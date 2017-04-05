@@ -1,5 +1,7 @@
 package pl.io;
 
+import java.util.List;
+
 public class Statistics {
 
 	public double normalization(Object aList_without_outliners) {
