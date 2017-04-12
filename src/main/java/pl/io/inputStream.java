@@ -3,10 +3,7 @@ package pl.io;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-
 import javax.sound.sampled.*;
-
 
 /**
  * @author Kamil Rytel
@@ -20,7 +17,7 @@ public class inputStream
 	 *
 	 * @author Kamil Rytel
 	 * 
-	 * @return
+	 * @return byte[]
 	 * @throws Exception
 	 */
 	public static byte[] reading() throws Exception 
@@ -70,7 +67,7 @@ public class inputStream
 	/**
 	 * @author Kamil Rytel
 	 * 
-	 * @return
+	 * @return byte[]
 	 * @throws UnsupportedAudioFileException
 	 * @throws IOException
 	 */
@@ -79,7 +76,6 @@ public class inputStream
 		final ByteArrayOutputStream baout = new ByteArrayOutputStream();
 		try{
 		 	final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(IO.FILE_PATH+inputStream.FILE_NAME));
-	
 	        AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, baout);
 	        audioInputStream.close();
 	        baout.close();
@@ -88,7 +84,6 @@ public class inputStream
 			e.printStackTrace();
 		}
         
-
 		return baout.toByteArray();
 	}
 }
