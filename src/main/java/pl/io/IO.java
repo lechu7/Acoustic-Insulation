@@ -1,5 +1,6 @@
 package pl.io;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -13,6 +14,8 @@ public class IO
 	 * @author Kamil Rytel
 	 * 
 	 * @param targetLine
+	 * @throws IOException 
+	 * @throws UnsupportedAudioFileException 
 	 */
 	public static void saveToFile(TargetDataLine targetLine) 
 	{
@@ -21,7 +24,7 @@ public class IO
 		
 		try{
 			//Write .wav file
-			AudioSystem.write(audioStream, AudioFileFormat.Type.WAVE,audioFile);
+			AudioSystem.write(audioStream, AudioFileFormat.Type.WAVE, audioFile);
 		}catch(IOException e)
 		{
 			e.printStackTrace();

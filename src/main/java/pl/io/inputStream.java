@@ -1,8 +1,12 @@
 package pl.io;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+
 import javax.sound.sampled.*;
+
 
 /**
  * @author Kamil Rytel
@@ -19,11 +23,11 @@ public class inputStream
 	 * @return
 	 * @throws Exception
 	 */
-	public static double reading() throws Exception 
+	public static byte[] reading() throws Exception 
 	{	
 		try{
 			//Declare audio format
-	    	AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,4410,16,2,4,4410, false);
+	    	AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,4410,16,2,4,4410, true);
 			TargetDataLine line;
 		
 		    DataLine.Info info = new DataLine.Info(TargetDataLine.class,format);
@@ -42,7 +46,7 @@ public class inputStream
 		    Thread thread = new Thread()
     		{
 		    	@Override public void run(){
-		    		IO.saveToFile(targetLine);
+					IO.saveToFile(targetLine);		
 		    	}
     		};
     		
@@ -60,6 +64,31 @@ public class inputStream
     		e.printStackTrace();
     	}
 		
-		return 0;
+		return inputStream.getAudioInputByteArray();
+	}
+	
+	/**
+	 * @author Kamil Rytel
+	 * 
+	 * @return
+	 * @throws UnsupportedAudioFileException
+	 * @throws IOException
+	 */
+	private static byte[] getAudioInputByteArray() throws UnsupportedAudioFileException, IOException{
+		
+		final ByteArrayOutputStream baout = new ByteArrayOutputStream();
+		try{
+		 	final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(IO.FILE_PATH+inputStream.FILE_NAME));
+	
+	        AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, baout);
+	        audioInputStream.close();
+	        baout.close();
+		}catch(UnsupportedAudioFileException e)
+		{
+			e.printStackTrace();
+		}
+        
+
+		return baout.toByteArray();
 	}
 }

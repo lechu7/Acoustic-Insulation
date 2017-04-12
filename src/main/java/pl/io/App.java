@@ -8,6 +8,9 @@ public class App
 	 */
     public static void main( String[] args ) throws Exception
     {
-    	inputStream.reading();
+		byte[] response = inputStream.reading();
+		for(int i = 0; i<response.length; i++){
+			System.out.println(response[i]);
+		}
     }
 }
