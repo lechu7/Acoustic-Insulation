@@ -9,12 +9,12 @@ import javax.sound.sampled.*;
 
 public class outputStream{
 	
-	float SAMPLE_RATE=44100f;
+	float SAMPLE_RATE=44100.0f;
 	int SAMPLE_SIZE_IN_BITS = 16;
 	int CHANNELS = 1;
 	boolean SIGNED = true;
 	boolean BIG_ENDIAN = true;
-	byte audioData[] = new byte[(int)SAMPLE_RATE*32];
+	byte audioData[] = new byte[(int)SAMPLE_RATE*16];
 	
 		
 	ByteBuffer byteBuffer = ByteBuffer.wrap(audioData);
@@ -39,13 +39,11 @@ public class outputStream{
 	    double lowFreq = 20.0;
 	    double highFreq = 20000.0;
 
-	    for(int cnt = 0; cnt < sampLength; cnt++){
+	    for(int cnt = 0; cnt < sampLength; cnt++)
+	    {
 	      double time = cnt/SAMPLE_RATE;
-
-	      double freq = lowFreq +
-	               cnt*(highFreq-lowFreq)/sampLength;
-	      double sinValue =
-	                   Math.sin(2*Math.PI*freq*time);
+	      double freq = lowFreq + cnt*(highFreq-lowFreq)/sampLength;
+	      double sinValue = Math.sin(2*Math.PI*freq*time);
 	      shortBuffer.put((short)(16000*sinValue));
 	    }
 		Thread listenThread = new Thread()
@@ -55,7 +53,7 @@ public class outputStream{
 			{
 				try
 				{		
-					byte playBuffer[] = new byte[16384];
+					byte playBuffer[] = new byte[45000];
 
 					
 					sdl.open(audioFormat);
