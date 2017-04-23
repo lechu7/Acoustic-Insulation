@@ -22,7 +22,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
 
-public class Main extends Application {
+public class gui extends Application {
 
 
     @Override
@@ -42,7 +42,7 @@ public class Main extends Application {
         startBtn.setText("START");
 
         // force the field to be numeric only
-        frequencyText.textProperty().addListener(new ChangeListener<String>() {
+        /*frequencyText.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!newValue.matches("\\d*")) {
@@ -58,7 +58,7 @@ public class Main extends Application {
                     timeText.setText(newValue.replaceAll("[^\\d]", ""));
                 }
             }
-        });
+        });*/
 
         /*
         After click start button we'll expect execute generateGraph() method
