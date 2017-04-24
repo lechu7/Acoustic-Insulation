@@ -1,86 +1,24 @@
 package pl.io;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.ShortBuffer;
-
-import javax.sound.sampled.*;
+import net.beadsproject.beads.core.AudioContext;
+import net.beadsproject.beads.data.Buffer;
+import net.beadsproject.beads.ugens.Envelope;
+import net.beadsproject.beads.ugens.Gain;
+import net.beadsproject.beads.ugens.WavePlayer;
 
 public class outputStream{
 	
-	float SAMPLE_RATE=44100.0f;
-	int SAMPLE_SIZE_IN_BITS = 16;
-	int CHANNELS = 1;
-	boolean SIGNED = true;
-	boolean BIG_ENDIAN = true;
-	byte audioData[] = new byte[(int)SAMPLE_RATE*16];
-	
-		
-	ByteBuffer byteBuffer = ByteBuffer.wrap(audioData);
-	ShortBuffer shortBuffer = byteBuffer.asShortBuffer();
-	int byteLength = audioData.length;
-	AudioInputStream audioInputStream;
-	AudioFormat audioFormat;
-	SourceDataLine sdl;
-	
-	
-	void sweep() throws LineUnavailableException
+	void sweep()
 	{
-		
-		InputStream byteArrayInputStream = new ByteArrayInputStream(audioData);
-		audioFormat = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE_IN_BITS, CHANNELS, SIGNED, BIG_ENDIAN);
-		audioInputStream = new AudioInputStream(byteArrayInputStream, audioFormat, audioData.length/audioFormat.getFrameSize());
-		DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
-		sdl = (SourceDataLine)AudioSystem.getLine(dataLineInfo);
-
-	    int bytesPerSamp = 2;
-	    int sampLength = byteLength/bytesPerSamp;
-	    double lowFreq = 20.0;
-	    double highFreq = 20000.0;
-
-	    for(int cnt = 0; cnt < sampLength; cnt++)
-	    {
-	      double time = cnt/SAMPLE_RATE;
-	      double freq = lowFreq + cnt*(highFreq-lowFreq)/sampLength;
-	      double sinValue = Math.sin(2*Math.PI*freq*time);
-	      shortBuffer.put((short)(16000*sinValue));
-	    }
-		Thread listenThread = new Thread()
-		{
-			@Override
-			public void run()
-			{
-				try
-				{		
-					byte playBuffer[] = new byte[45000];
-
-					
-					sdl.open(audioFormat);
-					sdl.start(); 			
-					
-					 int cnt; 
-				     while((cnt = audioInputStream.read(playBuffer, 0, playBuffer.length)) != -1)
-				      {
-				        if(cnt > 0)
-				        {			          
-				          sdl.write(playBuffer, 0, cnt);
-				        }
-				      }
-				      sdl.drain();
-				      sdl.stop();
-				      sdl.close();
-					
-				}
-				catch(Exception e)
-				{
-					
-				}
-			}
-		};
-		listenThread.start();
+		AudioContext ac = new AudioContext();
+		Envelope e1 = new Envelope(ac, 20);
+		e1.addSegment(20000, 30000);
+		WavePlayer wp1 = new WavePlayer(ac, e1, Buffer.SINE);
+		Gain g = new Gain(ac, 1, 0.1f);
+		g.addInput(wp1);
+		ac.out.addInput(g);
+		ac.start();
 	}
-
 	
 	public static void main(String[] args) {
 		try
