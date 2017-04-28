@@ -31,6 +31,7 @@ class ChangedSineBuffer extends BufferFactory
 
 /**
  * Class with static methods to generate sound.
+ * @version 2.1
  */
 public class outputStream{	
 	
@@ -79,13 +80,11 @@ public class outputStream{
 				AudioContext ac = new AudioContext();
 				Buffer CSIN = new ChangedSineBuffer().getDefault();
 				WavePlayer wp = new WavePlayer(ac, freq, CSIN);
-				Gain g = new Gain(ac, 1, 0.1f);
-				g.addInput(wp);
-				ac.out.addInput(g);
+				ac.out.addInput(wp);
 				ac.start();
 				try
 				{
-					Thread.sleep((long) time);
+					Thread.sleep(time);
 				} catch (InterruptedException e)
 				{
 					System.err.println(e.getMessage());
