@@ -7,8 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Insulation</name>
-  <url>http://maven.apache.org</url>
+  <name>Acoustic Insulation</name>
+  <url>https://github.com/lechu7/Acoustic-Insulation</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

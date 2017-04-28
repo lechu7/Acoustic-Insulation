@@ -5,31 +5,102 @@ import net.beadsproject.beads.data.Buffer;
 import net.beadsproject.beads.ugens.Envelope;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.WavePlayer;
+import net.beadsproject.beads.data.BufferFactory;
 
-public class outputStream{
+
+/**
+ * Sine-type buffer with amplitude 0.9 * 
+ */
+class ChangedSineBuffer extends BufferFactory
+{
+
+    public Buffer generateBuffer(int bufferSize)
+    {
+    	Buffer b = new Buffer(bufferSize);
+        for(int i = 0; i < bufferSize; i++) {
+            b.buf[i] = 0.9f * (float)Math.sin(2.0 * Math.PI * (double)i / (double)bufferSize);
+        }
+    	return b;
+    }
+
+    public String getName()
+    {
+    	return "ChangedSine";
+    }
+}
+
+/**
+ * Class with static methods to generate sound.
+ */
+public class outputStream{	
 	
-	void sweep()
+	/**
+	 * This method generates sweep signal.
+	 * @param startFreq Initial frequency of signal
+	 * @param endFreq Final frequency of signal
+	 * @param time Determines how long signal should be generating
+	 */
+	static void sweep(final float startFreq, final float endFreq, final float time)
 	{
-		AudioContext ac = new AudioContext();
-		Envelope e1 = new Envelope(ac, 20);
-		e1.addSegment(20000, 30000);
-		WavePlayer wp1 = new WavePlayer(ac, e1, Buffer.SINE);
-		Gain g = new Gain(ac, 1, 0.1f);
-		g.addInput(wp1);
-		ac.out.addInput(g);
-		ac.start();
+		new Thread()
+		{
+			public void run()
+			{
+				AudioContext ac = new AudioContext();
+				Envelope e1 = new Envelope(ac, startFreq);
+				e1.addSegment(endFreq, time);
+				WavePlayer wp1 = new WavePlayer(ac, e1, Buffer.SINE);
+				Gain g = new Gain(ac, 1, 0.1f);
+				g.addInput(wp1);
+				ac.out.addInput(g);
+				ac.start();
+				try
+				{
+					Thread.sleep((long) time);
+				} catch (InterruptedException e)
+				{
+					System.err.println(e.getMessage());
+				}
+				ac.stop();
+			}
+		}.start();		
+	}
+	/**
+	 * This method generates sinusoidal signal
+	 * @param freq Sets frequency of signal
+	 * @param time Determines how long signal should be generating
+	 */
+	static void sin(final float freq, final long time)
+	{
+		new Thread()
+		{
+			public void run()
+			{
+				AudioContext ac = new AudioContext();
+				Buffer CSIN = new ChangedSineBuffer().getDefault();
+				WavePlayer wp = new WavePlayer(ac, freq, CSIN);
+				Gain g = new Gain(ac, 1, 0.1f);
+				g.addInput(wp);
+				ac.out.addInput(g);
+				ac.start();
+				try
+				{
+					Thread.sleep((long) time);
+				} catch (InterruptedException e)
+				{
+					System.err.println(e.getMessage());
+				}
+				ac.stop();
+			}
+		}.start();
+			
 	}
 	
-	public static void main(String[] args) {
-		try
-		{
-			outputStream toTest = new outputStream();
-			toTest.sweep();
-		}
-		catch(Exception e)
-		{
-			
-		}
+	public static void main(String[] args) throws InterruptedException
+	{
+		outputStream.sin(1000.0f, 3000);
+		Thread.sleep(3500);
+		outputStream.sin(2000.0f, 5000);
 	}
 
 }
