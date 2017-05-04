@@ -3,37 +3,13 @@ package pl.io;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
-import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-import javax.sound.sampled.*;
 
 
 public class IO 
 {
-	final static String FILE_PATH = "sounds/";
-	
-	/**
-	 * @author Kamil Rytel
-	 * 
-	 * @param targetLine
-	 */
-	public static void saveToFile(TargetDataLine targetLine) 
-	{
-		AudioInputStream audioStream = new AudioInputStream(targetLine);
-		File audioFile = new File(IO.FILE_PATH+inputStream.FILE_NAME);
-		
-		try{
-			//Write .wav file
-			AudioSystem.write(audioStream, AudioFileFormat.Type.WAVE,audioFile);
-		}catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-
 	public void saveCSV(List<Double[]> data) throws FileNotFoundException{
 	      PrintWriter pw = new PrintWriter("file_X.csv");
 	      pw.println("Frequency;Front;Back;Difference");

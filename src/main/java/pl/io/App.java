@@ -1,5 +1,7 @@
 package pl.io;
 
+import java.util.ArrayList;
+
 public class App 
 {
 	/**
@@ -9,9 +11,8 @@ public class App
 	 */
     public static void main( String[] args ) throws Exception
     {
-		byte[] response = inputStream.reading();
-		for(int i = 0; i<response.length; i++){
-			System.out.println(response[i]);
-		}
+    	ArrayList<double[]> result = inputStream.reading();
+    	double[] firstChanel = result.get(0);
+    	double[] secondChanel = result.get(1);
     }
 }

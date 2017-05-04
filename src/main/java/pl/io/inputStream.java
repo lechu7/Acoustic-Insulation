@@ -1,30 +1,32 @@
 package pl.io;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
 import javax.sound.sampled.*;
+import java.nio.ByteBuffer;
 
 /**
  * @author Kamil Rytel
  */
 public class inputStream 
 {
-	static final String FILE_NAME = "file_name.wav";
-	static final int RECORDING_TIME = 1000;
+	static final int RECORDING_TIME = 3000;
 	
 	/**
-	 *
 	 * @author Kamil Rytel
 	 * 
-	 * @return byte[]
+	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] reading() throws Exception 
-	{	
+
+	public static ArrayList<double[]> reading() throws Exception 
+	{
+		ArrayList<double[]> myList = new ArrayList<double[]>();
+		
 		try{
 			//Declare audio format
-	    	AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,4410,16,2,4,4410, true);
+	    	AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,44100,16,2,4,44100, false);
 			TargetDataLine line;
 		
 		    DataLine.Info info = new DataLine.Info(TargetDataLine.class,format);
@@ -33,23 +35,29 @@ public class inputStream
 		    }
 		    
 		    TargetDataLine targetLine = (TargetDataLine)AudioSystem.getLine(info);
-		    
+		
 		    //Start recording
 		    targetLine.open(format);
 		    targetLine.start();
-		    System.out.println("Start recording!");
 		    
+		    System.out.println("Start recording!");
+		  
 		    //Special thread, responsible for saving sound after some time-sleep method
 		    Thread thread = new Thread()
     		{
 		    	@Override public void run(){
-					IO.saveToFile(targetLine);		
-		    	}
+		   			double[][] expplodedArray = inputStream.explodeArray((int)format.getSampleRate(),format.getFrameSize(), targetLine);
+		   			
+		   			myList.add(expplodedArray[0]);
+		   			myList.add(expplodedArray[1]);
+		   		}		    
     		};
     		
     		//Save after some milliseconds and close line
     		thread.start();
-    		Thread.sleep(inputStream.RECORDING_TIME);
+    		Thread.sleep(inputStream.RECORDING_TIME+100);
+    		
+    		
     		targetLine.stop();
     		targetLine.close();
     		System.out.println("Recording finished!");
@@ -60,30 +68,84 @@ public class inputStream
     	catch(InterruptedException e){
     		e.printStackTrace();
     	}
-		
-		return inputStream.getAudioInputByteArray();
+	
+		return myList;
+	}
+	
+	/**
+	 * @author Kamil Rytel
+	 * @param sampleRate
+	 * @param frameSize
+	 * @param targetLine
+	 * @return
+	 */
+	private static double[][] explodeArray(int sampleRate, int frameSize, TargetDataLine targetLine)
+	{
+			int bufferSize =  sampleRate * frameSize * inputStream.RECORDING_TIME/1000;		
+			byte buffer[] = new byte[bufferSize];
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+	        out.write(buffer, 0,  targetLine.read(buffer, 0, buffer.length));
+	        
+			byte[] allSamplesToByte = out.toByteArray();
+			double[] firstChanel = new double[bufferSize/2];
+			double[] secondChanel = new double[bufferSize/2];	
+			int helper = 0;
+			int firstChanelCounter = 0;
+			int secondChanelCounter = 0;
+			
+			//First 2 elements chanel one, next 2 chanel two
+			for(int i=0; i < allSamplesToByte.length; i++){
+				if(helper == 2) helper = -2;
+				if(helper < 2 && helper > -1)
+				{
+					firstChanel[firstChanelCounter] = inputStream.convertByteToDouble(allSamplesToByte[i]);
+					firstChanelCounter++;	
+				}
+				else{
+					secondChanel[secondChanelCounter] =  inputStream.convertByteToDouble(allSamplesToByte[i]);
+					secondChanelCounter++;
+				}
+				helper++;
+			}
+			
+			double[][] result = new double[2][];
+			result[0] = firstChanel;
+			result[1] = secondChanel;
+			
+			return result;
 	}
 	
 	/**
 	 * @author Kamil Rytel
 	 * 
-	 * @return byte[]
-	 * @throws UnsupportedAudioFileException
-	 * @throws IOException
+	 * @param element
+	 * @return
 	 */
-	private static byte[] getAudioInputByteArray() throws UnsupportedAudioFileException, IOException{
-		
-		final ByteArrayOutputStream baout = new ByteArrayOutputStream();
-		try{
-		 	final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(IO.FILE_PATH+inputStream.FILE_NAME));
-	        AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, baout);
-	        audioInputStream.close();
-	        baout.close();
-		}catch(UnsupportedAudioFileException e)
-		{
-			e.printStackTrace();
-		}
+	private static double convertByteToDouble(byte element)
+	{       
+		return (double)ByteBuffer.wrap(inputStream.byteToByteArray(element)).order(ByteOrder.LITTLE_ENDIAN).getShort();	
+	}
+	
+	/**
+	 * @author Kamil Rytel
+	 * 
+	 * @param x
+	 * @return
+	 */
+	private static byte[] byteToByteArray(byte x){
+		byte[] wynik;
+        short[] tablica_pom;
+        int i;
         
-		return baout.toByteArray();
+        wynik = new byte[2];
+        tablica_pom = new short[2];
+        
+        tablica_pom[0] = (short)(x & 0x00ff); 
+        tablica_pom[1] = (short)((x & 0xff00) >> 8);
+        
+        
+        for(i = 0; i < 2; i++) wynik[i] = (byte)tablica_pom[i];
+        
+        return wynik;
 	}
 }
