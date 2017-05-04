@@ -22,11 +22,11 @@ public class inputStream
 
 	public static ArrayList<double[]> reading() throws Exception 
 	{
-		ArrayList<double[]> myList = new ArrayList<double[]>();
+		final ArrayList<double[]> myList = new ArrayList<double[]>();
 		
 		try{
 			//Declare audio format
-	    	AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,44100,16,2,4,44100, false);
+	    	final AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,44100,16,2,4,44100, false);
 			TargetDataLine line;
 		
 		    DataLine.Info info = new DataLine.Info(TargetDataLine.class,format);
@@ -55,7 +55,7 @@ public class inputStream
     		
     		//Save after some milliseconds and close line
     		thread.start();
-    		Thread.sleep(inputStream.RECORDING_TIME+100);
+    		Thread.sleep(inputStream.RECORDING_TIME+500);
     		
     		
     		targetLine.stop();
@@ -87,8 +87,8 @@ public class inputStream
 	        out.write(buffer, 0,  targetLine.read(buffer, 0, buffer.length));
 	        
 			byte[] allSamplesToByte = out.toByteArray();
-			double[] firstChanel = new double[bufferSize/2];
-			double[] secondChanel = new double[bufferSize/2];	
+			double[] firstChanel = new double[bufferSize/2+1];
+			double[] secondChanel = new double[bufferSize/2+1];	
 			int helper = 0;
 			int firstChanelCounter = 0;
 			int secondChanelCounter = 0;
