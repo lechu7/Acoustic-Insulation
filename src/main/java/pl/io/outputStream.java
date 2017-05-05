@@ -31,7 +31,7 @@ class ChangedSineBuffer extends BufferFactory
 
 /**
  * Class with static methods to generate sound.
- * @version 2.1
+ * @version 2.2
  */
 public class outputStream{	
 	
@@ -40,10 +40,11 @@ public class outputStream{
 	 * @param startFreq Initial frequency of signal
 	 * @param endFreq Final frequency of signal
 	 * @param time Determines how long signal should be generating
+	 * @throws InterruptedException 
 	 */
-	static void sweep(final float startFreq, final float endFreq, final float time)
+	static void sweep(final float startFreq, final float endFreq, final float time) throws InterruptedException
 	{
-		new Thread()
+		Thread t = new Thread()
 		{
 			public void run()
 			{
@@ -64,16 +65,20 @@ public class outputStream{
 				}
 				ac.stop();
 			}
-		}.start();		
+		};
+		t.start();
+		t.join();
 	}
+	
 	/**
 	 * This method generates sinusoidal signal
 	 * @param freq Sets frequency of signal
 	 * @param time Determines how long signal should be generating
+	 * @throws InterruptedException 
 	 */
-	static void sin(final float freq, final long time)
+	static void sin(final float freq, final long time) throws InterruptedException
 	{
-		new Thread()
+		Thread t = new Thread()
 		{
 			public void run()
 			{
@@ -91,15 +96,8 @@ public class outputStream{
 				}
 				ac.stop();
 			}
-		}.start();
-			
+		};
+		t.start();
+		t.join();			
 	}
-	
-	public static void main(String[] args) throws InterruptedException
-	{
-		outputStream.sin(1000.0f, 3000);
-		Thread.sleep(3500);
-		outputStream.sin(2000.0f, 5000);
-	}
-
 }
