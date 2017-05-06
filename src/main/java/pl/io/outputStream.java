@@ -42,6 +42,11 @@ public class outputStream{
 	 * @param time Determines how long signal should be generating
 	 * @throws InterruptedException 
 	 */
+	static String getTime()
+	{
+		return "[Curr. time[ms]: " + System.currentTimeMillis() + "]";		
+	}
+	
 	static void sweep(final float startFreq, final float endFreq, final float time) throws InterruptedException
 	{
 		Thread t = new Thread()
@@ -55,6 +60,9 @@ public class outputStream{
 				Gain g = new Gain(ac, 1, 0.1f);
 				g.addInput(wp1);
 				ac.out.addInput(g);
+				
+				System.out.println(getTime() + " Starting sweep signal"); 
+				
 				ac.start();
 				try
 				{
@@ -64,6 +72,7 @@ public class outputStream{
 					System.err.println(e.getMessage());
 				}
 				ac.stop();
+				System.out.println(getTime() + " End of sweep signal"); 
 			}
 		};
 		t.start();
@@ -85,6 +94,7 @@ public class outputStream{
 				Buffer CSIN = new ChangedSineBuffer().getDefault();
 				WavePlayer wp = new WavePlayer(ac, freq, CSIN);
 				ac.out.addInput(wp);
+				System.out.println(getTime() + " Starting sin signal"); 
 				ac.start();
 				try
 				{
@@ -94,6 +104,7 @@ public class outputStream{
 					System.err.println(e.getMessage());
 				}
 				ac.stop();
+				System.out.println(getTime() + " End of sin signal"); 
 			}
 		};
 		t.start();
