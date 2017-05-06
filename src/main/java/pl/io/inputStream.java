@@ -10,9 +10,7 @@ import java.nio.ByteBuffer;
  * @author Kamil Rytel
  */
 public class inputStream 
-{
-	static final int RECORDING_TIME = 3000;
-	
+{	
 	/**
 	 * @author Kamil Rytel
 	 * 
@@ -20,7 +18,7 @@ public class inputStream
 	 * @throws Exception
 	 */
 
-	public static ArrayList<double[]> reading() throws Exception 
+	public static ArrayList<double[]> reading(final float recordingTime) throws Exception 
 	{
 		final ArrayList<double[]> myList = new ArrayList<double[]>();
 		
@@ -46,7 +44,8 @@ public class inputStream
 		    Thread thread = new Thread()
     		{
 		    	@Override public void run(){
-		   			double[][] expplodedArray = inputStream.explodeArray((int)format.getSampleRate(),format.getFrameSize(), targetLine);
+		    		System.out.println(outputStream.getTime() + " Starting recording signal");
+		   			double[][] expplodedArray = inputStream.explodeArray((int)format.getSampleRate(),format.getFrameSize(), targetLine, recordingTime);
 		   			
 		   			myList.add(expplodedArray[0]);
 		   			myList.add(expplodedArray[1]);
@@ -55,11 +54,12 @@ public class inputStream
     		
     		//Save after some milliseconds and close line
     		thread.start();
-    		Thread.sleep(inputStream.RECORDING_TIME+500);
+    		Thread.sleep((long) (recordingTime+500));
     		
     		
     		targetLine.stop();
     		targetLine.close();
+    		System.out.println(outputStream.getTime() + " Stop recording signal");
     		System.out.println("Recording finished!");
     	} 
     	catch(LineUnavailableException e){
@@ -79,9 +79,9 @@ public class inputStream
 	 * @param targetLine
 	 * @return
 	 */
-	private static double[][] explodeArray(int sampleRate, int frameSize, TargetDataLine targetLine)
+	private static double[][] explodeArray(int sampleRate, int frameSize, TargetDataLine targetLine, float recordingTime)
 	{
-			int bufferSize =  sampleRate * frameSize * inputStream.RECORDING_TIME/1000;		
+			int bufferSize =  (int) (sampleRate * frameSize * recordingTime/1000);		
 			byte buffer[] = new byte[bufferSize];
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        out.write(buffer, 0,  targetLine.read(buffer, 0, buffer.length));
