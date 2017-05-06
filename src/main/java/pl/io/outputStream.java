@@ -31,7 +31,7 @@ class ChangedSineBuffer extends BufferFactory
 
 /**
  * Class with static methods to generate sound.
- * @version 2.2
+ * @version 2.2.1
  */
 public class outputStream{	
 	
@@ -67,7 +67,6 @@ public class outputStream{
 			}
 		};
 		t.start();
-		t.join();
 	}
 	
 	/**
@@ -98,6 +97,5 @@ public class outputStream{
 			}
 		};
 		t.start();
-		t.join();			
 	}
 }
