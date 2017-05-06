@@ -16,7 +16,7 @@ public class App
 		outputStream.sweep(20, 20000, 2000);
 		System.out.println("za sweep");
     	ArrayList<double[]> result = inputStream.reading();
-    	double[] firstChanel = result.get(0);
-    	double[] secondChanel = result.get(1);
+    	double[] firstChannel = result.get(0);
+    	double[] secondChannel = result.get(1);
     }
 }

@@ -27,14 +27,14 @@ public class inputStream
 		try{
 			//Declare audio format
 	    	final AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,44100,16,2,4,44100, false);
-			TargetDataLine line;
+			final TargetDataLine line;
 		
 		    DataLine.Info info = new DataLine.Info(TargetDataLine.class,format);
 		    if(!AudioSystem.isLineSupported(info)){
 		    	throw new Exception("Line not suported");
 		    }
 		    
-		    TargetDataLine targetLine = (TargetDataLine)AudioSystem.getLine(info);
+		    final TargetDataLine targetLine = (TargetDataLine)AudioSystem.getLine(info);
 		
 		    //Start recording
 		    targetLine.open(format);
@@ -87,30 +87,30 @@ public class inputStream
 	        out.write(buffer, 0,  targetLine.read(buffer, 0, buffer.length));
 	        
 			byte[] allSamplesToByte = out.toByteArray();
-			double[] firstChanel = new double[bufferSize/2+1];
-			double[] secondChanel = new double[bufferSize/2+1];	
+			double[] firstChannel = new double[bufferSize/2+1];
+			double[] secondChannel = new double[bufferSize/2+1];	
 			int helper = 0;
-			int firstChanelCounter = 0;
-			int secondChanelCounter = 0;
+			int firstChannelCounter = 0;
+			int secondChannelCounter = 0;
 			
-			//First 2 elements chanel one, next 2 chanel two
+			//First 2 elements Channel one, next 2 Channel two
 			for(int i=0; i < allSamplesToByte.length; i++){
 				if(helper == 2) helper = -2;
 				if(helper < 2 && helper > -1)
 				{
-					firstChanel[firstChanelCounter] = inputStream.convertByteToDouble(allSamplesToByte[i]);
-					firstChanelCounter++;	
+					firstChannel[firstChannelCounter] = inputStream.convertByteToDouble(allSamplesToByte[i]);
+					firstChannelCounter++;	
 				}
 				else{
-					secondChanel[secondChanelCounter] =  inputStream.convertByteToDouble(allSamplesToByte[i]);
-					secondChanelCounter++;
+					secondChannel[secondChannelCounter] =  inputStream.convertByteToDouble(allSamplesToByte[i]);
+					secondChannelCounter++;
 				}
 				helper++;
 			}
 			
 			double[][] result = new double[2][];
-			result[0] = firstChanel;
-			result[1] = secondChanel;
+			result[0] = firstChannel;
+			result[1] = secondChannel;
 			
 			return result;
 	}
