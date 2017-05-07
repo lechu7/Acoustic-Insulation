@@ -1,5 +1,34 @@
+import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 public class test_IO
 {
-  //readCSV
   //saveCSV
+  	
+  public static void test_readCSV() throws FileNotFoundException
+	{
+		//odczytywanie danych z pliku .csv i wyświetlanie w konsoli
+		String path = "file_X.csv";
+		List<Double[]> lista = IOClass.readCSV(path);		
+		System.out.println("Frequency; Front; Back; Difference;");
+		for(Double[] tab : lista)
+		{		
+			for(Double l : tab)
+			{
+				System.out.print(l+"; ");				
+			}
+			System.out.println("");
+		}
+	}
+  
+	public static void main(String[] args) throws FileNotFoundException
+	{
+		test_readCSV();
+
+	}
+  
 }
