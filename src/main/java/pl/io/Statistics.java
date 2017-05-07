@@ -8,12 +8,12 @@ public class Statistics {
 	{
 		double max = list.get(0);
 		double min = list.get(0);
-		//Obliczenie wartosci najmniejszej i najwiekszej
+		//Calculation of min and max value
 		for (int i = 1; i < list.size(); i++) {
 			if (list.get(i)>max) max = list.get(i);
 			if (list.get(i)<min) min = list.get(i);
 		}
-		//normalizacja
+		//nNormalization
 		for(int i=0;i<list.size();i++)
 			list.set(i, (list.get(i)-min)/(max-min)*2-1); 
 		return list;
@@ -21,21 +21,21 @@ public class Statistics {
 
 	public static  List<Double> outliners(List<Double> list) 
 	{
-		//obliczenie sredniej
+		//Calculation of average value
 		double average=0;
 		for(int i=0;i<list.size();i++)
 			average+=list.get(i);
 		average=average/list.size();
-		//obliczenie odchylenia standardowego
+		//Calculation of standard deviation
 		double deviation=0;
 		for(int i=0;i<list.size();i++)
 			deviation += Math.pow(list.get(i)-average, 2);
 		deviation = deviation/(list.size()-1);
 		deviation = Math.sqrt(deviation);
-		//obliczenie wasow
-		double upper = average+deviation;
-		double bottom = average-deviation;
-		// sprawdzenie i zamiana
+		//Calculation of outliners
+		double upper = average+2*deviation;
+		double bottom = average-2*deviation;
+		//Checking and replacing departing elements for outliners
 		for(int i=0;i<list.size();i++)
 		{
 			if(list.get(i)>upper) list.set(i, upper);

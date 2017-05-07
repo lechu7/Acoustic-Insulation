@@ -1,4 +1,5 @@
 package pl.io;
+import java.util.List;
 
 public class Calculation {
 
@@ -6,7 +7,9 @@ public class Calculation {
 		throw new UnsupportedOperationException();
 	}
 
-	public double diff(Object aDouble_ch1, Object aDouble_ch2) {
-		throw new UnsupportedOperationException();
+	public static List<double> diff(List<Double> listch1, List<Double> listch2) {
+		for(int i=0;i<listch1.size();i++)
+			listch1.set(i,listch1.get(i)-listch2.get(i));
+		return listch1;
 	}
 }
