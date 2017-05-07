@@ -31,22 +31,24 @@ class ChangedSineBuffer extends BufferFactory
 
 /**
  * Class with static methods to generate sound.
- * @version 2.3
+ * @version 2.3.1
  */
 public class outputStream{	
 	
 	/**
-	 * This method generates sweep signal.
-	 * @param startFreq Initial frequency of signal
-	 * @param endFreq Final frequency of signal
-	 * @param time Determines how long signal should be generating
-	 * @throws InterruptedException 
+	 *  @return Returns current time in ms.
 	 */
 	static String getTime()
 	{
 		return "[Curr. time[ms]: " + System.currentTimeMillis() + "]";		
 	}
 	
+	/**
+	 * This method generates sweep signal.
+	 * @param startFreq Initial frequency of signal
+	 * @param endFreq Final frequency of signal
+	 * @param time Determines how long signal should be generating
+	 */
 	static void sweep(final float startFreq, final float endFreq, final float time, final long delay)
 	{
 		Thread t = new Thread()
@@ -90,7 +92,6 @@ public class outputStream{
 	 * This method generates sinusoidal signal
 	 * @param freq Sets frequency of signal
 	 * @param time Determines how long signal should be generating
-	 * @throws InterruptedException 
 	 */
 	static void sin(final float freq, final long time, final long delay)
 	{
