@@ -31,7 +31,7 @@ class ChangedSineBuffer extends BufferFactory
 
 /**
  * Class with static methods to generate sound.
- * @version 2.2.1
+ * @version 2.2.2
  */
 public class outputStream{	
 	
@@ -47,7 +47,7 @@ public class outputStream{
 		return "[Curr. time[ms]: " + System.currentTimeMillis() + "]";		
 	}
 	
-	static void sweep(final float startFreq, final float endFreq, final float time) throws InterruptedException
+	static void sweep(final float startFreq, final float endFreq, final float time)
 	{
 		Thread t = new Thread()
 		{
@@ -84,7 +84,7 @@ public class outputStream{
 	 * @param time Determines how long signal should be generating
 	 * @throws InterruptedException 
 	 */
-	static void sin(final float freq, final long time) throws InterruptedException
+	static void sin(final float freq, final long time)
 	{
 		Thread t = new Thread()
 		{
