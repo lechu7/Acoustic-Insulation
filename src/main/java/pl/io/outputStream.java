@@ -31,7 +31,7 @@ class ChangedSineBuffer extends BufferFactory
 
 /**
  * Class with static methods to generate sound.
- * @version 2.3.1
+ * @version 2.3.2
  */
 public class outputStream{	
 	
@@ -48,6 +48,7 @@ public class outputStream{
 	 * @param startFreq Initial frequency of signal
 	 * @param endFreq Final frequency of signal
 	 * @param time Determines how long signal should be generating
+	 * @param delay Sets delay to start generating signal
 	 */
 	static void sweep(final float startFreq, final float endFreq, final float time, final long delay)
 	{
@@ -92,6 +93,7 @@ public class outputStream{
 	 * This method generates sinusoidal signal
 	 * @param freq Sets frequency of signal
 	 * @param time Determines how long signal should be generating
+	 * @param delay Sets delay to start generating signal
 	 */
 	static void sin(final float freq, final long time, final long delay)
 	{
