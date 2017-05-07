@@ -1,5 +1,80 @@
 public class test_Statistics
 {
    //normalization
-   //outliners
+   //outliners - Test
+  public static double srednia_listy(List<Double> lista)
+	{
+		double srednia=0;
+		double suma=0;
+		for(int i=0;i<lista.size();i++)
+		{
+			suma+=lista.get(i);
+		}
+		srednia=suma/lista.size();
+		return srednia;
+	}
+   public static double odchylenie_listy(List<Double>lista)
+	{
+		double srednia=srednia_listy(lista);
+		double odchylenie=0;
+		for(int i=0;i<lista.size();i++)
+			odchylenie += Math.pow(lista.get(i)-srednia, 2);
+		odchylenie = odchylenie/(lista.size()-1);
+		odchylenie = Math.sqrt(odchylenie);
+		return odchylenie;
+	}
+   public static double was_gorny_listy(List<Double>lista)
+	{
+		double srednia=srednia_listy(lista);
+		double odchylenie=odchylenie_listy(lista);
+		return (double)(srednia+odchylenie);	
+	}
+	public static double was_dolny_listy(List<Double>lista)
+	{
+		double srednia=srednia_listy(lista);
+		double odchylenie=odchylenie_listy(lista);
+		return (double)(srednia-odchylenie);
+	}
+   public static void wyswietl_liste(List<Double>lista)
+	{
+		for(int i=0;i<lista.size();i++) System.out.print(lista.get(i)+" || ");
+	}
+   public static List<Double> zamien_elementy_odstajace(List<Double>lista)
+	{
+		double gorny=was_gorny_listy(lista);
+		double dolny = was_dolny_listy(lista);
+		
+		for(int i=0;i<lista.size();i++)
+		{
+			if(lista.get(i)>gorny) lista.set(i,gorny);
+			if(lista.get(i)<dolny) lista.set(i, dolny);
+		}
+	return lista;	
+	}
+   public static void main(String[] args) { //Niew iem czy funkcja Main potrzebna - dodaje na wszelki wypadek
+		//Dane testowe outliners
+		List<Double>lista=new ArrayList();
+		lista.add(2.0);
+		lista.add(3.5);
+		lista.add(-100.0);
+		lista.add(35.2);
+		lista.add(25.3);
+		lista.add(32.90);
+		System.out.println("srednia listy : "+ srednia_listy(lista));
+		System.out.println("odchylenie listy : "+odchylenie_listy(lista));
+		System.out.println("was gorny : "+was_gorny_listy(lista));
+		System.out.println("was dolny : "+was_dolny_listy(lista));
+		System.out.print("Lista lista wejsciowa : ");
+		wyswietl_liste(lista);
+		List<Double> wynikowa=new ArrayList();
+		wynikowa=zamien_elementy_odstajace(lista);
+		System.out.println();
+		System.out.print("Lista wyjsciowa " );
+		wyswietl_liste(wynikowa);
+      
+      
+
+	}
+   
+   
 }
