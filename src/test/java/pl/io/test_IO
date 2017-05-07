@@ -13,7 +13,7 @@ public class test_IO
 	{
 		//odczytywanie danych z pliku .csv i wyświetlanie w konsoli
 		String path = "file_X.csv";
-		List<Double[]> lista = IOClass.readCSV(path);		
+		List<Double[]> lista = IO.readCSV(path);		
 		System.out.println("Frequency; Front; Back; Difference;");
 		for(Double[] tab : lista)
 		{		
