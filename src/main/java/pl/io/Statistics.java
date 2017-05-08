@@ -13,7 +13,7 @@ public class Statistics {
 			if (list.get(i)>max) max = list.get(i);
 			if (list.get(i)<min) min = list.get(i);
 		}
-		//nNormalization
+		//Normalization
 		for(int i=0;i<list.size();i++)
 			list.set(i, (list.get(i)-min)/(max-min)*2-1); 
 		return list;
