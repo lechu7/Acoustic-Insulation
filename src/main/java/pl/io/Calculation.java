@@ -1,4 +1,5 @@
 package pl.io;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Calculation {
@@ -8,8 +9,9 @@ public class Calculation {
 	}
 
 	public static  List<Double> diff(List<Double> listch1, List<Double> listch2) {
+		List<Double> listdiff = new ArrayList<Double>();
 		for(int i=0;i<listch1.size();i++)
-			listch1.set(i,listch1.get(i)-listch2.get(i));
-		return listch1;
+			listdiff.add(listch1.get(i)-listch2.get(i));
+		return listdiff;
 	}
 }
