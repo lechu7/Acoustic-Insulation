@@ -20,7 +20,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-
+import javafx.scene.image.*;
 
 public class gui extends Application {
 
@@ -149,10 +149,26 @@ public class gui extends Application {
         series3.getData().add(new XYChart.Data(9, 43));
 
         /* end of graph section*/
-
+        Image graph1 = new Image("file:bitmap.png"); 
+        Image graph2 = new Image("file:bitmap.png"); 
+        Image graph3 = new Image("file:bitmap.png"); 
+        ImageView iv1 = new ImageView();
+        ImageView iv2 = new ImageView();
+        ImageView iv3 = new ImageView();
+        
+        iv1.fitWidthProperty().bind(primaryStage.widthProperty());
+        iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
+        iv2.fitWidthProperty().bind(primaryStage.widthProperty());
+        iv2.fitHeightProperty().bind(iv3.fitHeightProperty());
+        iv3.fitWidthProperty().bind(primaryStage.widthProperty());
+        iv3.fitHeightProperty().bind(primaryStage.minHeightProperty());
+ 
+        iv1.setImage(graph1);
+        iv2.setImage(graph2);
+        iv3.setImage(graph3);
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20,20,20,20));
-        layout.getChildren().addAll(cb1,cb2,frequencyLabel,frequencyText,timeLabel,timeText,startBtn,lineChart1,lineChart2,lineChart3);
+        layout.getChildren().addAll(cb1,cb2,frequencyLabel,frequencyText,timeLabel,timeText,startBtn,iv1,iv2,iv3);
 
         Scene scene = new Scene(layout,800,700);
 
@@ -165,6 +181,7 @@ public class gui extends Application {
     }
 
     public static void main(String[] args) {
+    	Graph.Call();
         launch(args);
     }
 }
