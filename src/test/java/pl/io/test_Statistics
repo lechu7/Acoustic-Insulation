@@ -24,7 +24,7 @@ public class test_IO {
 		for(int i=0;i<test1.size();i++) av1+=test1.get(i);
 		av1=av1/test1.size();
 		double deviation1=0;
-		System.out.println("Average input : "+av1);
+		System.out.println("Average input 1: "+av1);
 		for(int i=0;i<test1.size();i++)
 			deviation1 += Math.pow(test1.get(i)-av1, 2);
 		deviation1 = deviation1/(test1.size()-1);
@@ -71,15 +71,16 @@ public class test_IO {
 		for(int i=0;i<test2.size();i++) av2+=test2.get(i);
 		av2=av2/test2.size();
 		double deviation2=0;
-		System.out.println("Average input : "+av2);
+		System.out.println();
+		System.out.println("Average input 2: "+av2);
 		for(int i=0;i<test2.size();i++)
 			deviation2 += Math.pow(test2.get(i)-av2, 2);
 		deviation2 = deviation2/(test2.size()-1);
 		deviation2 = Math.sqrt(deviation2);
 		double upper2 = av2+2*deviation2;
 		double bottom2 = av2-2*deviation2;
-		System.out.println("upper input 1 : "+upper2);
-		System.out.println("bottom input 1 : "+bottom2);
+		System.out.println("upper input 2 : "+upper2);
+		System.out.println("bottom input 2 : "+bottom2);
 		
 		List<Double> result2 = new ArrayList();
 		result2=test.outliners(test2);
@@ -92,6 +93,11 @@ pr2.add(600.0);
 pr2.add(-400.0);
 pr2.add(0.99);
 pr2.add(-5.23);
+  System.out.println("Output list 2");
+for(int i=0;i<pr2.size();i++)
+{
+	System.out.print(pr2.get(i)+" || ");
+}
 
 assertEquals(result2,pr2);
 		
@@ -99,6 +105,8 @@ assertEquals(result2,pr2);
 }
 	
 	
+
+
 
 
 
