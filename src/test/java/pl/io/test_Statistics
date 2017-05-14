@@ -78,3 +78,138 @@ public class test_Statistics
    
    
 }
+/////////////////////   TEST NORMALIZATION ////////////
+//// WRZUCIŁAM WSZYSTKO, JEST PARĘ BŁĘDÓW W KODZIE JESZCZE DO EDYCJI
+package klasanormalization;
+import java.util.List;
+
+public class KlasaNormalization {
+public static List<Double> normalization(List<Double> list) 
+	{
+		double max = list.get(0);
+		double min = list.get(0);
+		//Calculation of min and max value
+		for (int i = 1; i < list.size(); i++) {
+			if (list.get(i)>max) max = list.get(i);
+			if (list.get(i)<min) min = list.get(i);
+		}
+		//Normalization
+		for(int i=0;i<list.size();i++)
+			list.set(i, (list.get(i)-min)/(max-min)*2-1); 
+		return list;
+	}
+    public static  List<Double> outliners(List<Double> list) 
+	{
+		//Calculation of average value
+		double average=0;
+		for(int i=0;i<list.size();i++)
+			average+=list.get(i);
+		average=average/list.size();
+		//Calculation of standard deviation
+		double deviation=0;
+		for(int i=0;i<list.size();i++)
+			deviation += Math.pow(list.get(i)-average, 2);
+		deviation = deviation/(list.size()-1);
+		deviation = Math.sqrt(deviation);
+		//Calculation of outliners
+		double upper = average+2*deviation;
+		double bottom = average-2*deviation;
+		//Checking and replacing departing elements for outliners
+		for(int i=0;i<list.size();i++)
+		{
+			if(list.get(i)>upper) list.set(i, upper);
+			if(list.get(i)<bottom) list.set(i, bottom);
+		}
+		return list;
+	} 
+}
+package klasanormalization;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import java.util.List;
+import java.util.ArrayList;
+import static org.junit.Assert.*;
+
+public class KlasaNormalizationTest {
+    
+    public KlasaNormalizationTest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
+    }
+    @Test
+    public void testNormalization() {
+        System.out.println("Test metody 'normalization'");
+        KlasaNormalization instance = new KlasaNormalization();
+        System.out.println("Inicjalizujemy przykladowy zestaw danych dla metodu outliners");
+        List<Double>lista=new ArrayList();
+		lista.add(2.0);
+		lista.add(3.5);
+		lista.add(-100.0);
+		lista.add(35.2);
+		lista.add(25.3);
+		lista.add(32.90);
+        instance.outliners(lista);
+        System.out.println(" Sprawdzamy prawidlowosc pobranych danych (zwracanych przez metoda 'outliners')");
+        List<Double> oczekiwana=instance.outliners(lista);
+        boolean czy_zgodne=true;
+      
+        if(oczekiwana==null) czy_zgodne = false;
+            
+            if(!czy_zgodne)
+            {
+                System.out.println("Nieprawidlowy pobor danych");
+                
+            }//end if
+      System.out.println("Sprawdzamy normalizacje danych");
+      /*Transformacja ta jest przeprowadzana wedlug wzoru:
+        a(i)'=(a(i)-a(i)max)/(a(i)max-a(i)min)
+ 	a(i)max jest maksymalna wartosc wystepujaca w zbiorze dla i-tej wartosci
+        a(i))min jest minimalna wartoscia
+      */
+        double max = oczekiwana.get(0);
+        double min = oczekiwana.get(0);
+	//Calculation of min and max value
+	for (int i = 1; i < oczekiwana.size(); i++) {
+		if (oczekiwana.get(i)>max) max = oczekiwana.get(i);
+			if (oczekiwana.get(i)<min) min = oczekiwana.get(i);
+		}
+		//Normalization
+		for(int i=0;i<oczekiwana.size();i++)
+			oczekiwana.set(i, (oczekiwana.get(i)-min)/(max-min)*2-1); 
+                
+	System.out.println("Lista 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'");
+        List<Double> uzyskana=instance.normalization(lista);
+        int i=0;
+        while(i < oczekiwana.size() && czy_zgodne == true)
+        {
+            if(oczekiwana.get(i)!=uzyskana.get(i)) czy_zgodne = false;
+            
+            if(!czy_zgodne)
+            {
+                System.out.println("Blad w tescie normalizacji!");      
+                System.out.println("oczekiwano .. " + oczekiwana.get(i));
+                System.out.println("uzyskano .... " + uzyskana.get(i));
+            }//end if
+        }//end while
+        assertEquals(true,czy_zgodne);
+       
+    }  
+}
