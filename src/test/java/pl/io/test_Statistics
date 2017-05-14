@@ -1,83 +1,117 @@
-public class test_Statistics
-{
-   //normalization
-   //outliners - Test
-  public static double srednia_listy(List<Double> lista)
-	{
-		double srednia=0;
-		double suma=0;
-		for(int i=0;i<lista.size();i++)
-		{
-			suma+=lista.get(i);
-		}
-		srednia=suma/lista.size();
-		return srednia;
-	}
-   public static double odchylenie_listy(List<Double>lista)
-	{
-		double srednia=srednia_listy(lista);
-		double odchylenie=0;
-		for(int i=0;i<lista.size();i++)
-			odchylenie += Math.pow(lista.get(i)-srednia, 2);
-		odchylenie = odchylenie/(lista.size()-1);
-		odchylenie = Math.sqrt(odchylenie);
-		return odchylenie;
-	}
-   public static double was_gorny_listy(List<Double>lista)
-	{
-		double srednia=srednia_listy(lista);
-		double odchylenie=odchylenie_listy(lista);
-		return (double)(srednia+odchylenie);	
-	}
-	public static double was_dolny_listy(List<Double>lista)
-	{
-		double srednia=srednia_listy(lista);
-		double odchylenie=odchylenie_listy(lista);
-		return (double)(srednia-odchylenie);
-	}
-   public static void wyswietl_liste(List<Double>lista)
-	{
-		for(int i=0;i<lista.size();i++) System.out.print(lista.get(i)+" || ");
-	}
-   public static List<Double> zamien_elementy_odstajace(List<Double>lista)
-	{
-		double gorny=was_gorny_listy(lista);
-		double dolny = was_dolny_listy(lista);
-		
-		for(int i=0;i<lista.size();i++)
-		{
-			if(lista.get(i)>gorny) lista.set(i,gorny);
-			if(lista.get(i)<dolny) lista.set(i, dolny);
-		}
-	return lista;	
-	}
-   public static void main(String[] args) { //Niew iem czy funkcja Main potrzebna - dodaje na wszelki wypadek
-		//Dane testowe outliners
-		List<Double>lista=new ArrayList();
-		lista.add(2.0);
-		lista.add(3.5);
-		lista.add(-100.0);
-		lista.add(35.2);
-		lista.add(25.3);
-		lista.add(32.90);
-		System.out.println("srednia listy : "+ srednia_listy(lista));
-		System.out.println("odchylenie listy : "+odchylenie_listy(lista));
-		System.out.println("was gorny : "+was_gorny_listy(lista));
-		System.out.println("was dolny : "+was_dolny_listy(lista));
-		System.out.print("Lista lista wejsciowa : ");
-		wyswietl_liste(lista);
-		List<Double> wynikowa=new ArrayList();
-		wynikowa=zamien_elementy_odstajace(lista);
-		System.out.println();
-		System.out.print("Lista wyjsciowa " );
-		wyswietl_liste(wynikowa);
-      
-      
+//////////////////// Test OUTLINERS ////////////////////////////////
+package testIO;
+import java.util.ArrayList;
+import java.util.List;
+import static org.junit.Assert.*;
 
+import org.junit.Test;
+
+public class test_IO {
+
+	@Test
+	public void test() {
+		Statistics test = new Statistics();
+		List<Double> test1 = new ArrayList();
+		test1.add(1.0);
+		test1.add(2.0);
+		test1.add(10.0);
+		test1.add(2.4);
+		test1.add(1.7);
+		test1.add(23.99);
+		test1.add(-5.0);
+		test1.add(-500.0);
+		double av1=0;
+		for(int i=0;i<test1.size();i++) av1+=test1.get(i);
+		av1=av1/test1.size();
+		double deviation1=0;
+		System.out.println("Average input : "+av1);
+		for(int i=0;i<test1.size();i++)
+			deviation1 += Math.pow(test1.get(i)-av1, 2);
+		deviation1 = deviation1/(test1.size()-1);
+		deviation1 = Math.sqrt(deviation1);
+		double upper1 = av1+2*deviation1;
+		double bottom1 = av1-2*deviation1;
+		System.out.println("upper input 1 : "+upper1);
+		System.out.println("bottom input 1 : "+bottom1);
+		
+		List<Double> result1 = new ArrayList();
+		result1=test.outliners(test1);
+		List<Double> pr =new ArrayList();
+		pr.add(1.0);
+		pr.add(2.0);
+		pr.add(10.0);
+		pr.add(2.4);
+		pr.add(1.7);
+		pr.add(23.99);
+		pr.add(-5.0);
+		pr.add(-415.60994551079665);
+		assertEquals(result1,pr);
+		System.out.println("Output list : ");
+		for(int i=0;i<pr.size();i++)
+		{
+			System.out.print(pr.get(i)+" || ");
+		}
+		
+			
 	}
-   
-   
+	@Test
+	public void test2() {
+		Statistics test = new Statistics();
+		List<Double> test2=new ArrayList();
+		test2.add(1.99);
+		test2.add(5.21);
+		test2.add(10.5);
+		test2.add(600.0);
+		test2.add(-400.0);
+		test2.add(0.99);
+		test2.add(-5.23);
+		
+		
+		double av2=0;
+		for(int i=0;i<test2.size();i++) av2+=test2.get(i);
+		av2=av2/test2.size();
+		double deviation2=0;
+		System.out.println("Average input : "+av2);
+		for(int i=0;i<test2.size();i++)
+			deviation2 += Math.pow(test2.get(i)-av2, 2);
+		deviation2 = deviation2/(test2.size()-1);
+		deviation2 = Math.sqrt(deviation2);
+		double upper2 = av2+2*deviation2;
+		double bottom2 = av2-2*deviation2;
+		System.out.println("upper input 1 : "+upper2);
+		System.out.println("bottom input 1 : "+bottom2);
+		
+		List<Double> result2 = new ArrayList();
+		result2=test.outliners(test2);
+
+List<Double> pr2=new ArrayList();
+pr2.add(1.99);
+pr2.add(5.21);
+pr2.add(10.5);
+pr2.add(600.0);
+pr2.add(-400.0);
+pr2.add(0.99);
+pr2.add(-5.23);
+
+assertEquals(result2,pr2);
+		
+	}
 }
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
 /////////////////////   TEST NORMALIZATION ////////////
 //// WRZUCIŁAM WSZYSTKO, JEST PARĘ BŁĘDÓW W KODZIE JESZCZE DO EDYCJI
 package klasanormalization;
