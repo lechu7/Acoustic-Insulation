@@ -169,10 +169,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author student
- */
 public class KlasaNormalizationTest {
     
     public KlasaNormalizationTest() {
@@ -202,7 +198,7 @@ public class KlasaNormalizationTest {
         System.out.println("Test metody 'normalization'");
         KlasaNormalization instance;
         instance = new KlasaNormalization();
-        System.out.println("Inicjalizujemy przykladowy zestaw danych dla metodu outliners");
+        System.out.println("Inicjalizujemy przykladowy zestaw danych dla metody outliners");
         List<Double>lista=new ArrayList();
 		lista.add(2.0);
 		lista.add(3.5);
@@ -242,7 +238,7 @@ public class KlasaNormalizationTest {
 	System.out.println("Lista 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'");
         List<Double> uzyskana=KlasaNormalization.normalization(lista);
         int i=0;
-        while(i < oczekiwana.size() && czy_zgodne == true)
+        while(i < oczekiwana.size() && czy_zgodne == true && uzyskana.get(i)>=-1 && uzyskana.get(i)<=1)
         {
             if(!Objects.equals(oczekiwana.get(i), uzyskana.get(i))) czy_zgodne = false;
             
