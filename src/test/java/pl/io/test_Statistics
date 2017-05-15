@@ -108,25 +108,13 @@ assertEquals(result2,pr2);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /////////////////////   TEST NORMALIZATION ////////////
-//// WRZUCIŁAM WSZYSTKO, JEST PARĘ BŁĘDÓW W KODZIE JESZCZE DO EDYCJI
 package klasanormalization;
 import java.util.List;
 
 public class KlasaNormalization {
-public static List<Double> normalization(List<Double> list) 
+
+    public static List<Double> normalization(List<Double> list) 
 	{
 		double max = list.get(0);
 		double min = list.get(0);
@@ -163,8 +151,12 @@ public static List<Double> normalization(List<Double> list)
 			if(list.get(i)<bottom) list.set(i, bottom);
 		}
 		return list;
-	} 
-}
+        }
+    public static void main(String[] args) {
+        // TODO code application logic here
+    }
+                
+} 
 package klasanormalization;
 
 import org.junit.After;
@@ -174,8 +166,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 import static org.junit.Assert.*;
 
+/**
+ *
+ * @author student
+ */
 public class KlasaNormalizationTest {
     
     public KlasaNormalizationTest() {
@@ -196,10 +193,15 @@ public class KlasaNormalizationTest {
     @After
     public void tearDown() {
     }
+
+    /**
+     * Test of normalization method, of class KlasaNormalization.
+     */
     @Test
     public void testNormalization() {
         System.out.println("Test metody 'normalization'");
-        KlasaNormalization instance = new KlasaNormalization();
+        KlasaNormalization instance;
+        instance = new KlasaNormalization();
         System.out.println("Inicjalizujemy przykladowy zestaw danych dla metodu outliners");
         List<Double>lista=new ArrayList();
 		lista.add(2.0);
@@ -208,9 +210,9 @@ public class KlasaNormalizationTest {
 		lista.add(35.2);
 		lista.add(25.3);
 		lista.add(32.90);
-        instance.outliners(lista);
+        KlasaNormalization.outliners(lista);
         System.out.println(" Sprawdzamy prawidlowosc pobranych danych (zwracanych przez metoda 'outliners')");
-        List<Double> oczekiwana=instance.outliners(lista);
+        List<Double> oczekiwana=KlasaNormalization.outliners(lista);
         boolean czy_zgodne=true;
       
         if(oczekiwana==null) czy_zgodne = false;
@@ -238,11 +240,11 @@ public class KlasaNormalizationTest {
 			oczekiwana.set(i, (oczekiwana.get(i)-min)/(max-min)*2-1); 
                 
 	System.out.println("Lista 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'");
-        List<Double> uzyskana=instance.normalization(lista);
+        List<Double> uzyskana=KlasaNormalization.normalization(lista);
         int i=0;
         while(i < oczekiwana.size() && czy_zgodne == true)
         {
-            if(oczekiwana.get(i)!=uzyskana.get(i)) czy_zgodne = false;
+            if(!Objects.equals(oczekiwana.get(i), uzyskana.get(i))) czy_zgodne = false;
             
             if(!czy_zgodne)
             {
@@ -252,6 +254,8 @@ public class KlasaNormalizationTest {
             }//end if
         }//end while
         assertEquals(true,czy_zgodne);
+    }
        
-    }  
-}
+} 
+   
+   
