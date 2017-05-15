@@ -153,7 +153,7 @@ public class KlasaNormalization {
 		return list;
         }
     public static void main(String[] args) {
-        // TODO code application logic here
+       
     }
                 
 } 
@@ -190,15 +190,10 @@ public class KlasaNormalizationTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of normalization method, of class KlasaNormalization.
-     */
     @Test
     public void testNormalization() {
         System.out.println("Test metody 'normalization'");
-        KlasaNormalization instance;
-        instance = new KlasaNormalization();
-        System.out.println("Inicjalizujemy przykladowy zestaw danych dla metody outliners");
+        //przykladowy zestaw danych dla metody 'outliners'
         List<Double>lista=new ArrayList();
 		lista.add(2.0);
 		lista.add(3.5);
@@ -206,7 +201,7 @@ public class KlasaNormalizationTest {
 		lista.add(35.2);
 		lista.add(25.3);
 		lista.add(32.90);
-        KlasaNormalization.outliners(lista);
+        
         System.out.println(" Sprawdzamy prawidlowosc pobranych danych (zwracanych przez metoda 'outliners')");
         List<Double> oczekiwana=KlasaNormalization.outliners(lista);
         boolean czy_zgodne=true;
@@ -217,7 +212,7 @@ public class KlasaNormalizationTest {
             {
                 System.out.println("Nieprawidlowy pobor danych");
                 
-            }//end if
+            }
       System.out.println("Sprawdzamy normalizacje danych");
       /*Transformacja ta jest przeprowadzana wedlug wzoru:
         a(i)'=(a(i)-a(i)max)/(a(i)max-a(i)min)
@@ -235,7 +230,7 @@ public class KlasaNormalizationTest {
 		for(int i=0;i<oczekiwana.size();i++)
 			oczekiwana.set(i, (oczekiwana.get(i)-min)/(max-min)*2-1); 
                 
-	System.out.println("Lista 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'");
+        //Lista 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'
         List<Double> uzyskana=KlasaNormalization.normalization(lista);
         int i=0;
         while(i < oczekiwana.size() && czy_zgodne == true && uzyskana.get(i)>=-1 && uzyskana.get(i)<=1)
@@ -247,7 +242,7 @@ public class KlasaNormalizationTest {
                 System.out.println("Blad w tescie normalizacji!");      
                 System.out.println("oczekiwano .. " + oczekiwana.get(i));
                 System.out.println("uzyskano .... " + uzyskana.get(i));
-            }//end if
+            }
         }//end while
         assertEquals(true,czy_zgodne);
     }
