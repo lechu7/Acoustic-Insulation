@@ -9,18 +9,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.*;
+
 
 public class gui extends Application {
 
@@ -29,8 +27,11 @@ public class gui extends Application {
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Acoustic Insulation");
 
-        final CheckBox cb1 = new CheckBox("Sweep");
-        final CheckBox cb2 = new CheckBox("Sin");
+        ToggleGroup signalGroup = new ToggleGroup();
+        final RadioButton radioSweep = new RadioButton("Sweep");
+        radioSweep.setToggleGroup(signalGroup);
+        final RadioButton radioSin = new RadioButton("Sin");
+        radioSin.setToggleGroup(signalGroup);
 
         Label frequencyLabel = new Label("Frequency:");
         final TextField frequencyText = new TextField();
@@ -40,6 +41,30 @@ public class gui extends Application {
 
         Button startBtn = new Button();
         startBtn.setText("START");
+        startBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    if (radioSweep.isSelected()) {
+                        outputStream.sweep(20, 20000, 1000*Integer.parseInt(timeText.getText()), 350);
+                    } else {
+                        outputStream.sin(Integer.parseInt(frequencyText.getText()), 1000*Integer.parseInt(timeText.getText()), 350);
+                    }
+                }
+                catch(Exception ex){
+                    Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
+                    exAlert.setTitle("Acoustic-Insulation");
+                    exAlert.setHeaderText("Błąd");
+                    exAlert.setContentText("Nieprawidłowe dane wejściowe");
+                    exAlert.showAndWait().ifPresent(rs -> {
+                        if (rs == ButtonType.OK) {
+                           exAlert.close();
+                        }
+                    });
+
+                }
+            }
+        });
 
         // force the field to be numeric only
         /*frequencyText.textProperty().addListener(new ChangeListener<String>() {
@@ -80,7 +105,7 @@ public class gui extends Application {
         y1Axis.setLabel("Frequency");
 
         final LineChart<Number,Number> lineChart1 =
-                new LineChart<Number,Number>(x1Axis,y1Axis);
+                new LineChart<>(x1Axis,y1Axis);
 
         lineChart1.setTitle("Graph 1");
 
@@ -168,7 +193,7 @@ public class gui extends Application {
         iv3.setImage(graph3);
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20,20,20,20));
-        layout.getChildren().addAll(cb1,cb2,frequencyLabel,frequencyText,timeLabel,timeText,startBtn,iv1,iv2,iv3);
+        layout.getChildren().addAll(radioSweep,radioSin,frequencyLabel,frequencyText,timeLabel,timeText,startBtn,iv1,iv2,iv3);
 
         Scene scene = new Scene(layout,800,700);
 
