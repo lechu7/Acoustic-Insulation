@@ -233,9 +233,9 @@ public class KlasaNormalizationTest {
         //Lista 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'
         List<Double> uzyskana=KlasaNormalization.normalization(lista);
         int i=0;
-        while(i < oczekiwana.size() && czy_zgodne == true && uzyskana.get(i)>=-1 && uzyskana.get(i)<=1)
+        while(i < oczekiwana.size() && czy_zgodne == true)
         {
-            if(!Objects.equals(oczekiwana.get(i), uzyskana.get(i))) czy_zgodne = false;
+            if(!Objects.equals(oczekiwana.get(i), uzyskana.get(i))|| uzyskana.get(i)<-1 || uzyskana.get(i)>1) czy_zgodne = false;
             
             if(!czy_zgodne)
             {
