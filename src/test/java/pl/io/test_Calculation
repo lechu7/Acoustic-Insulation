@@ -52,7 +52,7 @@ public class CalculationTest {
 
     /**
      * Test of diff method, of class Calculation.
-     * @author Mateusz
+     * @author Mateusz Kubiakowski
      */
     @org.junit.Test
     public void testDiff() {
