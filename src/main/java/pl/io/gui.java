@@ -45,12 +45,24 @@ public class gui extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
+                    if(Integer.parseInt(timeText.getText())>60|| Integer.parseInt(timeText.getText())<1)
+                    {
+                        Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
+                        errorAlert.setTitle("Nieprawidłowe dane wejściowe");
+                        errorAlert.setContentText("Czas sygnału musi być z przedziału 1-60[s], a częstotliwosć z przedziału 20Hz - 20kHz");
+                        errorAlert.showAndWait().ifPresent(rs -> {
+                            if (rs == ButtonType.OK){
+                                errorAlert.close();
+                        }
+                        });
+                    }
+                    else{
                     if (radioSweep.isSelected()) {
                         outputStream.sweep(20, 20000, 1000*Integer.parseInt(timeText.getText()), 350);
                     } else {
                         outputStream.sin(Integer.parseInt(frequencyText.getText()), 1000*Integer.parseInt(timeText.getText()), 350);
                     }
-                }
+                }}
                 catch(Exception ex){
                     Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
                     exAlert.setTitle("Acoustic-Insulation");
@@ -112,16 +124,16 @@ public class gui extends Application {
         XYChart.Series series1 = new XYChart.Series();
         series1.setName("graph placeholder");
 
-        series1.getData().add(new XYChart.Data(0, 23));
-        series1.getData().add(new XYChart.Data(1, 23));
-        series1.getData().add(new XYChart.Data(2, 14));
-        series1.getData().add(new XYChart.Data(3, 15));
-        series1.getData().add(new XYChart.Data(4, 24));
-        series1.getData().add(new XYChart.Data(5, 34));
-        series1.getData().add(new XYChart.Data(6, 36));
-        series1.getData().add(new XYChart.Data(7, 22));
-        series1.getData().add(new XYChart.Data(8, 45));
-        series1.getData().add(new XYChart.Data(9, 43));
+//        series1.getData().add(new XYChart.Data(0, 23));
+//        series1.getData().add(new XYChart.Data(1, 23));
+//        series1.getData().add(new XYChart.Data(2, 14));
+//        series1.getData().add(new XYChart.Data(3, 15));
+//        series1.getData().add(new XYChart.Data(4, 24));
+//        series1.getData().add(new XYChart.Data(5, 34));
+//        series1.getData().add(new XYChart.Data(6, 36));
+//        series1.getData().add(new XYChart.Data(7, 22));
+//        series1.getData().add(new XYChart.Data(8, 45));
+//        series1.getData().add(new XYChart.Data(9, 43));
 
         /*graph 2*/
         final NumberAxis x2Axis = new NumberAxis();
@@ -137,16 +149,16 @@ public class gui extends Application {
         XYChart.Series series2 = new XYChart.Series();
         series2.setName("graph placeholder");
 
-        series2.getData().add(new XYChart.Data(0, 23));
-        series2.getData().add(new XYChart.Data(1, 23));
-        series2.getData().add(new XYChart.Data(2, 14));
-        series2.getData().add(new XYChart.Data(3, 15));
-        series2.getData().add(new XYChart.Data(4, 24));
-        series2.getData().add(new XYChart.Data(5, 34));
-        series2.getData().add(new XYChart.Data(6, 36));
-        series2.getData().add(new XYChart.Data(7, 22));
-        series2.getData().add(new XYChart.Data(8, 45));
-        series2.getData().add(new XYChart.Data(9, 43));
+//        series2.getData().add(new XYChart.Data(0, 23));
+//        series2.getData().add(new XYChart.Data(1, 23));
+//        series2.getData().add(new XYChart.Data(2, 14));
+//        series2.getData().add(new XYChart.Data(3, 15));
+//        series2.getData().add(new XYChart.Data(4, 24));
+//        series2.getData().add(new XYChart.Data(5, 34));
+//        series2.getData().add(new XYChart.Data(6, 36));
+//        series2.getData().add(new XYChart.Data(7, 22));
+//        series2.getData().add(new XYChart.Data(8, 45));
+//        series2.getData().add(new XYChart.Data(9, 43));
 
         /*graph3*/
         final NumberAxis x3Axis = new NumberAxis();
@@ -162,16 +174,16 @@ public class gui extends Application {
         XYChart.Series series3 = new XYChart.Series();
         series3.setName("graph placeholder");
 
-        series3.getData().add(new XYChart.Data(0, 23));
-        series3.getData().add(new XYChart.Data(1, 23));
-        series3.getData().add(new XYChart.Data(2, 14));
-        series3.getData().add(new XYChart.Data(3, 15));
-        series3.getData().add(new XYChart.Data(4, 24));
-        series3.getData().add(new XYChart.Data(5, 34));
-        series3.getData().add(new XYChart.Data(6, 36));
-        series3.getData().add(new XYChart.Data(7, 22));
-        series3.getData().add(new XYChart.Data(8, 45));
-        series3.getData().add(new XYChart.Data(9, 43));
+//        series3.getData().add(new XYChart.Data(0, 23));
+//        series3.getData().add(new XYChart.Data(1, 23));
+//        series3.getData().add(new XYChart.Data(2, 14));
+//        series3.getData().add(new XYChart.Data(3, 15));
+//        series3.getData().add(new XYChart.Data(4, 24));
+//        series3.getData().add(new XYChart.Data(5, 34));
+//        series3.getData().add(new XYChart.Data(6, 36));
+//        series3.getData().add(new XYChart.Data(7, 22));
+//        series3.getData().add(new XYChart.Data(8, 45));
+//        series3.getData().add(new XYChart.Data(9, 43));
 
         /* end of graph section*/
         Image graph1 = new Image("file:bitmap.png"); 
@@ -197,9 +209,9 @@ public class gui extends Application {
 
         Scene scene = new Scene(layout,800,700);
 
-        lineChart1.getData().add(series1);
-        lineChart2.getData().add(series2);
-        lineChart3.getData().add(series3);
+//        lineChart1.getData().add(series1);
+//        lineChart2.getData().add(series2);
+//        lineChart3.getData().add(series3);
 
         primaryStage.setScene(scene);
         primaryStage.show();
