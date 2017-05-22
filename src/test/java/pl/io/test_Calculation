@@ -1,5 +1,109 @@
-public class test_Calculation
-{
-  //transformation
-  //diff
+package pl.io;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ *
+ */
+public class CalculationTest {
+    
+    public CalculationTest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
+    }
+
+    /**
+     * Test of transformation method, of class Calculation.
+     * Not ready yet
+     */
+   /** @org.junit.Test
+    public void testTransformation() {
+        System.out.println("transformation");
+        Object aDouble_sample = null;
+        Calculation instance = new Calculation();
+        double expResult = 0.0;
+        double result = instance.transformation(aDouble_sample);
+        assertEquals(expResult, result, 0.0);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+    */
+
+    /**
+     * Test of diff method, of class Calculation.
+     * @author Mateusz Kubiakowski
+     */
+    @org.junit.Test
+    public void testDiff() {
+        System.out.println("diff");
+        Random generator;
+        List<Double> listch1;
+        List<Double> listch2;
+        List<Double> expResult;
+        int N;
+        int i;
+        boolean if_equal;
+        double difference;
+        
+        
+        listch1 = new ArrayList();
+        listch2 = new ArrayList();
+        expResult = new ArrayList();
+        if_equal = true;
+        generator = new Random();
+        N=300;
+        
+        for(i=0;i<N;i++)
+        {
+            listch1.add(i,generator.nextDouble());
+            listch2.add(i,generator.nextDouble());
+        }
+        
+        for(i=0;i<listch1.size();i++)
+        {
+            expResult.add(listch1.get(i)-listch2.get(i));
+        }//koniec pętli for
+        List<Double> result = Calculation.diff(listch1, listch2);
+        
+        i=0;
+        while(i<expResult.size() && if_equal == true)
+        {
+            difference = expResult.get(i)-result.get(i);
+            if(difference < -0.0001 || difference > 0.0001) if_equal = false;
+            
+            if(!if_equal)
+            {
+                System.out.println("Blad w tescie diff!");
+                System.out.println("oczekiwano........ " + expResult.get(i));
+                System.out.println("uzyskano.......... " + result.get(i));
+            }//end if
+            
+            i++;
+        }//end while
+        
+        assertEquals(true, if_equal);
+        
+    }//koniec testu diff
+    
 }

@@ -1,23 +1,17 @@
 package pl.io;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.scene.image.*;
 
 
 public class gui extends Application {
@@ -26,10 +20,12 @@ public class gui extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Acoustic Insulation");
+        primaryStage.getIcons().add(new Image("file:icon.png"));
 
         ToggleGroup signalGroup = new ToggleGroup();
         final RadioButton radioSweep = new RadioButton("Sweep");
         radioSweep.setToggleGroup(signalGroup);
+
         final RadioButton radioSin = new RadioButton("Sin");
         radioSin.setToggleGroup(signalGroup);
 
@@ -45,24 +41,12 @@ public class gui extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    if(Integer.parseInt(timeText.getText())>60|| Integer.parseInt(timeText.getText())<1)
-                    {
-                        Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
-                        errorAlert.setTitle("Nieprawidłowe dane wejściowe");
-                        errorAlert.setContentText("Czas sygnału musi być z przedziału 1-60[s], a częstotliwosć z przedziału 20Hz - 20kHz");
-                        errorAlert.showAndWait().ifPresent(rs -> {
-                            if (rs == ButtonType.OK){
-                                errorAlert.close();
-                        }
-                        });
-                    }
-                    else{
                     if (radioSweep.isSelected()) {
                         outputStream.sweep(20, 20000, 1000*Integer.parseInt(timeText.getText()), 350);
                     } else {
                         outputStream.sin(Integer.parseInt(frequencyText.getText()), 1000*Integer.parseInt(timeText.getText()), 350);
                     }
-                }}
+                }
                 catch(Exception ex){
                     Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
                     exAlert.setTitle("Acoustic-Insulation");
@@ -79,113 +63,24 @@ public class gui extends Application {
         });
 
         // force the field to be numeric only
-        /*frequencyText.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    frequencyText.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-            }
-        });
+//        frequencyText.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                if (!newValue.matches("\\d*")) {
+//                    frequencyText.setText(newValue.replaceAll("[^\\d]", ""));
+//                }
+//            }
+//        });
+//
+//        timeText.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                if (!newValue.matches("\\d*")) {
+//                    timeText.setText(newValue.replaceAll("[^\\d]", ""));
+//                }
+//            }
+//        });
 
-        timeText.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    timeText.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-            }
-        });*/
-
-        /*
-        After click start button we'll expect execute generateGraph() method
-
-        startBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                generateGraph();
-            }
-        });*/
-
-        /*graphs section- for now its only example of displaying graphs without using generateGraph() method */
-
-        /* graph 1*/
-
-        final NumberAxis x1Axis = new NumberAxis();
-        final NumberAxis y1Axis = new NumberAxis();
-        x1Axis.setLabel("Time");
-        y1Axis.setLabel("Frequency");
-
-        final LineChart<Number,Number> lineChart1 =
-                new LineChart<>(x1Axis,y1Axis);
-
-        lineChart1.setTitle("Graph 1");
-
-        XYChart.Series series1 = new XYChart.Series();
-        series1.setName("graph placeholder");
-
-//        series1.getData().add(new XYChart.Data(0, 23));
-//        series1.getData().add(new XYChart.Data(1, 23));
-//        series1.getData().add(new XYChart.Data(2, 14));
-//        series1.getData().add(new XYChart.Data(3, 15));
-//        series1.getData().add(new XYChart.Data(4, 24));
-//        series1.getData().add(new XYChart.Data(5, 34));
-//        series1.getData().add(new XYChart.Data(6, 36));
-//        series1.getData().add(new XYChart.Data(7, 22));
-//        series1.getData().add(new XYChart.Data(8, 45));
-//        series1.getData().add(new XYChart.Data(9, 43));
-
-        /*graph 2*/
-        final NumberAxis x2Axis = new NumberAxis();
-        final NumberAxis y2Axis = new NumberAxis();
-        x2Axis.setLabel("Time");
-        y2Axis.setLabel("Frequency");
-
-        final LineChart<Number,Number> lineChart2 =
-                new LineChart<Number,Number>(x2Axis,y2Axis);
-
-        lineChart2.setTitle("Graph 2");
-
-        XYChart.Series series2 = new XYChart.Series();
-        series2.setName("graph placeholder");
-
-//        series2.getData().add(new XYChart.Data(0, 23));
-//        series2.getData().add(new XYChart.Data(1, 23));
-//        series2.getData().add(new XYChart.Data(2, 14));
-//        series2.getData().add(new XYChart.Data(3, 15));
-//        series2.getData().add(new XYChart.Data(4, 24));
-//        series2.getData().add(new XYChart.Data(5, 34));
-//        series2.getData().add(new XYChart.Data(6, 36));
-//        series2.getData().add(new XYChart.Data(7, 22));
-//        series2.getData().add(new XYChart.Data(8, 45));
-//        series2.getData().add(new XYChart.Data(9, 43));
-
-        /*graph3*/
-        final NumberAxis x3Axis = new NumberAxis();
-        final NumberAxis y3Axis = new NumberAxis();
-        x3Axis.setLabel("Time");
-        y3Axis.setLabel("Frequency");
-
-        final LineChart<Number,Number> lineChart3 =
-                new LineChart<Number,Number>(x3Axis,y3Axis);
-
-        lineChart3.setTitle("Graph 3");
-
-        XYChart.Series series3 = new XYChart.Series();
-        series3.setName("graph placeholder");
-
-//        series3.getData().add(new XYChart.Data(0, 23));
-//        series3.getData().add(new XYChart.Data(1, 23));
-//        series3.getData().add(new XYChart.Data(2, 14));
-//        series3.getData().add(new XYChart.Data(3, 15));
-//        series3.getData().add(new XYChart.Data(4, 24));
-//        series3.getData().add(new XYChart.Data(5, 34));
-//        series3.getData().add(new XYChart.Data(6, 36));
-//        series3.getData().add(new XYChart.Data(7, 22));
-//        series3.getData().add(new XYChart.Data(8, 45));
-//        series3.getData().add(new XYChart.Data(9, 43));
-
-        /* end of graph section*/
         Image graph1 = new Image("file:bitmap.png"); 
         Image graph2 = new Image("file:bitmap.png"); 
         Image graph3 = new Image("file:bitmap.png"); 
@@ -203,22 +98,60 @@ public class gui extends Application {
         iv1.setImage(graph1);
         iv2.setImage(graph2);
         iv3.setImage(graph3);
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(20,20,20,20));
-        layout.getChildren().addAll(radioSweep,radioSin,frequencyLabel,frequencyText,timeLabel,timeText,startBtn,iv1,iv2,iv3);
 
-        Scene scene = new Scene(layout,800,700);
+        GridPane root = new GridPane();
+        root.setPadding(new Insets(20, 0, 20, 0));
 
-//        lineChart1.getData().add(series1);
-//        lineChart2.getData().add(series2);
-//        lineChart3.getData().add(series3);
+        HBox box = new HBox();
+        box.getChildren().addAll(radioSweep, radioSin);
+        box.setMinWidth(400);
+        box.setSpacing(200);
+        box.setPadding(new Insets(0,0,20,0));
+        box.setAlignment(Pos.CENTER);
 
+        HBox box1 = new HBox();
+        box1.getChildren().addAll(frequencyLabel, timeLabel);
+        box1.setMinWidth(400);
+        box1.setSpacing(200);
+        box1.setAlignment(Pos.CENTER);
+
+        HBox box2 = new HBox();
+        box2.getChildren().addAll(frequencyText, timeText);
+        box2.setMinWidth(400);
+        box2.setSpacing(100);
+        box2.setPadding(new Insets(0,0,10,0));
+        box2.setAlignment(Pos.CENTER);
+
+        HBox box3 = new HBox();
+        box3.getChildren().add(startBtn);
+        box3.setAlignment(Pos.CENTER);
+        box3.setStyle("-fx-font-weight:bold;" + " -fx-font-size:20px;" + " -fx-padding:10px;" );
+
+        HBox box4 = new HBox();
+        box4.getChildren().addAll(iv1);
+        box4.setPadding(new Insets(10,0,0,0));
+
+        HBox box5 = new HBox();
+        box5.getChildren().addAll(iv2);
+
+        HBox box6 = new HBox();
+        box6.getChildren().addAll(iv3);
+
+        root.add(box, 0, 0);
+        root.add(box1, 0, 1);
+        root.add(box2, 0, 2);
+        root.add(box3, 0, 3);
+        root.add(box4, 0, 4);
+        root.add(box5, 0, 5);
+        root.add(box6, 0, 6);
+
+        Scene scene = new Scene(root, 900, 700);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
-    	Graph.Call();
-        launch(args);
-    }
+//    public static void main(String[] args) {
+//    	Graph.Call();
+//        launch(args);
+//    }
 }
