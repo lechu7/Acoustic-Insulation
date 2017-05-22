@@ -52,11 +52,7 @@ public class gui extends Application {
                     exAlert.setTitle("Acoustic-Insulation");
                     exAlert.setHeaderText("Błąd");
                     exAlert.setContentText("Nieprawidłowe dane wejściowe");
-                    exAlert.showAndWait().ifPresent(rs -> {
-                        if (rs == ButtonType.OK) {
-                           exAlert.close();
-                        }
-                    });
+                    exAlert.showAndWait();
 
                 }
             }
