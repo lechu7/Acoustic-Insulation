@@ -12,7 +12,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import java.awt.image.*;
+import java.io.ByteArrayInputStream;
 
+import javax.imageio.ImageIO;
+import javafx.embed.swing.SwingFXUtils;
 
 public class gui extends Application {
 
@@ -84,6 +88,11 @@ public class gui extends Application {
         ImageView iv2 = new ImageView();
         ImageView iv3 = new ImageView();
         
+        byte[] bytes = Graph.save();
+        BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
+        Image image = SwingFXUtils.toFXImage(img, null);
+       
+        
         iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
         iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
         iv2.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
@@ -91,10 +100,11 @@ public class gui extends Application {
         iv3.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
         iv3.fitHeightProperty().bind(primaryStage.minHeightProperty());
  
-        iv1.setImage(graph1);
-        iv2.setImage(graph2);
-        iv3.setImage(graph3);
-
+        iv1.setImage(image);
+        iv2.setImage(image);
+        iv3.setImage(image);
+        
+        
         GridPane root = new GridPane();
         root.setPadding(new Insets(20, 0, 20, 0));
 
@@ -147,7 +157,7 @@ public class gui extends Application {
     }
 
     public static void main(String[] args) {
-   	Graph.Call();
+      
       launch(args);
    }
 }

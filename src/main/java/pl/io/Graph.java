@@ -2,6 +2,7 @@ package pl.io;
 
 
 import java.awt.Color;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,7 +25,7 @@ import de.erichseifert.gral.ui.InteractivePanel;
 public class Graph extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private final XYPlot plot;
+	private static XYPlot plot = null;
 		
 	public Graph(List<Double> list)
 	{
@@ -67,39 +68,27 @@ public class Graph extends JFrame {
         plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(lb2);
        // plot.getAxis(XYPlot.AXIS_X).setRange(300, arg1);
 	}
-	public void save() 
-	{
-			File outputFile = new File("bitmap.png");
-			try {
-				BitmapWriter writer = (BitmapWriter) DrawableWriterFactory.getInstance().get("image/png");
-				writer.write(plot, new FileOutputStream(outputFile), 700, 150);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	public static void Call()
+	public  static byte[] save() throws IOException
 	{
 		File file = new File("spectrum.csv");
         List<Double> list2 = new ArrayList<Double>();
-			try
-			{
-				Scanner s = new Scanner(file);
-				while(s.hasNextLine()){
-					String line = s.nextLine();
-					double d = Double.parseDouble(line);
-				     list2.add(d);
-				      }
-				s.close();
-			} catch (FileNotFoundException e)
-			{
-				
-				e.printStackTrace();
-			}
-			
-        Graph graph = new Graph(list2);
-     //   graph.setVisible(true);
-        graph.save();
-	}
+        Scanner s = new Scanner(file);
+		while(s.hasNextLine()){
+			String line = s.nextLine();
+			double d = Double.parseDouble(line);
+			list2.add(d);
+	   }
+		s.close();
+		Graph graph = new Graph(list2);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		BitmapWriter writer = (BitmapWriter) DrawableWriterFactory.getInstance().get("image/png");
+		writer.write(plot, baos, 700, 150);
+		baos.flush();
+		byte[] bytes = baos.toByteArray();
+		baos.close();
+		return bytes;
+		}
+	
 	
 	public static void main(String[] args)  {
         
