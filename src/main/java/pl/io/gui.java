@@ -84,11 +84,11 @@ public class gui extends Application {
         ImageView iv2 = new ImageView();
         ImageView iv3 = new ImageView();
         
-        iv1.fitWidthProperty().bind(primaryStage.widthProperty());
+        iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
         iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
-        iv2.fitWidthProperty().bind(primaryStage.widthProperty());
+        iv2.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
         iv2.fitHeightProperty().bind(iv3.fitHeightProperty());
-        iv3.fitWidthProperty().bind(primaryStage.widthProperty());
+        iv3.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
         iv3.fitHeightProperty().bind(primaryStage.minHeightProperty());
  
         iv1.setImage(graph1);
@@ -146,8 +146,8 @@ public class gui extends Application {
         primaryStage.show();
     }
 
-//    public static void main(String[] args) {
-//    	Graph.Call();
-//        launch(args);
-//    }
+    public static void main(String[] args) {
+   	Graph.Call();
+      launch(args);
+   }
 }

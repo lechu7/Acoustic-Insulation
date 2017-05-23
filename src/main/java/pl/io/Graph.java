@@ -1,7 +1,6 @@
 package pl.io;
 
-import pl.io.IO;
-import java.awt.BasicStroke;
+
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,19 +9,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-
-import de.erichseifert.gral.data.DataSeries;
-import de.erichseifert.gral.data.DataSource;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.graphics.Insets2D;
 import de.erichseifert.gral.graphics.Label;
-import de.erichseifert.gral.io.data.DataWriter;
-import de.erichseifert.gral.io.data.DataWriterFactory;
 import de.erichseifert.gral.io.plots.BitmapWriter;
-import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.areas.AreaRenderer;
@@ -31,13 +22,16 @@ import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
 import de.erichseifert.gral.plots.lines.LineRenderer;
 import de.erichseifert.gral.ui.InteractivePanel;
 public class Graph extends JFrame {
+	
+	private static final long serialVersionUID = 1L;
 	private final XYPlot plot;
 		
 	public Graph(List<Double> list)
 	{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(700, 150);
-        DataTable data = new DataTable(Double.class, Double.class);
+        @SuppressWarnings("unchecked")
+		DataTable data = new DataTable(Double.class, Double.class);
         AreaRenderer area = new DefaultAreaRenderer2D();
         area.setColor(Color.black);
 		for(int i=0; i<list.size();i++)
@@ -46,10 +40,11 @@ public class Graph extends JFrame {
 			data.add((double)i,a);
 		}
 		plot = new XYPlot(data);
+		Color color1 = new Color(230,230,230);
         getContentPane().add(new InteractivePanel(plot));
         LineRenderer lines = new DefaultLineRenderer2D();
         plot.setLineRenderers(data, lines);
-        plot.setBackground(Color.gray);
+        plot.setBackground(color1);
         plot.setBorderColor(Color.blue);
         plot.setAreaRenderers(data, area);
         
@@ -62,7 +57,7 @@ public class Graph extends JFrame {
         double insetsTop = 10.0,
         	       insetsLeft = 60.0,
         	       insetsBottom = 20.0,
-        	       insetsRight = 60.0;
+        	       insetsRight = 45.0;
         plot.setInsets(new Insets2D.Double(
         	    insetsTop, insetsLeft, insetsBottom, insetsRight));
      //   plot.getTitle().setText("Acoustic Spectrum ");
@@ -72,11 +67,8 @@ public class Graph extends JFrame {
         plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(lb2);
        // plot.getAxis(XYPlot.AXIS_X).setRange(300, arg1);
 	}
-	public void save() {
-		
-		JFileChooser chooser = new JFileChooser();
-			
-			File file = chooser.getSelectedFile();
+	public void save() 
+	{
 			File outputFile = new File("bitmap.png");
 			try {
 				BitmapWriter writer = (BitmapWriter) DrawableWriterFactory.getInstance().get("image/png");
@@ -87,7 +79,7 @@ public class Graph extends JFrame {
 		}
 	public static void Call()
 	{
-		File file = new File("dane.perl");
+		File file = new File("spectrum.csv");
         List<Double> list2 = new ArrayList<Double>();
 			try
 			{
