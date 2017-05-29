@@ -21,7 +21,6 @@ import javafx.embed.swing.SwingFXUtils;
 public class gui extends Application {
 
 
-    @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Acoustic Insulation");
         primaryStage.getIcons().add(new Image("file:icon.png"));
@@ -33,7 +32,7 @@ public class gui extends Application {
         final RadioButton radioSin = new RadioButton("Sin");
         radioSin.setToggleGroup(signalGroup);
 
-        Label frequencyLabel = new Label("Frequency:");
+        Label frequencyLabel = new Label("Frequency [Hz]:");
         final TextField frequencyText = new TextField();
 
         Label timeLabel = new Label("Set time [s]:");
@@ -42,7 +41,6 @@ public class gui extends Application {
         Button startBtn = new Button();
         startBtn.setText("START");
         startBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
             public void handle(ActionEvent event) {
                 try {
                     if (radioSweep.isSelected()) {
@@ -81,9 +79,6 @@ public class gui extends Application {
 //            }
 //        });
 
-        Image graph1 = new Image("file:bitmap.png"); 
-        Image graph2 = new Image("file:bitmap.png"); 
-        Image graph3 = new Image("file:bitmap.png"); 
         ImageView iv1 = new ImageView();
         ImageView iv2 = new ImageView();
         ImageView iv3 = new ImageView();
