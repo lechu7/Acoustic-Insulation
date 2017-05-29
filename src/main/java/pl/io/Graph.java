@@ -77,7 +77,7 @@ public class Graph extends JFrame {
 			list2.add(d);
 	   }
 		s.close();
-		Graph graph = new Graph(list2);
+		new Graph(list2);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		BitmapWriter writer = (BitmapWriter) DrawableWriterFactory.getInstance().get("image/png");
 		writer.write(plot, baos, 700, 150);
