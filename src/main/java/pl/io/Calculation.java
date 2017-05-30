@@ -4,8 +4,9 @@ import java.util.List;
 
 public class Calculation {
 
-	public double transformation(Object aDouble_sample) {
-		throw new UnsupportedOperationException();
+	public Complex[] transformation(double[] list) {
+    	Complex[] sinusSpectrum = FFT.fft(PreparingFFT.DataPreparingForFFT(list, PreparingFFT.RECTANGLE));
+    	return sinusSpectrum;
 	}
 
 	public static  List<Double> diff(List<Double> listch1, List<Double> listch2) {
