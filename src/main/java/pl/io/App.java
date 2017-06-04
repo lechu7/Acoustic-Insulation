@@ -14,11 +14,15 @@ public class App
     public static void main( String[] args ) throws Exception
     {
     	final float recordingTime = 3000;
-		outputStream.sweep(20, 20000, (long) recordingTime, 0);
-    	ArrayList<double[]> result = inputStream.reading(recordingTime);
     	
-    	double[] firstChannel = result.get(0);
-    	double[] secondChannel = result.get(1);
+    	InputStream inputStream = new InputStream();
+        double[][] inputStreamResponse = inputStream.reading(recordingTime);
+        
+    	double[] firstChannel = inputStreamResponse[0];
+    	double[] secondChannel = inputStreamResponse[1];
+    	for (int i = 0; i < firstChannel.length; i++){
+    		System.out.println(firstChannel[i]);
+    	}
     	
     	int zerosCh1 = 0;
     	int zerosCh2 = 0;
