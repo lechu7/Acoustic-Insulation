@@ -4,14 +4,14 @@ import java.util.List;
 
 public class Calculation {
 
-	public static double[] calculateIsolation(List<double[]> listOfSamples, double frequency){
-		Complex[] fft1 = transformation(listOfSamples.get(0));
-		Complex[] fft2 = transformation(listOfSamples.get(1));
+	public static double[] calculateIsolation(double[] firstChannel, double[] secondChannel, double frequency){
+		Complex[] fft1 = transformation(firstChannel);
+		Complex[] fft2 = transformation(secondChannel);
 //		Complex[] difference = diff(fft1, fft2);
-		double[] energySpectrum1 = PreparingFFT.EnergySpectrum(fft1, listOfSamples.get(0).length);
-		double[] energySpectrum2 = PreparingFFT.EnergySpectrum(fft2, listOfSamples.get(1).length);
+		double[] energySpectrum1 = PreparingFFT.EnergySpectrum(fft1, firstChannel.length);
+		double[] energySpectrum2 = PreparingFFT.EnergySpectrum(fft2, secondChannel.length);
 		double[] energySpectrumDifference = diff(energySpectrum1, energySpectrum2);
-		double[] dBs = dbs(energySpectrumDifference, frequency, -94, fft1.length);
+		double[] dBs = dbs(energySpectrumDifference, frequency, -99, fft1.length);
 		
 		return dBs;
 //		double[] spectrum1 = spectrumFromFFT(fft1, frequency);

@@ -15,142 +15,6 @@ package pl.io;
     @since 2016.02.14
 */
 public class PreparingFFT{
-
-    //There are constants, which represent different windows for signal analysis.
-
-    /**The rectangle window*/
-    public static final int RECTANGLE = 1;
-    /**The Bartlett's window*/
-    public static final int BARTLETT = 2;
-    /**The Hanning's window*/
-    public static final int HANNING = 3;
-    /**The Hamming's window*/
-    public static final int HAMMING = 4;
-    /**The Blackman's window*/
-    public static final int BLACKMAN = 5;
-    
-    
-    /**
-        The Bartlett's window implementation.
-        
-        @param x This is the real input signal.
-        @return The signal multiplied by the Bartlett's window.
-    */
-    private static double[] BartlettWindow(double[] x){
-    
-        double[] result;
-        int i;
-        double N;
-        double value;
-        double n;
-        
-        result = new double[x.length];
-        N = (double)x.length;
-        
-        for(i = 0; i < x.length; i++){
-        
-            value = x[i];
-            n = (double)i;
-            
-            result[i] = (1.0-(Math.abs((n-((N-1.0)/2.0)))/(N-1.0))) * value;
-        }//next i
-        
-        return result;
-        
-    }//end of Bartlett Window
-    
-    /**
-        The Hanning's window implementation.
-        
-        @param x This is the real input signal.
-        @return The signal multiplied by the Hanning's window.
-    */
-    private static double[] HanningWindow(double[] x){
-    
-        double[] result;
-        int i;
-        double N;
-        double value;
-        double n;
-        
-        result = new double[x.length];
-        N = (double)x.length;
-        
-        for(i = 0; i < x.length; i++){
-        
-            value = x[i];
-            n = (double)i;
-            
-            result[i] = (0.5*(1.0-Math.cos(2.0*Math.PI*n/(N-1.0)))) * value;
-        }//next i
-        
-        return result;
-        
-    }//end of Hanning Window
-    
-    /**
-        The Hamming's window implementation.
-        
-        @param x This is the real input signal.
-        @return The signal multiplied by the Hamming's window.
-    */
-    private static double[] HammingWindow(double[] x){
-    
-        double[] result;
-        int i;
-        double N;
-        double value;
-        double n;
-        
-        result = new double[x.length];
-        N = (double)x.length;
-        
-        for(i = 0; i < x.length; i++){
-        
-            value = x[i];
-            n = (double)i;
-            
-            result[i] = (0.54-(0.46*Math.cos(2.0*Math.PI*n/(N-1.0)))) * value;
-        }//next i
-        
-        return result;
-        
-    }//end of Hamming Window
-    
-    /**
-        The Blackman's window implementation.
-        
-        @param x This is the real input signal.
-        @return The signal multiplied by the Blackman's window.
-    */
-    private static double[] BlackmanWindow(double[] x){
-    
-        double[] result;
-        int i;
-        double N;
-        double value;
-        double n;
-        
-        double[] parts;
-        
-        parts = new double[2];
-        result = new double[x.length];
-        N = (double)x.length;
-        
-        for(i = 0; i < x.length; i++){
-        
-            value = x[i];
-            n = (double)i;
-            
-            parts[0] = 0.42 - (0.50*Math.cos(2.0*Math.PI*n/(N-1.0)));
-            parts[1] = 0.08*Math.cos(4*Math.PI*n/(N-1.0));
-            
-            result[i] = (parts[0] + parts[1]) * value;
-        }//next i
-        
-        return result;
-        
-    }//end of Blackmann Window
     
     /**
         This method is designed to increase the table dimension for the nearest power of 2.
@@ -241,7 +105,7 @@ public class PreparingFFT{
         
         @return The completly prepared signal for FFT (from the FFT class).
     */
-    public static Complex[] DataPreparingForFFT(double[] x, int WindowT){
+    public static Complex[] DataPreparingForFFT(double[] x){
     
         Complex[] result;
         
@@ -250,10 +114,6 @@ public class PreparingFFT{
         int i;
         
         data_for_calculation = x;
-        if(WindowT == BARTLETT) data_for_calculation = BartlettWindow(x);
-        if(WindowT == HANNING) data_for_calculation = HanningWindow(x);
-        if(WindowT == HAMMING) data_for_calculation = HammingWindow(x);
-        if(WindowT == BLACKMAN) data_for_calculation = BlackmanWindow(x);
                 
         table_power_2 = FillZeros(data_for_calculation);
         result = new Complex[table_power_2.length];
