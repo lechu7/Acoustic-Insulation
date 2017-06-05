@@ -1,46 +1,51 @@
 package pl.io;
 
-import java.util.List;
-
 public class Statistics {
-
-	public static List<Double> normalization(List<Double> list) 
-	{
-		double max = list.get(0);
-		double min = list.get(0);
-		//Calculation of min and max value
-		for (int i = 1; i < list.size(); i++) {
-			if (list.get(i)>max) max = list.get(i);
-			if (list.get(i)<min) min = list.get(i);
-		}
-		//Normalization
-		for(int i=0;i<list.size();i++)
-			list.set(i, (list.get(i)-min)/(max-min)*2-1); 
-		return list;
-	}
-
-	public static  List<Double> outliners(List<Double> list) 
-	{
-		//Calculation of average value
-		double average=0;
-		for(int i=0;i<list.size();i++)
-			average+=list.get(i);
-		average=average/list.size();
-		//Calculation of standard deviation
-		double deviation=0;
-		for(int i=0;i<list.size();i++)
-			deviation += Math.pow(list.get(i)-average, 2);
-		deviation = deviation/(list.size()-1);
-		deviation = Math.sqrt(deviation);
-		//Calculation of outliners
-		double upper = average+2*deviation;
-		double bottom = average-2*deviation;
-		//Checking and replacing departing elements for outliners
-		for(int i=0;i<list.size();i++)
-		{
-			if(list.get(i)>upper) list.set(i, upper);
-			if(list.get(i)<bottom) list.set(i, bottom);
-		}
-		return list;
-	}
+	 /**
+	  * @param tab
+	  * @return
+	  */
+    public static double[] normalization(double[] tab)
+    {
+        double max = tab[0];                        //Defining and calculating the max value
+        double min = tab[0];                        //Defining and calculating the min value
+        for (int i = 1; i < tab.length; i++) {
+            if (tab[i]>max) max = tab[i];   //If the tab item is greater than the temporary maximum, temporary becomes of this value
+            if (tab[i]<min) min = tab[i];       //If the tab item is lower than the temporary minimum, temporary becomes of this value
+        }
+       
+        for(int i=0;i<tab.length;i++)                   //Normalization
+            tab[i] = (tab[i]-min)/(max-min)*2-1;
+           
+        return tab;                                 //Return a normalized tab
+    }
+ 
+    /**
+     * @param tab
+     * @return
+     */
+    public static  double[] outliners(double[] tab)
+    {
+       
+        double average=0;                           //Defining and calculating of average value
+        for(int i=0;i<tab.length;i++)
+            average+=tab[i];
+        average=average/tab.length;
+       
+        double deviation=0;                         //Calculation of standard deviation
+        for(int i=0;i<tab.length;i++)
+            deviation += Math.pow(tab[i]-average, 2);
+        deviation = deviation/(tab.length-1);
+        deviation = Math.sqrt(deviation);
+                                                    //Calculation of outliners
+        double upper = average+2*deviation;         //Defining and calculating of the upper limit
+        double bottom = average-2*deviation;        //Defining and calculating of the lower limit
+       
+        for(int i=0;i<tab.length;i++)           //Checking and replacing departing elements for outliners
+        {
+            if(tab[i]>upper) tab[i] = upper; //If the value exceeds the upper limit it is converted to it
+            if(tab[i]<bottom) tab[i] =bottom; //If the value exceeds the lower limit it is converted to it
+        }
+        return tab;                                 //returning a corrected tab
+    }
 }
