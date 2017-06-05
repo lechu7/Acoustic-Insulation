@@ -10,12 +10,12 @@ import java.util.Scanner;
 
 public class IO 
 {
-	public void saveCSV(List <Double> ch1,List <Double> ch2,List <Double> diff) throws FileNotFoundException{
-	      PrintWriter pw = new PrintWriter("file_X.csv");
+	public void saveCSV(Double[] ch1, Double[] ch2, Double[] diff) throws FileNotFoundException{
+	      PrintWriter pw = new PrintWriter("result.csv");
 	      pw.println("Frequency;Front;Back;Difference");
 	      
-	      for (int i = 0; i < diff.size(); i++) {
-	    	  pw.println(ch1.get(i) + ";" + ch1.get(i) +";" + ch2.get(i) + ";" + diff.get(i));
+	      for (int i = 0; i < diff.length; i++) {
+	    	  pw.println(i + ";" + ch1[i] +";" + ch2[i] + ";" + diff[i]);
 	      }
 	      System.out.println("File saved.");
 	      pw.close();
