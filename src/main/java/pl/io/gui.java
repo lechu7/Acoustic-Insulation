@@ -47,21 +47,25 @@ public class gui extends Application {
         startBtn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
+                	double frequency = Double.parseDouble(frequencyText.getText());
                 	int time =Integer.parseInt(timeText.getText());
+                	
                     if (radioSweep.isSelected()) {
                         outputStream.sweep(20, 20000, 1000*time, 350);
          
                     } else {
-                        outputStream.sin(Integer.parseInt(frequencyText.getText()), 1000*time, 350);
+                        outputStream.sin((int)frequency, 1000*time, 350);
                     }
-                   Double[][] result= InputStream.reading((float)time);
-                   List<Double> channel1 = Arrays.asList(result[0]);
-                   List<Double> channel2 = Arrays.asList(result[1]);
+                   double[][] result= InputStream.reading((float)time);
+                   double[] channel1 = result[0];
+                   double[] channel2 = result[1];
                    channel1 = Statistics.outliners(channel1);
                    channel2 = Statistics.outliners(channel2);
                    
                    channel1 = Statistics.normalization(channel1);
                    channel2 = Statistics.normalization(channel2);
+                
+                   Calculation.calculateIsolation(channel1, channel2, frequency); 
                 }
                 catch(Exception ex){
                     Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -165,7 +169,7 @@ public class gui extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
+    public static void start(String[] args) {
       
       launch(args);
    }
