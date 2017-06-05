@@ -100,11 +100,11 @@ public class gui extends Application {
                    channel1 = Statistics.normalization(channel1);
                    channel2 = Statistics.normalization(channel2);
                
-                   double[] diff=Calculation.calculateIsolation(channel1, channel2, frequency);
-                   channel1=Calculation.calcDBs(channel1, 48000);
-                   channel2=Calculation.calcDBs(channel2, 48000);
+                   double[] diff=Calculation.calculateIsolation(channel1, channel2, 48000);//Różnica- wykres 3
+                   channel1=Calculation.calcDBs(channel1, 48000);//Kanał 1- wykres 1
+                   channel2=Calculation.calcDBs(channel2, 48000);//kanał 2- wykres 2
                    
-                   //Tu dodać wywołanie wykresów klasy Graph
+                   //Tu dodać wywołanie wykresów klasy Graph, wszystko masz już na tablicach
                    
                    
                    //Tu ponownie załączyć przycisk Start
@@ -122,24 +122,6 @@ public class gui extends Application {
             }
         });
  
-        // force the field to be numeric only
-//        frequencyText.textProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                if (!newValue.matches("\\d*")) {
-//                    frequencyText.setText(newValue.replaceAll("[^\\d]", ""));
-//                }
-//            }
-//        });
-//
-//        timeText.textProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                if (!newValue.matches("\\d*")) {
-//                    timeText.setText(newValue.replaceAll("[^\\d]", ""));
-//                }
-//            }
-//        });
  
         ImageView iv1 = new ImageView();
         ImageView iv2 = new ImageView();
