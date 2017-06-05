@@ -1,6 +1,4 @@
 package pl.io;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Calculation {
 
@@ -16,8 +14,14 @@ public class Calculation {
 		return dBs;
 //		double[] spectrum1 = spectrumFromFFT(fft1, frequency);
 //		double[] spectrum2 = spectrumFromFFT(fft2, frequency);
-//		double[] difference = diff(spectrum1, spectrum2);			//TODO Uwzględnić różnicę w kalibracji
-		
+//		double[] difference = diff(spectrum1, spectrum2);			
+	}
+	
+	public static double[] calcDBs(double[] channel, double frequency){
+		Complex[] fft = transformation(channel);
+		double[] energySpectrum = PreparingFFT.EnergySpectrum(fft, channel.length);
+		double[] dBs = dbs(energySpectrum, frequency, -99, fft.length);
+		return dBs;
 	}
 	
 	public static Complex[] transformation(double[] samples) {
@@ -65,13 +69,28 @@ public class Calculation {
         double f;
         double dB;
         
+        double[] result = new double[(int)fs];
+        int a = 0;
+        double sum = 0;
+        int freq = 0;
+        
         for(i = 0; i < PowerS.length; i++){
         
             f = PreparingFFT.FrequencyDenormalization((double)i, fs, (double)N);
             dB = PreparingFFT.Power_dB(PowerS[i],P0);
             
-            System.out.println(i + " " + f + " " + dB + " dB");
+            a++;
+            if ((int) f != freq){
+            	result[freq] = sum / a;
+            	freq = (int) f;
+            	sum = dB;
+            	a = 0;
+            } else {
+            	sum += dB;
+            }
+            
+//            System.out.println(i + " " + f + " " + dB + " dB");
         }
-        return null;
+        return result;
     }
 }
