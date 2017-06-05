@@ -6,14 +6,12 @@ import javax.sound.sampled.*;
 
 public class InputStream 
 {	
-    int channelShortSize = 0;
-    
     /**
      * @param recordingTime
      * @return
      * @throws Exception
      */
-    public double[][] reading(float recordingTime) throws Exception
+    public static Double[][] reading(float recordingTime) throws Exception
     {
         int bufferSize =  (int) (48000 * 4 * recordingTime/1000.);
         final byte[] fromStream = new byte[bufferSize];
@@ -48,7 +46,7 @@ public class InputStream
         targetLine.close();
         System.out.println("Done.");
        
-        double[][] result = regroupData(fromStream);
+        Double[][] result = regroupData(fromStream);
        
         return result;    
     }
@@ -57,8 +55,8 @@ public class InputStream
      * @param fromStream
      * @return
      */
-    double[][] regroupData(byte[] fromStream){
-        this.channelShortSize = fromStream.length/4;
+    private static Double[][] regroupData(byte[] fromStream){
+        int channelShortSize = fromStream.length/4;
        
         short toChannel1, toChannel2;
         short[] channel1 = new short[channelShortSize];
@@ -86,7 +84,7 @@ public class InputStream
             channel1,channel2,
         };
        
-        double[][] doubleChannels = new double[2][channelShortSize];
+        Double[][] doubleChannels = new Double[2][channelShortSize];
         
         for(int j = 0; j<channelShortSize;j++){
             doubleChannels[0][j] = -shortChannels[0][j]/(double)maxShortCh1;

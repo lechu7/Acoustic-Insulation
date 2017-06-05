@@ -12,6 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.image.*;
 import java.io.ByteArrayInputStream;
 
@@ -43,11 +47,21 @@ public class gui extends Application {
         startBtn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
+                	int time =Integer.parseInt(timeText.getText());
                     if (radioSweep.isSelected()) {
-                        outputStream.sweep(20, 20000, 1000*Integer.parseInt(timeText.getText()), 350);
+                        outputStream.sweep(20, 20000, 1000*time, 350);
+         
                     } else {
-                        outputStream.sin(Integer.parseInt(frequencyText.getText()), 1000*Integer.parseInt(timeText.getText()), 350);
+                        outputStream.sin(Integer.parseInt(frequencyText.getText()), 1000*time, 350);
                     }
+                   Double[][] result= InputStream.reading((float)time);
+                   List<Double> channel1 = Arrays.asList(result[0]);
+                   List<Double> channel2 = Arrays.asList(result[1]);
+                   channel1 = Statistics.outliners(channel1);
+                   channel2 = Statistics.outliners(channel2);
+                   
+                   channel1 = Statistics.normalization(channel1);
+                   channel2 = Statistics.normalization(channel2);
                 }
                 catch(Exception ex){
                     Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
