@@ -4,15 +4,74 @@ import java.util.List;
 
 public class Calculation {
 
-	public Complex[] transformation(double[] list) {
-    	Complex[] sinusSpectrum = FFT.fft(PreparingFFT.DataPreparingForFFT(list, PreparingFFT.RECTANGLE));
-    	return sinusSpectrum;
+	public static double[] calculateIsolation(List<double[]> listOfSamples, double frequency){
+		Complex[] fft1 = transformation(listOfSamples.get(0));
+		Complex[] fft2 = transformation(listOfSamples.get(1));
+//		Complex[] difference = diff(fft1, fft2);
+		double[] energySpectrum1 = PreparingFFT.EnergySpectrum(fft1, listOfSamples.get(0).length);
+		double[] energySpectrum2 = PreparingFFT.EnergySpectrum(fft2, listOfSamples.get(1).length);
+		double[] energySpectrumDifference = diff(energySpectrum1, energySpectrum2);
+		double[] dBs = dbs(energySpectrumDifference, frequency, -94, fft1.length);
+		
+		return dBs;
+//		double[] spectrum1 = spectrumFromFFT(fft1, frequency);
+//		double[] spectrum2 = spectrumFromFFT(fft2, frequency);
+//		double[] difference = diff(spectrum1, spectrum2);			//TODO Uwzględnić różnicę w kalibracji
+		
 	}
+	
+	public static Complex[] transformation(double[] samples) {
+    	Complex[] fft = FFT.fft(PreparingFFT.DataPreparingForFFT(samples));
+    	return fft;
+	}
+	
+//	public static double[] spectrumFromFFT(Complex[] fft, double frequency){
+//    	double[] spectrum = new double[(int) frequency];
+//    	int freqSum = 0;
+//    	double amplitudeSum = 0;
+//    	for(int i = 0; i < fft.length; i += 1){
+//         	double freq = PreparingFFT.FrequencyDenormalization((double)i, 48000, (double)fft.length);
+//        	double amplitude = fft[i].abs();
+//        	
+//        	if ((int) freq != freqSum){
+//        		spectrum[freqSum] = amplitudeSum;
+//        		amplitudeSum = amplitude;
+//        		freqSum = (int) freq;
+//        	} else {
+//        		amplitudeSum += amplitude;
+//        	}
+//    	}
+//        return spectrum;
+//	}
 
-	public static  List<Double> diff(List<Double> listch1, List<Double> listch2) {
-		List<Double> listdiff = new ArrayList<Double>();
-		for(int i=0;i<listch1.size();i++)
-			listdiff.add(listch1.get(i)-listch2.get(i));
+	public static double[] diff(double[] listch1, double[] listch2) {
+		double[] listdiff = new double[listch1.length];
+		for(int i = 0; i < listch1.length; i++)
+			listdiff[i] = listch1[i] - listch2[i];
 		return listdiff;
 	}
+	
+//	public static Complex[] diff(Complex[] fft1, Complex[] fft2){
+//		Complex[] difference = new Complex[fft1.length];
+//		for (int i = 0; i < difference.length; i++){
+//			difference[i] = fft1[i].minus(fft2[i]);
+//		}
+//		return difference;
+//	}
+	
+	public static double[] dbs(double[] PowerS, double fs, double P0, int N){
+        int i;
+        
+        double f;
+        double dB;
+        
+        for(i = 0; i < PowerS.length; i++){
+        
+            f = PreparingFFT.FrequencyDenormalization((double)i, fs, (double)N);
+            dB = PreparingFFT.Power_dB(PowerS[i],P0);
+            
+            System.out.println(i + " " + f + " " + dB + " dB");
+        }
+        return null;
+    }
 }
