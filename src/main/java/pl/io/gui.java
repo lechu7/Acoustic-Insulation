@@ -104,6 +104,9 @@ public class gui extends Application {
                    channel1=Calculation.calcDBs(channel1, 48000);//Kanał 1- wykres 1
                    channel2=Calculation.calcDBs(channel2, 48000);//kanał 2- wykres 2
                    
+                   IO.saveCSV(channel1, channel2, diff);
+                   
+                   
                    //Tu dodać wywołanie wykresów klasy Graph, wszystko masz już na tablicach
                    
                    
