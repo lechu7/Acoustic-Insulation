@@ -65,7 +65,14 @@ public class gui extends Application {
                    channel1 = Statistics.normalization(channel1);
                    channel2 = Statistics.normalization(channel2);
                 
-                   Calculation.calculateIsolation(channel1, channel2, frequency); 
+                   double[] diff=Calculation.calculateIsolation(channel1, channel2, frequency); 
+                   channel1=Calculation.calcDBs(channel1, 48000);
+                   channel2=Calculation.calcDBs(channel2, 48000);
+                   
+                   //Tu dodać wywołanie wykresów klasy Graph 
+                   
+                   
+                   //Tu ponownie załączyć przycisk Start
                 }
                 catch(Exception ex){
                     Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
