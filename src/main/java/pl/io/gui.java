@@ -92,7 +92,7 @@ public class gui extends Application {
                         double frequency = Double.parseDouble(frequencyText.getText());
                         outputStream.sin((int)frequency, 1000*time, 350);
                     }
-                   double[][] result= InputStream.reading((float)time);
+                   double[][] result= InputStream.reading((float)1000*time);
                    double[] channel1 = result[0];
                    double[] channel2 = result[1];
                    channel1 = Statistics.outliners(channel1);
@@ -118,7 +118,7 @@ public class gui extends Application {
                     Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
                     exAlert.setTitle("Acoustic-Insulation");
                     exAlert.setHeaderText("Błąd");
-                    exAlert.setContentText("Nieprawidłowe dane wejściowe");
+                    exAlert.setContentText("Nieprawidłowe dane wejściowe. " + ex.getMessage());
                     exAlert.showAndWait();
                     startBtn.setDisable(false);
  
