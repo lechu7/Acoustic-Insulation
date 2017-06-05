@@ -81,7 +81,7 @@ public class gui extends Application {
             public void handle(ActionEvent event) {
                 try {
                     int time =Integer.parseInt(timeText.getText());
-                    double frequency = Double.parseDouble(frequencyText.getText());
+
  
                     startBtn.setDisable(true);
  
@@ -89,6 +89,7 @@ public class gui extends Application {
                         outputStream.sweep(20, 20000, 1000*time, 350);
          
                     } else {
+                        double frequency = Double.parseDouble(frequencyText.getText());
                         outputStream.sin((int)frequency, 1000*time, 350);
                     }
                    double[][] result= InputStream.reading((float)time);
