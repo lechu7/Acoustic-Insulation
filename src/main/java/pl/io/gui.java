@@ -136,15 +136,6 @@ public class gui extends Application {
                 }
             }
         });
-        double[] tab = new double[20];
-        for(int i = 0; i < 20; i++)
-		{
-			tab[i] = i;
-		}
-        tab1 = tab;
-        
-        
-        
         
         iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
         iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
