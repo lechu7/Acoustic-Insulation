@@ -38,7 +38,7 @@ public class Graph extends JFrame {
         @SuppressWarnings("unchecked")
 		DataTable data = new DataTable(Double.class, Double.class);
         AreaRenderer area = new DefaultAreaRenderer2D();
-        area.setColor(Color.black);
+        area.setColor(Color.white);
 		for(int i = 0; i<tab.length;i++)
 		{
 			data.add((double)i,tab[i]);
@@ -48,7 +48,7 @@ public class Graph extends JFrame {
         getContentPane().add(new InteractivePanel(plot));
         LineRenderer lines = new DefaultLineRenderer2D();
         plot.setLineRenderers(data, lines);
-        plot.setBackground(color1);
+      //  plot.setBackground(color1);
         plot.setBorderColor(Color.blue);
         plot.setAreaRenderers(data, area);
         

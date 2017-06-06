@@ -26,8 +26,12 @@ import javafx.stage.WindowEvent;
  
 public class gui extends Application {
  
- 
-    public void start(final Stage primaryStage) throws Exception{
+	double[] tab1 = null, tab2= null, tab3=null;
+	ImageView iv1 = new ImageView();
+    ImageView iv2 = new ImageView();
+    ImageView iv3 = new ImageView();
+    
+    public void start(Stage primaryStage) throws Exception{
         //set program title
         primaryStage.setTitle("Acoustic Insulation");
  
@@ -107,28 +111,18 @@ public class gui extends Application {
                    channel2=Calculation.calcDBs(channel2, 48000);//kanał 2- wykres 2
                    
                    IO.saveCSV(channel1, channel2, diff);
+                   tab1 = channel1;
+                   tab2 = channel2;
+                   tab3 = diff;
+                   iv1.setImage(Graph.GenerateImage(tab1)); //set Image from channel1
+                   iv2.setImage(Graph.GenerateImage(tab2)); //set Image from channel2
+                   iv3.setImage(Graph.GenerateImage(tab3)); //set Image showing differences between channel1 nad channel2
+                  
                    
                    
-                   //Tu dodać wywołanie wykresów klasy Graph, wszystko masz już na tablicach
-                   
-                   ImageView iv1 = new ImageView();
-                   ImageView iv2 = new ImageView();
-                   ImageView iv3 = new ImageView();
-                   
-                   iv1.setImage(Graph.GenerateImage(channel1)); //set Image from channel1
-                   iv2.setImage(Graph.GenerateImage(channel2)); //set Image from channel2
-                   iv3.setImage(Graph.GenerateImage(diff)); //set Image showing differences between channel1 nad channel2
                    
                    
-                   iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
-                   iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
-                   iv2.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
-                   iv2.fitHeightProperty().bind(iv3.fitHeightProperty());
-                   iv3.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
-                   iv3.fitHeightProperty().bind(primaryStage.minHeightProperty());
                    
-                   
-                   //Tu ponownie załączyć przycisk Start
                     startBtn.setDisable(false);
                 }
                 catch(Exception ex){
@@ -142,9 +136,22 @@ public class gui extends Application {
                 }
             }
         });
- 
- 
+        double[] tab = new double[20];
+        for(int i = 0; i < 20; i++)
+		{
+			tab[i] = i;
+		}
+        tab1 = tab;
         
+        
+        
+        
+        iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
+        iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
+        iv2.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
+        iv2.fitHeightProperty().bind(iv3.fitHeightProperty());
+        iv3.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
+        iv3.fitHeightProperty().bind(primaryStage.minHeightProperty());
        
        
         GridPane root = new GridPane();
