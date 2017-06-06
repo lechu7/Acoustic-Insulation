@@ -14,19 +14,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
  
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.image.*;
-import java.io.ByteArrayInputStream;
- 
-import javax.imageio.ImageIO;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.stage.WindowEvent;
  
+//@SuppressWarnings("restriction")
 public class gui extends Application {
  
-	double[] tab1 = null, tab2= null, tab3=null;
+
 	ImageView iv1 = new ImageView();
     ImageView iv2 = new ImageView();
     ImageView iv3 = new ImageView();
@@ -106,26 +99,19 @@ public class gui extends Application {
                    channel1 = Statistics.normalization(channel1);
                    channel2 = Statistics.normalization(channel2);
                
-                   double[] diff=Calculation.calculateIsolation(channel1, channel2, 48000);//Różnica- wykres 3
-                   channel1=Calculation.calcDBs(channel1, 48000);//Kanał 1- wykres 1
-                   channel2=Calculation.calcDBs(channel2, 48000);//kanał 2- wykres 2
+                   double[] diff=Calculation.calculateIsolation(channel1, channel2, 48000);
+                   channel1=Calculation.calcDBs(channel1, 48000);
+                   channel2=Calculation.calcDBs(channel2, 48000);
                    
                    IO.saveCSV(channel1, channel2, diff);
-                   tab1 = channel1;
-                   tab2 = channel2;
-                   tab3 = diff;
-                   Graph g1= new Graph(tab1);
-                   Graph g2= new Graph(tab1);
-                   Graph g3= new Graph(tab1);
 
-                   iv1.setImage(g1.GenerateImage(tab1)); //set Image from channel1
-                   iv2.setImage(g2.GenerateImage(tab2)); //set Image from channel2
-                   iv3.setImage(g3.GenerateImage(tab3)); //set Image showing differences between channel1 nad channel2
-                  
-                   
-                   
-                   
-                   
+                   Graph g1= new Graph(channel1);
+                   Graph g2= new Graph(channel2);
+                   Graph g3= new Graph(diff);
+
+                   Graph.GenerateAndSetImage(iv1, channel1); //set Image from channel1
+                   Graph.GenerateAndSetImage(iv2, channel1); //set Image from channel2
+                   Graph.GenerateAndSetImage(iv3, diff); //set Image showing differences between channel1 nad channel2
                    
                     startBtn.setDisable(false);
                 }
