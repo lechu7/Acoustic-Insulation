@@ -16,23 +16,27 @@ public class InputStream
     {
         int bufferSize =  (int) (48000 * 4 * recordingTime/1000.);
         final byte[] fromStream = new byte[bufferSize];
-       
+
+        //Create audio format with 48000 sampleRate
         AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 48000, 16, 2, 4, 48000, false);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);  
         
         if(!AudioSystem.isLineSupported(info))
             System.err.println("Line unsupported");
-       
+
+        //Create target line and open it
         final TargetDataLine targetLine = (TargetDataLine)AudioSystem.getLine(info);
         targetLine.open();
        
         System.out.println("Recording has started...");
         targetLine.start();
-       
+
+        //Create separate thread
         Thread thread = new Thread(){
             @Override public void run(){
                 AudioInputStream audioStream = new AudioInputStream(targetLine);
                 try{
+                    //Read stream from input audioStream
                 	audioStream.read(fromStream);
                 }
                 catch (IOException e){
@@ -41,12 +45,14 @@ public class InputStream
                 System.out.println("Recording stopped");
             }
         };
+        //Execute thread with some sleep
         thread.start();
         Thread.sleep((long) (recordingTime + 500));
         targetLine.stop();
         targetLine.close();
         System.out.println("Done.");
-       
+
+        //Result is double array
         double[][] result = regroupData(fromStream);
        
         return result;    
@@ -63,9 +69,8 @@ public class InputStream
         short[] channel1 = new short[channelShortSize];
         short[] channel2 = new short[channelShortSize];
         int totalSamples = 0;
-        short maxShortCh1 = 0;
-        short maxShortCh2 = 0;
-       
+
+        //Convert to big endian divided data on two channels
         for(int i = 0; i<fromStream.length; i=i+4, totalSamples++){
             toChannel1 = (short)(fromStream[i+1] << 8);
             toChannel1 = (short)(toChannel1 + fromStream[i]);
@@ -75,11 +80,6 @@ public class InputStream
            
             channel1[totalSamples] = toChannel1;
             channel2[totalSamples] = toChannel2;
-           
-            if(((toChannel1<0)?-toChannel1:toChannel1)>maxShortCh1)
-                maxShortCh1 = (short) ((toChannel1<0)?-toChannel1:toChannel1);
-            if(((toChannel2<0)?-toChannel2:toChannel2)>maxShortCh2)
-                maxShortCh2 = (short) ((toChannel2<0)?-toChannel2:toChannel2);
         }
         short[][] shortChannels = new short[][]{
             channel1,channel2,
@@ -88,12 +88,13 @@ public class InputStream
         double[][] doubleChannels = new double[2][channelShortSize];
         
         for(int j = 0; j<channelShortSize;j++){
-            doubleChannels[0][j] = -shortChannels[0][j]/(double)maxShortCh1;
+            doubleChannels[0][j] = -shortChannels[0][j];
         }
         for(int j = 0; j<channelShortSize;j++){
-            doubleChannels[1][j] = -shortChannels[1][j]/(double)maxShortCh2;
+            doubleChannels[1][j] = -shortChannels[1][j];
         }
- 
+
+
         return doubleChannels;
     }
 }
