@@ -1,13 +1,17 @@
-package pl.io;
+	package pl.io;
 
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.graphics.Insets2D;
@@ -20,12 +24,14 @@ import de.erichseifert.gral.plots.areas.DefaultAreaRenderer2D;
 import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
 import de.erichseifert.gral.plots.lines.LineRenderer;
 import de.erichseifert.gral.ui.InteractivePanel;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 public class Graph extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private static XYPlot plot = null;
 		
-	public Graph(List<Double> list)
+	public Graph(double[] tab)
 	{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(700, 150);
@@ -33,10 +39,9 @@ public class Graph extends JFrame {
 		DataTable data = new DataTable(Double.class, Double.class);
         AreaRenderer area = new DefaultAreaRenderer2D();
         area.setColor(Color.black);
-		for(int i=0; i<list.size();i++)
+		for(int i = 0; i<tab.length;i++)
 		{
-			double a = list.get(i);
-			data.add((double)i,a);
+			data.add((double)i,tab[i]);
 		}
 		plot = new XYPlot(data);
 		Color color1 = new Color(230,230,230);
@@ -66,18 +71,9 @@ public class Graph extends JFrame {
         plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(lb2);
        // plot.getAxis(XYPlot.AXIS_X).setRange(300, arg1);
 	}
-	public  static byte[] save() throws IOException
+	public  static byte[] save(double[] tab) throws IOException
 	{
-		File file = new File("spectrum.csv");
-        List<Double> list2 = new ArrayList<Double>();
-        Scanner s = new Scanner(file);
-		while(s.hasNextLine()){
-			String line = s.nextLine();
-			double d = Double.parseDouble(line);
-			list2.add(d);
-	   }
-		s.close();
-		new Graph(list2);
+		new Graph(tab);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		BitmapWriter writer = (BitmapWriter) DrawableWriterFactory.getInstance().get("image/png");
 		writer.write(plot, baos, 700, 150);
@@ -87,7 +83,13 @@ public class Graph extends JFrame {
 		return bytes;
 		}
 	
+	@SuppressWarnings("restriction")
+	public static Image GenerateImage(double[] tab) throws IOException
+	{
+		byte[] bytes = Graph.save(tab);
+		BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
+		Image image = SwingFXUtils.toFXImage(img, null);
+		return image;
+	}
+}
 	
-	public static void main(String[] args)  {
-        
-}}

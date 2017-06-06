@@ -27,7 +27,7 @@ import javafx.stage.WindowEvent;
 public class gui extends Application {
  
  
-    public void start(Stage primaryStage) throws Exception{
+    public void start(final Stage primaryStage) throws Exception{
         //set program title
         primaryStage.setTitle("Acoustic Insulation");
  
@@ -41,6 +41,7 @@ public class gui extends Application {
                 System.exit(0);
             }
         });
+        
         //set frequency label and create frequency input field
         Label frequencyLabel = new Label("Frequency [Hz]:");
         final TextField frequencyText = new TextField();
@@ -110,6 +111,22 @@ public class gui extends Application {
                    
                    //Tu dodać wywołanie wykresów klasy Graph, wszystko masz już na tablicach
                    
+                   ImageView iv1 = new ImageView();
+                   ImageView iv2 = new ImageView();
+                   ImageView iv3 = new ImageView();
+                   
+                   iv1.setImage(Graph.GenerateImage(channel1)); //set Image from channel1
+                   iv2.setImage(Graph.GenerateImage(channel2)); //set Image from channel2
+                   iv3.setImage(Graph.GenerateImage(diff)); //set Image showing differences between channel1 nad channel2
+                   
+                   
+                   iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
+                   iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
+                   iv2.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
+                   iv2.fitHeightProperty().bind(iv3.fitHeightProperty());
+                   iv3.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
+                   iv3.fitHeightProperty().bind(primaryStage.minHeightProperty());
+                   
                    
                    //Tu ponownie załączyć przycisk Start
                     startBtn.setDisable(false);
@@ -127,25 +144,7 @@ public class gui extends Application {
         });
  
  
-        ImageView iv1 = new ImageView();
-        ImageView iv2 = new ImageView();
-        ImageView iv3 = new ImageView();
-       
-        byte[] bytes = Graph.save();
-        BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
-        Image image = SwingFXUtils.toFXImage(img, null);
-       
-       
-        iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
-        iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
-        iv2.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
-        iv2.fitHeightProperty().bind(iv3.fitHeightProperty());
-        iv3.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
-        iv3.fitHeightProperty().bind(primaryStage.minHeightProperty());
- 
-        iv1.setImage(image);
-        iv2.setImage(image);
-        iv3.setImage(image);
+        
        
        
         GridPane root = new GridPane();
