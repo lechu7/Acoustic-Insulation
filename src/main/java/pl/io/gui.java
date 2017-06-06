@@ -114,9 +114,13 @@ public class gui extends Application {
                    tab1 = channel1;
                    tab2 = channel2;
                    tab3 = diff;
-                   iv1.setImage(Graph.GenerateImage(tab1)); //set Image from channel1
-                   iv2.setImage(Graph.GenerateImage(tab2)); //set Image from channel2
-                   iv3.setImage(Graph.GenerateImage(tab3)); //set Image showing differences between channel1 nad channel2
+                   Graph g1= new Graph(tab1);
+                   Graph g2= new Graph(tab1);
+                   Graph g3= new Graph(tab1);
+
+                   iv1.setImage(g1.GenerateImage(tab1)); //set Image from channel1
+                   iv2.setImage(g2.GenerateImage(tab2)); //set Image from channel2
+                   iv3.setImage(g3.GenerateImage(tab3)); //set Image showing differences between channel1 nad channel2
                   
                    
                    
@@ -175,13 +179,15 @@ public class gui extends Application {
  
         HBox box4 = new HBox();
         box4.getChildren().addAll(iv1);
-        box4.setPadding(new Insets(10,0,0,0));
+        box4.setPadding(new Insets(10,0,0,35));
  
         HBox box5 = new HBox();
         box5.getChildren().addAll(iv2);
+        box5.setPadding(new Insets(5,0,0,35));
  
         HBox box6 = new HBox();
         box6.getChildren().addAll(iv3);
+        box6.setPadding(new Insets(5,0,0,35));
  
         root.add(box, 0, 0);
         root.add(box1, 0, 1);

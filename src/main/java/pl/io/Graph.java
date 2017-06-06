@@ -84,7 +84,7 @@ public class Graph extends JFrame {
 		}
 	
 	@SuppressWarnings("restriction")
-	public static Image GenerateImage(double[] tab) throws IOException
+	public Image GenerateImage(double[] tab) throws IOException
 	{
 		byte[] bytes = Graph.save(tab);
 		BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
@@ -92,4 +92,5 @@ public class Graph extends JFrame {
 		return image;
 	}
 }
+
 	
