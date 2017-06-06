@@ -86,14 +86,10 @@ public class InputStream
         };
        
         double[][] doubleChannels = new double[2][channelShortSize];
-        
         for(int j = 0; j<channelShortSize;j++){
             doubleChannels[0][j] = -shortChannels[0][j];
-        }
-        for(int j = 0; j<channelShortSize;j++){
             doubleChannels[1][j] = -shortChannels[1][j];
         }
-
 
         return doubleChannels;
     }
