@@ -19,7 +19,6 @@ import javafx.stage.WindowEvent;
 //@SuppressWarnings("restriction")
 public class gui extends Application {
  
-
 	ImageView iv1 = new ImageView();
     ImageView iv2 = new ImageView();
     ImageView iv3 = new ImageView();
@@ -126,7 +125,7 @@ public class gui extends Application {
                 }
             }
         });
-        
+        //Setting layout of the graph images
         iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
         iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
         iv2.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
