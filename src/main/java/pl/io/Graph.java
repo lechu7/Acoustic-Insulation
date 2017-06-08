@@ -1,4 +1,4 @@
-    package pl.io;
+package pl.io;
  
  
 import de.erichseifert.gral.data.DataTable;
@@ -31,43 +31,50 @@ public class Graph extends JFrame {
        
     public Graph(double[] tab)
     {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //Initialization of area for graph 
+    	setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(700, 150);
         @SuppressWarnings("unchecked")
         DataTable data = new DataTable(Double.class, Double.class);
         AreaRenderer area = new DefaultAreaRenderer2D();
         area.setColor(Color.white);
+        
+        //Add data from the array to DataTable class
         for(int i = 0; i<tab.length;i++)
         {
             data.add((double)i,tab[i]);
         }
+        
+        //Plot Initialization
         plot = new XYPlot(data);
         getContentPane().add(new InteractivePanel(plot));
         LineRenderer lines = new DefaultLineRenderer2D();
         plot.setLineRenderers(data, lines);
-      //  plot.setBackground(color1);
         plot.setBorderColor(Color.blue);
         plot.setAreaRenderers(data, area);
-       
         lines.setColor(Color.blue);
         Color color = new Color(0,0,0,0);
         for(int i=0; i<plot.getPointRenderers(data).size();i++)
         {
             plot.getPointRenderers(data).get(i).setColor(color);
         }
+        
+        //Setting a margin
         double insetsTop = 10.0,
                    insetsLeft = 60.0,
                    insetsBottom = 20.0,
                    insetsRight = 45.0;
         plot.setInsets(new Insets2D.Double(
                 insetsTop, insetsLeft, insetsBottom, insetsRight));
-     //   plot.getTitle().setText("Acoustic Spectrum ");
+        
+        //Setting label
         Label lb = new Label("X");
         Label lb2 = new Label("Y");
         plot.getAxisRenderer(XYPlot.AXIS_X).setLabel(lb);
         plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(lb2);
-       // plot.getAxis(XYPlot.AXIS_X).setRange(300, arg1);
+       
     }
+    //Convert a Graph to byte[] object
     public  static byte[] save(double[] tab) throws IOException
     {
         new Graph(tab);
@@ -80,6 +87,7 @@ public class Graph extends JFrame {
         return bytes;
         }
    
+    // Method takes double[], and creates the Image class, which is putting to ImageView  
     public static void GenerateAndSetImage(final ImageView iv, final double[] tab)
     {
         new Thread(new Runnable() {
