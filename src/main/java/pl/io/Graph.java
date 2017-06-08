@@ -28,7 +28,10 @@ public class Graph extends JFrame {
    
     private static final long serialVersionUID = 1L;
     private static XYPlot plot = null;
-       
+       /**
+        * 
+        * @param tab
+        */
     public Graph(double[] tab)
     {
         //Initialization of area for graph 
@@ -75,6 +78,12 @@ public class Graph extends JFrame {
        
     }
     //Convert a Graph to byte[] object
+    /**
+     * 
+     * @param tab
+     * @return
+     * @throws IOException
+     */
     public  static byte[] save(double[] tab) throws IOException
     {
         new Graph(tab);
@@ -88,6 +97,11 @@ public class Graph extends JFrame {
         }
    
     // Method takes double[], and creates the Image class, which is putting to ImageView  
+    /**
+     * 
+     * @param iv
+     * @param tab
+     */
     public static void GenerateAndSetImage(final ImageView iv, final double[] tab)
     {
         new Thread(new Runnable() {

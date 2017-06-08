@@ -26,6 +26,9 @@ public class gui extends Application {
     ImageView iv2 = new ImageView();
     ImageView iv3 = new ImageView();
     
+    /**
+     * 
+     */
     public void start(Stage primaryStage) throws Exception{
         //set program title
         primaryStage.setTitle("Acoustic Insulation");

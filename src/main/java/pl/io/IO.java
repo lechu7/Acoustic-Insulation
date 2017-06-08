@@ -6,6 +6,13 @@ import java.io.PrintWriter;
 
 public class IO 
 {
+	/**
+	 * 
+	 * @param channel1
+	 * @param channel2
+	 * @param diff
+	 * @throws FileNotFoundException
+	 */
 	public static void saveCSV(double[] channel1, double[] channel2, double[] diff) throws FileNotFoundException{
 	      PrintWriter pw = new PrintWriter("result.csv");
 	      pw.println("Frequency;Front;Back;Difference");
