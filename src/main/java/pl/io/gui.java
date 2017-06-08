@@ -19,15 +19,14 @@ import javafx.stage.Stage;
  
 import javafx.stage.WindowEvent;
  
-//@SuppressWarnings("restriction")
+@SuppressWarnings("restriction")
 public class gui extends Application {
  
 	ImageView iv1 = new ImageView();
     ImageView iv2 = new ImageView();
     ImageView iv3 = new ImageView();
     
-    @SuppressWarnings("restriction")
-	public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception{
         //set program title
         primaryStage.setTitle("Acoustic Insulation");
  
@@ -70,7 +69,7 @@ public class gui extends Application {
 		{
 			public void handle(ActionEvent event)
 			{
-				ArrayList<String> choices = new ArrayList();
+				ArrayList<String> choices = new ArrayList<String>();
 				choices.add("Kanał 0");
 				choices.add("Kanał 1");
 				
@@ -217,9 +216,9 @@ public class gui extends Application {
 			                   
 								IO.saveCSV(channel1, channel2, diff);
 	
-								Graph g1= new Graph(channel1);
-								Graph g2= new Graph(channel2);
-								Graph g3= new Graph(diff);
+								new Graph(channel1);
+								new Graph(channel2);
+								new Graph(diff);
 	
 								Graph.GenerateAndSetImage(iv1, channel1); //set Image from channel1
 								Graph.GenerateAndSetImage(iv2, channel1); //set Image from channel2
