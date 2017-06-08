@@ -1,5 +1,8 @@
 package pl.io;
  
+import java.util.ArrayList;
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -24,7 +27,8 @@ public class gui extends Application {
     ImageView iv2 = new ImageView();
     ImageView iv3 = new ImageView();
     
-    public void start(Stage primaryStage) throws Exception{
+    @SuppressWarnings("restriction")
+	public void start(Stage primaryStage) throws Exception{
         //set program title
         primaryStage.setTitle("Acoustic Insulation");
  
@@ -60,6 +64,96 @@ public class gui extends Application {
  
             }
         });
+        
+        Button channelPickerBtn = new Button();
+        channelPickerBtn.setText("Kanał przed przegrodą");
+        channelPickerBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			public void handle(ActionEvent event)
+			{
+				ArrayList<String> choices = new ArrayList();
+				choices.add("Kanał 0");
+				choices.add("Kanał 1");
+				
+				
+				ChoiceDialog<String> dialog = new ChoiceDialog<String>("Kanał 0", choices);
+				dialog.setTitle("Wybór kanału przed przegrodą");
+				dialog.setHeaderText("Który kanał znajduje się przed przegrodą?");
+				Optional<String> result = dialog.showAndWait();
+				
+				if (result.isPresent()){
+					if (result.get() == "Kanał 0") {
+						Calculation.setFirstChannelIsBeforeBarrier(true);
+					} else if (result.get() == "Kanał 1") {
+						Calculation.setFirstChannelIsBeforeBarrier(false);
+					}
+				}
+			}
+		});
+        
+        Button calibrateBtn = new Button();
+        calibrateBtn.setText("Kalibracja");
+        calibrateBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			public void handle(ActionEvent event)
+			{
+				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+				alert.setTitle("Kalibracja");
+				alert.setHeaderText("Czy chciałbyś przeprowadzić kalibrację?");
+//				alert.setContentText("");
+				
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK){
+					try{
+						double[][] recording = InputStream.reading((float)1000 * 3);
+						double[] channel1 = recording[0];
+						double[] channel2 = recording[1];
+						
+						channel1 = Statistics.outliners(channel1);
+						channel2 = Statistics.outliners(channel2);
+						
+						channel1 = Statistics.normalization(channel1);
+						channel2 = Statistics.normalization(channel2);
+						
+						channel1 = Calculation.calcDBs(channel1, 48000);
+						channel2 = Calculation.calcDBs(channel2, 48000);
+						double[] diff = Calculation.diff(channel1, channel2);
+						
+						Calculation.setCalibrationDifference(diff);
+						
+						Alert calibratedAlert = new Alert(Alert.AlertType.INFORMATION);
+						calibratedAlert.setTitle("Kalibracja Zakończona");
+						calibratedAlert.setHeaderText("Kalibracja zakończona sukcesem!");
+						calibratedAlert.show();
+					}catch(Exception e){
+						System.out.println(e.getMessage());
+					}
+				}
+			}
+		});
+        
+        Button minimalSignalBtn = new Button();
+        minimalSignalBtn.setText("Minimalna moc sygnału");
+        minimalSignalBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			
+			public void handle(ActionEvent event)
+			{
+				TextInputDialog dialog = new TextInputDialog();
+				dialog.setTitle("Minimalna moc sygnału");
+				dialog.setHeaderText("Proszę podać minimalną moc sygnału, dla którego przeprowadzony zostanie pomiar [0-32768]");
+				
+				Optional<String> result = dialog.showAndWait();
+				if (result.isPresent()){
+					try{
+						double min = Double.parseDouble(result.get());
+						Calculation.setMinimalSignalStrength(min);
+					} catch (Exception e){
+						
+					}
+				}
+			}
+		});
  
         //set sin radio button
         final RadioButton radioSin = new RadioButton("Sin");
@@ -77,53 +171,79 @@ public class gui extends Application {
         startBtn.setText("START");
         startBtn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                try {
-                    int time =Integer.parseInt(timeText.getText());
-
- 
-                    startBtn.setDisable(true);
- 
-                    if (radioSweep.isSelected()) {
-                        outputStream.sweep(20, 20000, 1000*time, 350);
-         
-                    } else {
-                        double frequency = Double.parseDouble(frequencyText.getText());
-                        outputStream.sin((int)frequency, 1000*time, 350);
-                    }
-                   double[][] result= InputStream.reading((float)1000*time);
-                   double[] channel1 = result[0];
-                   double[] channel2 = result[1];
-                   channel1 = Statistics.outliners(channel1);
-                   channel2 = Statistics.outliners(channel2);
-                   
-                   channel1 = Statistics.normalization(channel1);
-                   channel2 = Statistics.normalization(channel2);
-               
-                   double[] diff=Calculation.calculateIsolation(channel1, channel2, 48000);
-                   channel1=Calculation.calcDBs(channel1, 48000);
-                   channel2=Calculation.calcDBs(channel2, 48000);
-                   
-                   IO.saveCSV(channel1, channel2, diff);
-
-                   Graph g1= new Graph(channel1);
-                   Graph g2= new Graph(channel2);
-                   Graph g3= new Graph(diff);
-
-                   Graph.GenerateAndSetImage(iv1, channel1); //set Image from channel1
-                   Graph.GenerateAndSetImage(iv2, channel1); //set Image from channel2
-                   Graph.GenerateAndSetImage(iv3, diff); //set Image showing differences between channel1 nad channel2
-                   
-                    startBtn.setDisable(false);
-                }
-                catch(Exception ex){
-                    Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
-                    exAlert.setTitle("Acoustic-Insulation");
-                    exAlert.setHeaderText("Błąd");
-                    exAlert.setContentText("Nieprawidłowe dane wejściowe. " + ex.getMessage());
-                    exAlert.showAndWait();
-                    startBtn.setDisable(false);
- 
-                }
+                	startBtn.setDisable(true);
+                	
+                    Thread t = new Thread(new Runnable()
+					{
+						public void run()
+						{
+							try {
+								int time = Integer.parseInt(timeText.getText());	
+								if (radioSweep.isSelected()) {
+			                        outputStream.sweep(20, 20000, 1000*time, 350);
+								} else {
+			                        double frequency = Double.parseDouble(frequencyText.getText());
+			                        outputStream.sin((int)frequency, 1000*time, 350);
+								}
+								double[][] result = InputStream.reading((float)1000*time);
+								double[] channel1 = result[0];
+								double[] channel2 = result[1];
+								
+								channel1 = Statistics.outliners(channel1);
+								channel2 = Statistics.outliners(channel2);
+			                   
+								if (!Calculation.isSignalStrongEnough(channel1)){
+									Platform.runLater(new Runnable()
+									{
+										
+										public void run()
+										{
+											Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
+						                    exAlert.setTitle("Acoustic-Insulation");
+						                    exAlert.setHeaderText("Błąd");
+						                    exAlert.setContentText("Synał wejściowy zbyt słaby");
+						                    exAlert.show();
+						                    startBtn.setDisable(false);
+										}
+									});
+				                    return;
+								}
+								
+								channel1 = Statistics.normalization(channel1);
+								channel2 = Statistics.normalization(channel2);
+			               
+								double[] diff=Calculation.calculateIsolation(channel1, channel2, 48000);
+								channel1=Calculation.calcDBs(channel1, 48000);
+								channel2=Calculation.calcDBs(channel2, 48000);
+			                   
+								IO.saveCSV(channel1, channel2, diff);
+	
+								Graph g1= new Graph(channel1);
+								Graph g2= new Graph(channel2);
+								Graph g3= new Graph(diff);
+	
+								Graph.GenerateAndSetImage(iv1, channel1); //set Image from channel1
+								Graph.GenerateAndSetImage(iv2, channel1); //set Image from channel2
+								Graph.GenerateAndSetImage(iv3, diff); //set Image showing differences between channel1 nad channel2
+			                   
+								startBtn.setDisable(false);
+							}catch (Exception e){
+								Platform.runLater(new Runnable()
+								{
+									public void run()
+									{
+										Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
+					                    exAlert.setTitle("Acoustic-Insulation");
+					                    exAlert.setHeaderText("Błąd");
+					                    exAlert.setContentText("Nieprawidłowe dane wejściowe. ");
+					                    exAlert.showAndWait();
+					                    startBtn.setDisable(false);
+									}
+								});
+							}
+						}
+					});
+                    t.start();
             }
         });
         
@@ -137,6 +257,28 @@ public class gui extends Application {
        
         GridPane root = new GridPane();
         root.setPadding(new Insets(20, 0, 20, 0));
+        
+        
+        GridPane buttons = new GridPane();
+        buttons.setPadding(new Insets(0, 0, 20, 0));
+        buttons.setAlignment(Pos.TOP_LEFT);
+        
+        HBox box00 = new HBox();
+        box00.getChildren().add(channelPickerBtn);
+        box00.setPadding(new Insets(0, 0, 0, 10));
+        
+        HBox box01 = new HBox();
+        box01.getChildren().add(calibrateBtn);
+        box01.setPadding(new Insets(0, 0, 0, 10));
+        
+        HBox box02 = new HBox();
+        box02.getChildren().add(minimalSignalBtn);
+        box02.setPadding(new Insets(0, 0, 0, 10));
+        
+        buttons.add(box00, 0, 0);
+        buttons.add(box01, 1, 0);
+        buttons.add(box02, 2, 0);
+        
  
         HBox box = new HBox();
         box.getChildren().addAll(radioSweep, radioSin);
@@ -175,13 +317,14 @@ public class gui extends Application {
         box6.getChildren().addAll(iv3);
         box6.setPadding(new Insets(5,0,0,35));
  
-        root.add(box, 0, 0);
-        root.add(box1, 0, 1);
-        root.add(box2, 0, 2);
-        root.add(box3, 0, 3);
-        root.add(box4, 0, 4);
-        root.add(box5, 0, 5);
-        root.add(box6, 0, 6);
+        root.add(buttons, 0, 0);
+        root.add(box, 0, 1);
+        root.add(box1, 0, 2);
+        root.add(box2, 0, 3);
+        root.add(box3, 0, 4);
+        root.add(box4, 0, 5);
+        root.add(box5, 0, 6);
+        root.add(box6, 0, 7);
  
         Scene scene = new Scene(root, 900, 700);
         primaryStage.setScene(scene);

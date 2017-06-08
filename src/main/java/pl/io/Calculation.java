@@ -1,11 +1,22 @@
 package pl.io;
 
 public class Calculation {
-
+	private static double[] calibrationDifference;
+	private static boolean firstChannelIsBeforeBarrier = true;
+	private static double minimalSignalStrength = 0;
+	
 	public static double[] calculateIsolation(double[] firstChannel, double[] secondChannel, double frequency){
 		double[] dbs1 = calcDBs(firstChannel, frequency);
 		double[] dbs2 = calcDBs(secondChannel, frequency);
-		double[] difference = diff(dbs1, dbs2);
+		
+		double[] difference;
+		if (firstChannelIsBeforeBarrier) {
+			difference = diff(dbs1, dbs2);
+		} else {
+			difference = diff(dbs2, dbs1);
+		}
+		
+		if (calibrationDifference != null) difference = diff(difference, calibrationDifference);
 		
 		return difference;
 	}
@@ -22,7 +33,7 @@ public class Calculation {
     	return fft;
 	}
 
-	private static double[] diff(double[] listch1, double[] listch2) {
+	public static double[] diff(double[] listch1, double[] listch2) {
 		double[] listdiff = new double[listch1.length];
 		for(int i = 0; i < listch1.length; i++)
 			listdiff[i] = listch1[i] - listch2[i];
@@ -57,5 +68,36 @@ public class Calculation {
         }
         return result;
     }
+	
+	public static void setCalibrationDifference(double[] diff){
+		calibrationDifference = diff;
+		if (!firstChannelIsBeforeBarrier) {
+			for (int i = 0; i < calibrationDifference.length; i++){
+				calibrationDifference[i] = -calibrationDifference[i];
+			}
+		}
+	}
+	
+	public static void setFirstChannelIsBeforeBarrier(boolean b){
+		if (firstChannelIsBeforeBarrier != b){
+			firstChannelIsBeforeBarrier = b;
+			if (calibrationDifference != null) {
+				for (int i = 0; i < calibrationDifference.length; i++){
+					calibrationDifference[i] = -calibrationDifference[i];
+				}
+			}
+		}
+	}
+	
+	public static void setMinimalSignalStrength(double min){
+		minimalSignalStrength = min;
+	}
+	
+	public static boolean isSignalStrongEnough(double[] channel){
+		for (int i = 0; i < channel.length; i++){
+			if (Math.abs(channel[i]) >= minimalSignalStrength) return true;
+		}
+		return false;
+	}
 	
 }
