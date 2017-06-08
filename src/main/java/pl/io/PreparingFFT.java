@@ -56,41 +56,6 @@ public class PreparingFFT{
         
     }//end of FillZeros
     
-    /**
-        The calculating of signal energy.
-        
-        @param x The real input signal without extra zeros.
-        @return Energy of the signal.
-    */
-    public static double Energy(double[] x){
-    
-        double result;
-        int i;
-        
-        result = 0;
-        
-        for(i = 0; i < x.length; i++){
-            result += (x[i] * x[i]);
-        }//next i
-        
-        return result;
-    }//end of Energy
-    
-    /**
-        The calculating of signal power.
-        
-        @param x The real input signal without extra zeros.
-        @return Power of the signal.
-    */
-    public static double Power(double[] x){
-    
-        double result;
-        
-        result = Energy(x)/((double)x.length);
-        
-        return result;
-    }//end of Power
-    
     
     /**
         The method which prepares the real input data for FFT calculation.
@@ -125,35 +90,6 @@ public class PreparingFFT{
         
         return result;
     }//end of DataPreparingForFFT
-    
-    /**
-        This method calculate the signal power from the FFT.
-        
-        @param X The FFT of the x signal,
-        @param original_length The original length of input data table.
-        
-        @return The power of signal calculation by Parseval's theorem. This value has to be the same as the value obtained by the Power method.
-    */
-    public static double Parseval(Complex[] X, int original_length){
-    
-        double result;
-        int i;
-        double fraction;
-        
-        result = 0;
-        
-        for(i = 0; i < X.length; i++){
-        
-            result += (X[i].abs()*X[i].abs());
-        }//next i
-        
-        fraction = (double)X.length/(double)original_length;
-        
-        result = result * fraction;
-        
-        return result;
-        
-    }//end of Parseval
     
     /**
         This function calculates the real frequency from the sample frequency, the index of the FFT sample and the original number of the input samples.
