@@ -326,6 +326,7 @@ public class gui extends Application {
         root.add(box6, 0, 7);
  
         Scene scene = new Scene(root, 900, 700);
+        primaryStage.resizableProperty().setValue(Boolean.FALSE);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
