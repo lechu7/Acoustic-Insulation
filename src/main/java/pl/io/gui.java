@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
  
 import javafx.stage.WindowEvent;
@@ -45,11 +46,11 @@ public class gui extends Application {
         });
         
         //set frequency label and create frequency input field
-        Label frequencyLabel = new Label("Frequency [Hz]:");
+        Label frequencyLabel = new Label("Częstotliwość [Hz]:");
         final TextField frequencyText = new TextField();
  
         //set time label and create time input field
-        Label timeLabel = new Label("Set time [s]:");
+        Label timeLabel = new Label("Czas [s]:");
         final TextField timeText = new TextField();
  
         ToggleGroup signalGroup = new ToggleGroup();
@@ -287,19 +288,21 @@ public class gui extends Application {
         box.setSpacing(200);
         box.setPadding(new Insets(0,0,20,0));
         box.setAlignment(Pos.CENTER);
- 
-        HBox box1 = new HBox();
-        box1.getChildren().addAll(frequencyLabel, timeLabel);
-        box1.setMinWidth(400);
-        box1.setSpacing(200);
+        
+        VBox box1 = new VBox();
+        box1.getChildren().addAll(frequencyLabel, frequencyText);
+        box1.setMaxWidth(100);
         box1.setAlignment(Pos.CENTER);
- 
-        HBox box2 = new HBox();
-        box2.getChildren().addAll(frequencyText, timeText);
-        box2.setMinWidth(400);
-        box2.setSpacing(100);
-        box2.setPadding(new Insets(0,0,10,0));
+        
+        VBox box2 = new VBox();
+        box2.getChildren().addAll(timeLabel, timeText);
+        box2.setMaxWidth(100);
         box2.setAlignment(Pos.CENTER);
+        
+        HBox box12 = new HBox();
+        box12.getChildren().addAll(box1, box2);
+        box12.setAlignment(Pos.CENTER);
+        box12.setSpacing(150);
  
         HBox box3 = new HBox();
         box3.getChildren().add(startBtn);
@@ -320,12 +323,11 @@ public class gui extends Application {
  
         root.add(buttons, 0, 0);
         root.add(box, 0, 1);
-        root.add(box1, 0, 2);
-        root.add(box2, 0, 3);
-        root.add(box3, 0, 4);
-        root.add(box4, 0, 5);
-        root.add(box5, 0, 6);
-        root.add(box6, 0, 7);
+        root.add(box12, 0, 2);
+        root.add(box3, 0, 3);
+        root.add(box4, 0, 4);
+        root.add(box5, 0, 5);
+        root.add(box6, 0, 6);
  
         Scene scene = new Scene(root, 900, 700);
         primaryStage.resizableProperty().setValue(Boolean.FALSE);
