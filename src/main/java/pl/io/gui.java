@@ -197,13 +197,21 @@ public class gui extends Application {
 						public void run()
 						{
 							try {
-								int time = Integer.parseInt(timeText.getText());	
+								if (timeText.getText().isEmpty()) throw new Exception("Nieprawidłowe dane wejściowe. Czas nie został podany.");
+								int time = Integer.parseInt(timeText.getText());
+								if (time <= 0) throw new Exception("Nieprawidłowe dane wejściowe. Podany czas jest nieprawidłowy.");
+								if (time > 120) throw new Exception("Nieprawidłowe dane wejściowe. Podany czas jest zbyt długi.");
+								
 								if (radioSweep.isSelected()) {
 			                        outputStream.sweep(20, 20000, 1000*time, 350);
 								} else {
+									if (frequencyText.getText().isEmpty()) throw new Exception("Nieprawidłowe dane wejściowe. Częstotliwość nie została podana.");
 			                        double frequency = Double.parseDouble(frequencyText.getText());
+			                        if (frequency <= 0) throw new Exception("Nieprawidłowe dane wejściowe. Podana częstotliwość jest zbyt niska.");
+			                        if (frequency > 20000) throw new Exception("Nieprawidłowe dane wejściowe. Podana częstotiwość jest za duża.");
 			                        outputStream.sin((int)frequency, 1000*time, 350);
 								}
+								
 								double[][] result = InputStream.reading((float)1000*time);
 								double[] channel1 = result[0];
 								double[] channel2 = result[1];
@@ -256,15 +264,15 @@ public class gui extends Application {
 							    		minimalSignalBtn  ,calibrateBtn,radioSin,radioSweep,
 							    		timeText, frequencyText);
 
-							}catch (Exception e){
+							}catch (final Exception e){
 								Platform.runLater(new Runnable()
 								{
 									public void run()
 									{
-										Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
+										Alert exAlert = new Alert(Alert.AlertType.ERROR);
 					                    exAlert.setTitle("Acoustic-Insulation");
 					                    exAlert.setHeaderText("Błąd");
-					                    exAlert.setContentText("Nieprawidłowe dane wejściowe. ");
+					                    exAlert.setContentText(e.getMessage());
 					                    exAlert.showAndWait();
 					                    ScreenEnabled(frequencyTextDisabled,startBtn,channelPickerBtn, 
 									    		minimalSignalBtn  ,calibrateBtn,radioSin,radioSweep,
