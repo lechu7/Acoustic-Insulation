@@ -236,11 +236,7 @@ public class gui extends Application {
 								channel2=Calculation.calcDBs(channel2, 48000);
 			                   
 								IO.saveCSV(channel1, channel2, diff);
-	
-								new Graph(channel1);
-								new Graph(channel2);
-								new Graph(diff);
-	
+								
 								Graph.GenerateAndSetImage(iv1, channel1); //set Image from channel1
 								Graph.GenerateAndSetImage(iv2, channel1); //set Image from channel2
 								Graph.GenerateAndSetImage(iv3, diff); //set Image showing differences between channel1 nad channel2
@@ -287,6 +283,11 @@ public class gui extends Application {
                     t.start();
             }
         });
+        
+        Label labelBeforeBarrier = new Label("Kanał przed przegrodą");
+        Label labelAfterBarrier = new Label("Kanał za przegrodą");
+        Label labelDifference = new Label("Różnica między kanałami");
+        
         //Setting layout of the graph images
         iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
         iv1.fitHeightProperty().bind(iv2.fitHeightProperty());
@@ -348,14 +349,26 @@ public class gui extends Application {
         box3.setAlignment(Pos.CENTER);
         box3.setStyle("-fx-font-weight:bold;" + " -fx-font-size:20px;" + " -fx-padding:10px;" );
  
+        HBox box7 = new HBox();
+        box7.getChildren().add(labelBeforeBarrier);
+        box7.setAlignment(Pos.CENTER);
+        
         HBox box4 = new HBox();
         box4.getChildren().addAll(iv1);
         box4.setPadding(new Insets(10,0,0,35));
+        
+        HBox box8 = new HBox();
+        box8.getChildren().add(labelAfterBarrier);
+        box8.setAlignment(Pos.CENTER);
  
         HBox box5 = new HBox();
         box5.getChildren().addAll(iv2);
         box5.setPadding(new Insets(5,0,0,35));
  
+        HBox box9 = new HBox();
+        box9.getChildren().add(labelDifference);
+        box9.setAlignment(Pos.CENTER);
+        
         HBox box6 = new HBox();
         box6.getChildren().addAll(iv3);
         box6.setPadding(new Insets(5,0,0,35));
@@ -364,14 +377,28 @@ public class gui extends Application {
         root.add(box, 0, 1);
         root.add(box12, 0, 2);
         root.add(box3, 0, 3);
-        root.add(box4, 0, 4);
-        root.add(box5, 0, 5);
-        root.add(box6, 0, 6);
+        root.add(box7, 0, 4);
+        root.add(box4, 0, 5);
+        root.add(box8, 0, 6);
+        root.add(box5, 0, 7);
+        root.add(box9, 0, 8);
+        root.add(box6, 0, 9);
  
-        Scene scene = new Scene(root, 900, 700);
+        Scene scene = new Scene(root, 900, 720);
         primaryStage.resizableProperty().setValue(Boolean.FALSE);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        Thread t = new Thread(new Runnable()
+		{
+			public void run()
+			{
+				Graph.GenerateAndSetImage(iv1, new double[]{0});
+		        Graph.GenerateAndSetImage(iv2, new double[]{0});
+		        Graph.GenerateAndSetImage(iv3, new double[]{0});
+			}
+		});
+        t.start();
     }
  
     public static void start(String[] args) {
