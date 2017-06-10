@@ -89,7 +89,7 @@ public class Calculation {
 	}
 	
 	public static void setMinimalSignalStrength(double min){
-		minimalSignalStrength = min;
+		minimalSignalStrength = 32768 * (min / 100);
 	}
 	
 	public static boolean isSignalStrongEnough(double[] channel){

@@ -148,13 +148,15 @@ public class gui extends Application {
 			{
 				TextInputDialog dialog = new TextInputDialog();
 				dialog.setTitle("Minimalna moc sygnału");
-				dialog.setHeaderText("Proszę podać minimalną moc sygnału, dla którego przeprowadzony zostanie pomiar [0-32768]");
+				dialog.setHeaderText("Proszę podać minimalną moc sygnału w procentach, dla którego przeprowadzony zostanie pomiar.");
 				
 				Optional<String> result = dialog.showAndWait();
 				if (result.isPresent()){
 					try{
 						double min = Double.parseDouble(result.get());
-						Calculation.setMinimalSignalStrength(min);
+						if (min >= 0 && min <= 100){
+							Calculation.setMinimalSignalStrength(min);
+						}
 					} catch (Exception e){
 						
 					}
@@ -199,7 +201,7 @@ public class gui extends Application {
 							try {
 								if (timeText.getText().isEmpty()) throw new Exception("Nieprawidłowe dane wejściowe. Czas nie został podany.");
 								int time = Integer.parseInt(timeText.getText());
-								if (time <= 0) throw new Exception("Nieprawidłowe dane wejściowe. Podany czas jest nieprawidłowy.");
+								if (time < 1) throw new Exception("Nieprawidłowe dane wejściowe. Podany czas jest nieprawidłowy.");
 								if (time > 120) throw new Exception("Nieprawidłowe dane wejściowe. Podany czas jest zbyt długi.");
 								
 								if (radioSweep.isSelected()) {
@@ -207,7 +209,7 @@ public class gui extends Application {
 								} else {
 									if (frequencyText.getText().isEmpty()) throw new Exception("Nieprawidłowe dane wejściowe. Częstotliwość nie została podana.");
 			                        double frequency = Double.parseDouble(frequencyText.getText());
-			                        if (frequency <= 0) throw new Exception("Nieprawidłowe dane wejściowe. Podana częstotliwość jest zbyt niska.");
+			                        if (frequency <= 20) throw new Exception("Nieprawidłowe dane wejściowe. Podana częstotliwość jest zbyt niska.");
 			                        if (frequency > 20000) throw new Exception("Nieprawidłowe dane wejściowe. Podana częstotiwość jest za duża.");
 			                        outputStream.sin((int)frequency, 1000*time, 350);
 								}
