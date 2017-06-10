@@ -114,44 +114,45 @@ import java.util.List;
 
 public class KlasaNormalization {
 
-    public static List<Double> normalization(List<Double> list) 
-	{
-		double max = list.get(0);
-		double min = list.get(0);
-		//Calculation of min and max value
-		for (int i = 1; i < list.size(); i++) {
-			if (list.get(i)>max) max = list.get(i);
-			if (list.get(i)<min) min = list.get(i);
-		}
-		//Normalization
-		for(int i=0;i<list.size();i++)
-			list.set(i, (list.get(i)-min)/(max-min)*2-1); 
-		return list;
-	}
-    public static  List<Double> outliners(List<Double> list) 
-	{
-		//Calculation of average value
-		double average=0;
-		for(int i=0;i<list.size();i++)
-			average+=list.get(i);
-		average=average/list.size();
-		//Calculation of standard deviation
-		double deviation=0;
-		for(int i=0;i<list.size();i++)
-			deviation += Math.pow(list.get(i)-average, 2);
-		deviation = deviation/(list.size()-1);
-		deviation = Math.sqrt(deviation);
-		//Calculation of outliners
-		double upper = average+2*deviation;
-		double bottom = average-2*deviation;
-		//Checking and replacing departing elements for outliners
-		for(int i=0;i<list.size();i++)
-		{
-			if(list.get(i)>upper) list.set(i, upper);
-			if(list.get(i)<bottom) list.set(i, bottom);
-		}
-		return list;
+    
+     public static double[] normalization(double[] tab)
+    {
+        double max = tab[0];                        //Defining and calculating the max value
+        double min = tab[0];                        //Defining and calculating the min value
+        for (int i = 1; i < tab.length; i++) {
+            if (tab[i]>max) max = tab[i];   //If the tab item is greater than the temporary maximum, temporary becomes of this value
+            if (tab[i]<min) min = tab[i];       //If the tab item is lower than the temporary minimum, temporary becomes of this value
         }
+       
+        for(int i=0;i<tab.length;i++)                   //Normalization
+            tab[i] = (tab[i]-min)/(max-min)*2-1;
+           
+        return tab;                                 //Return a normalized tab
+    }
+     public static  double[] outliners(double[] tab)
+    {
+       
+        double average=0;                           //Defining and calculating of average value
+        for(int i=0;i<tab.length;i++)
+            average+=tab[i];
+        average=average/tab.length;
+       
+        double deviation=0;                         //Calculation of standard deviation
+        for(int i=0;i<tab.length;i++)
+            deviation += Math.pow(tab[i]-average, 2);
+        deviation = deviation/(tab.length-1);
+        deviation = Math.sqrt(deviation);
+                                                    //Calculation of outliners
+        double upper = average+2*deviation;         //Defining and calculating of the upper limit
+        double bottom = average-2*deviation;        //Defining and calculating of the lower limit
+       
+        for(int i=0;i<tab.length;i++)           //Checking and replacing departing elements for outliners
+        {
+            if(tab[i]>upper) tab[i] = upper; //If the value exceeds the upper limit it is converted to it
+            if(tab[i]<bottom) tab[i] =bottom; //If the value exceeds the lower limit it is converted to it
+        }
+        return tab;                                 //returning a corrected tab
+    }
     public static void main(String[] args) {
        
     }
@@ -194,16 +195,16 @@ public class KlasaNormalizationTest {
     public void testNormalization() {
         System.out.println("Test metody 'normalization'");
         //przykladowy zestaw danych dla metody 'outliners'
-        List<Double>lista=new ArrayList();
-		lista.add(2.0);
-		lista.add(3.5);
-		lista.add(-100.0);
-		lista.add(35.2);
-		lista.add(25.3);
-		lista.add(32.90);
+        double [] tab=new double[6];
+		tab[0]=2.0;
+		tab[1]=3.5;
+		tab[2]=-100;
+		tab[3]=35.5;
+		tab[4]=25.3;
+		tab[5]=32.90;
         
         System.out.println(" Sprawdzamy prawidlowosc pobranych danych (zwracanych przez metoda 'outliners')");
-        List<Double> oczekiwana=KlasaNormalization.outliners(lista);
+        double [] oczekiwana=KlasaNormalization.outliners(tab);
         boolean czy_zgodne=true;
       
         if(oczekiwana==null) czy_zgodne = false;
@@ -219,30 +220,29 @@ public class KlasaNormalizationTest {
  	a(i)max jest maksymalna wartosc wystepujaca w zbiorze dla i-tej wartosci
         a(i))min jest minimalna wartoscia
       */
-        double max = oczekiwana.get(0);
-        double min = oczekiwana.get(0);
-	//Calculation of min and max value
-	for (int i = 1; i < oczekiwana.size(); i++) {
-		if (oczekiwana.get(i)>max) max = oczekiwana.get(i);
-			if (oczekiwana.get(i)<min) min = oczekiwana.get(i);
-		}
-		//Normalization
-		for(int i=0;i<oczekiwana.size();i++)
-			oczekiwana.set(i, (oczekiwana.get(i)-min)/(max-min)*2-1); 
+        double max = oczekiwana[0];                        
+        double min = oczekiwana[0];                       
+        for (int i = 1; i < oczekiwana.length; i++) {
+            if (oczekiwana[i]>max) max = oczekiwana[i];   
+            if (oczekiwana[i]<min) min = oczekiwana[i];     
+        }
+       
+        for(int i=0;i<oczekiwana.length;i++)                  
+            oczekiwana[i] = (oczekiwana[i]-min)/(max-min)*2-1;
                 
-        //Lista 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'
-        List<Double> uzyskana=KlasaNormalization.normalization(lista);
+        //Tablica 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'
+        double [] uzyskana=KlasaNormalization.normalization(lista);
         int i=0;
-        while(i < oczekiwana.size() && czy_zgodne == true)
+        while(i < oczekiwana.length && czy_zgodne == true)
         {
-            if(!Objects.equals(oczekiwana.get(i), uzyskana.get(i))|| uzyskana.get(i)<-1 || uzyskana.get(i)>1) czy_zgodne = false;
-            
+            if(oczekiwana[i] != uzyskana[i] || uzyskana[i]<-1 || uzyskana[i]>1) czy_zgodne = false;       
             if(!czy_zgodne)
             {
                 System.out.println("Blad w tescie normalizacji!");      
-                System.out.println("oczekiwano .. " + oczekiwana.get(i));
-                System.out.println("uzyskano .... " + uzyskana.get(i));
+                System.out.println("oczekiwano .. " + oczekiwana[i]));
+                System.out.println("uzyskano .... " + uzyskana[i]);
             }
+	    i++;
         }//end while
         assertEquals(true,czy_zgodne);
     }
