@@ -230,15 +230,24 @@ public class gui extends Application {
 								
 								channel1 = Statistics.normalization(channel1);
 								channel2 = Statistics.normalization(channel2);
-			               
-								double[] diff=Calculation.calculateIsolation(channel1, channel2, 48000);
-								channel1=Calculation.calcDBs(channel1, 48000);
-								channel2=Calculation.calcDBs(channel2, 48000);
 			                   
-								IO.saveCSV(channel1, channel2, diff);
+								double[] frontChannel, backChannel;
+								if (Calculation.isFirstChannelBeforeBarrier()){
+									frontChannel = channel1;
+									backChannel = channel2;
+								} else {
+									frontChannel = channel2;
+									backChannel = channel1;
+								}
 								
-								Graph.GenerateAndSetImage(iv1, channel1); //set Image from channel1
-								Graph.GenerateAndSetImage(iv2, channel1); //set Image from channel2
+								double[] diff = Calculation.calculateIsolation(frontChannel, backChannel, 48000);
+								frontChannel = Calculation.calcDBs(frontChannel, 48000);
+								backChannel = Calculation.calcDBs(backChannel, 48000);
+								
+								IO.saveCSV(frontChannel, backChannel, diff);
+								
+								Graph.GenerateAndSetImage(iv1, frontChannel); //set Image from channel1
+								Graph.GenerateAndSetImage(iv2, backChannel); //set Image from channel2
 								Graph.GenerateAndSetImage(iv3, diff); //set Image showing differences between channel1 nad channel2
 			                   
 								startBtn.setDisable(false);

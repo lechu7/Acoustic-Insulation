@@ -9,12 +9,7 @@ public class Calculation {
 		double[] dbs1 = calcDBs(firstChannel, frequency);
 		double[] dbs2 = calcDBs(secondChannel, frequency);
 		
-		double[] difference;
-		if (firstChannelIsBeforeBarrier) {
-			difference = diff(dbs1, dbs2);
-		} else {
-			difference = diff(dbs2, dbs1);
-		}
+		double[] difference = diff(dbs1, dbs2);
 		
 		if (calibrationDifference != null) difference = diff(difference, calibrationDifference);
 		
@@ -87,6 +82,10 @@ public class Calculation {
 				}
 			}
 		}
+	}
+	
+	public static boolean isFirstChannelBeforeBarrier(){
+		return firstChannelIsBeforeBarrier;
 	}
 	
 	public static void setMinimalSignalStrength(double min){
