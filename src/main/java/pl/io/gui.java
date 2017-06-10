@@ -203,7 +203,7 @@ public class gui extends Application {
 											Alert exAlert = new Alert(Alert.AlertType.INFORMATION);
 						                    exAlert.setTitle("Acoustic-Insulation");
 						                    exAlert.setHeaderText("Błąd");
-						                    exAlert.setContentText("Synał wejściowy zbyt słaby");
+						                    exAlert.setContentText("Sygnał wejściowy zbyt słaby");
 						                    exAlert.show();
 						                    startBtn.setDisable(false);
 										}
