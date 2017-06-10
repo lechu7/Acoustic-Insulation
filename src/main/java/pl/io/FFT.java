@@ -83,8 +83,6 @@ package pl.io;
  */
 public class FFT {
 
-    private static final Complex ZERO = new Complex(0, 0);
-
     // Do not instantiate.
     private FFT() { }
 

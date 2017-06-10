@@ -27,6 +27,8 @@ public class gui extends Application {
     ImageView iv2 = new ImageView();
     ImageView iv3 = new ImageView();
     
+    boolean frequencyTextDisabled=false;
+    
     /**
      * 
      */
@@ -63,11 +65,14 @@ public class gui extends Application {
         radioSweep.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 frequencyText.setDisable(true);
+                frequencyTextDisabled=true;
+                frequencyText.setText("");
  
             }
         });
         
-        Button channelPickerBtn = new Button();
+  
+        final Button channelPickerBtn = new Button();
         channelPickerBtn.setText("Kanał przed przegrodą");
         channelPickerBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -93,7 +98,7 @@ public class gui extends Application {
 			}
 		});
         
-        Button calibrateBtn = new Button();
+        final Button calibrateBtn = new Button();
         calibrateBtn.setText("Kalibracja");
         calibrateBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -134,7 +139,7 @@ public class gui extends Application {
 			}
 		});
         
-        Button minimalSignalBtn = new Button();
+        final Button minimalSignalBtn = new Button();
         minimalSignalBtn.setText("Minimalna moc sygnału");
         minimalSignalBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -162,18 +167,30 @@ public class gui extends Application {
         radioSin.setSelected(true);
         radioSin.setToggleGroup(signalGroup);
  
-        //disable frequencyText after checked sin radio button
+        //enable frequencyText after checked sin radio button
         radioSin.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 frequencyText.setDisable(false);
+                frequencyTextDisabled=false;
             }
         });
+        
+  
  
         final Button startBtn = new Button();
         startBtn.setText("START");
         startBtn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 	startBtn.setDisable(true);
+                	channelPickerBtn.setDisable(true);
+                	minimalSignalBtn.setDisable(true);
+                	calibrateBtn.setDisable(true);
+                	
+                	radioSin.setDisable(true);
+                	radioSweep.setDisable(true);
+                	
+                	timeText.setDisable(true);
+                	frequencyText.setDisable(true);
                 	
                     Thread t = new Thread(new Runnable()
 					{
@@ -229,6 +246,17 @@ public class gui extends Application {
 								Graph.GenerateAndSetImage(iv3, diff); //set Image showing differences between channel1 nad channel2
 			                   
 								startBtn.setDisable(false);
+								channelPickerBtn.setDisable(false);
+			                	minimalSignalBtn.setDisable(false);
+			                	calibrateBtn.setDisable(false);
+			                	
+			                	radioSin.setDisable(false);
+			                	radioSweep.setDisable(false);
+			                	
+			                 	timeText.setDisable(false);
+			                 	if	(!frequencyTextDisabled)
+			                 		frequencyText.setDisable(false);
+
 							}catch (Exception e){
 								Platform.runLater(new Runnable()
 								{
@@ -240,6 +268,17 @@ public class gui extends Application {
 					                    exAlert.setContentText("Nieprawidłowe dane wejściowe. ");
 					                    exAlert.showAndWait();
 					                    startBtn.setDisable(false);
+					                	channelPickerBtn.setDisable(false);
+					                	minimalSignalBtn.setDisable(false);
+					                	calibrateBtn.setDisable(false);
+					                	
+					                	radioSin.setDisable(false);
+					                	radioSweep.setDisable(false);
+					                	
+					                	timeText.setDisable(false);
+					                	if	(!frequencyTextDisabled)
+					                 		frequencyText.setDisable(false);
+
 									}
 								});
 							}
