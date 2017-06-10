@@ -302,7 +302,7 @@ public class gui extends Application {
         
         
         GridPane buttons = new GridPane();
-        buttons.setPadding(new Insets(0, 0, 20, 0));
+        buttons.setPadding(new Insets(0, 0, 10, 0));
         buttons.setAlignment(Pos.TOP_LEFT);
         
         HBox box00 = new HBox();
@@ -326,7 +326,7 @@ public class gui extends Application {
         box.getChildren().addAll(radioSweep, radioSin);
         box.setMinWidth(400);
         box.setSpacing(200);
-        box.setPadding(new Insets(0,0,20,0));
+        box.setPadding(new Insets(0,0,10,0));
         box.setAlignment(Pos.CENTER);
         
         VBox box1 = new VBox();
@@ -355,7 +355,7 @@ public class gui extends Application {
         
         HBox box4 = new HBox();
         box4.getChildren().addAll(iv1);
-        box4.setPadding(new Insets(10,0,0,35));
+        box4.setPadding(new Insets(0,0,0,35));
         
         HBox box8 = new HBox();
         box8.getChildren().add(labelAfterBarrier);
@@ -363,7 +363,7 @@ public class gui extends Application {
  
         HBox box5 = new HBox();
         box5.getChildren().addAll(iv2);
-        box5.setPadding(new Insets(5,0,0,35));
+        box5.setPadding(new Insets(0,0,0,35));
  
         HBox box9 = new HBox();
         box9.getChildren().add(labelDifference);
@@ -371,7 +371,7 @@ public class gui extends Application {
         
         HBox box6 = new HBox();
         box6.getChildren().addAll(iv3);
-        box6.setPadding(new Insets(5,0,0,35));
+        box6.setPadding(new Insets(0,0,0,35));
  
         root.add(buttons, 0, 0);
         root.add(box, 0, 1);
@@ -384,7 +384,7 @@ public class gui extends Application {
         root.add(box9, 0, 8);
         root.add(box6, 0, 9);
  
-        Scene scene = new Scene(root, 900, 720);
+        Scene scene = new Scene(root, 900, 700);
         primaryStage.resizableProperty().setValue(Boolean.FALSE);
         primaryStage.setScene(scene);
         primaryStage.show();
