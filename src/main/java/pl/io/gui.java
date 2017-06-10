@@ -153,12 +153,18 @@ public class gui extends Application {
 				Optional<String> result = dialog.showAndWait();
 				if (result.isPresent()){
 					try{
-						double min = Double.parseDouble(result.get());
-						if (min >= 0 && min <= 100){
-							Calculation.setMinimalSignalStrength(min);
+						String value = result.get();
+						if (value.endsWith("%")){
+							value = value.substring(0, value.length() - 1);
 						}
+						double min = Double.parseDouble(value);
+						if (min < 0 || min > 100) throw new Exception();
+						Calculation.setMinimalSignalStrength(min);
 					} catch (Exception e){
-						
+						Alert calibratedAlert = new Alert(Alert.AlertType.INFORMATION);
+						calibratedAlert.setTitle("Nieprawidłowe dane");
+						calibratedAlert.setHeaderText("Nieprawidłowe dane.");
+						calibratedAlert.show();
 					}
 				}
 			}
