@@ -222,7 +222,9 @@ public class gui extends Application {
 						                    exAlert.setHeaderText("Błąd");
 						                    exAlert.setContentText("Sygnał wejściowy zbyt słaby");
 						                    exAlert.show();
-						                    startBtn.setDisable(false);
+						                    ScreenEnabled(frequencyTextDisabled,startBtn,channelPickerBtn, 
+										    		minimalSignalBtn  ,calibrateBtn,radioSin,radioSweep,
+										    		timeText, frequencyText);
 										}
 									});
 				                    return;
@@ -241,17 +243,9 @@ public class gui extends Application {
 								Graph.GenerateAndSetImage(iv2, channel1); //set Image from channel2
 								Graph.GenerateAndSetImage(iv3, diff); //set Image showing differences between channel1 nad channel2
 			                   
-								startBtn.setDisable(false);
-								channelPickerBtn.setDisable(false);
-			                	minimalSignalBtn.setDisable(false);
-			                	calibrateBtn.setDisable(false);
-			                	
-			                	radioSin.setDisable(false);
-			                	radioSweep.setDisable(false);
-			                	
-			                 	timeText.setDisable(false);
-			                 	if	(!frequencyTextDisabled)
-			                 		frequencyText.setDisable(false);
+								ScreenEnabled(frequencyTextDisabled,startBtn,channelPickerBtn, 
+							    		minimalSignalBtn  ,calibrateBtn,radioSin,radioSweep,
+							    		timeText, frequencyText);
 
 							}catch (Exception e){
 								Platform.runLater(new Runnable()
@@ -263,18 +257,9 @@ public class gui extends Application {
 					                    exAlert.setHeaderText("Błąd");
 					                    exAlert.setContentText("Nieprawidłowe dane wejściowe. ");
 					                    exAlert.showAndWait();
-					                    startBtn.setDisable(false);
-					                	channelPickerBtn.setDisable(false);
-					                	minimalSignalBtn.setDisable(false);
-					                	calibrateBtn.setDisable(false);
-					                	
-					                	radioSin.setDisable(false);
-					                	radioSweep.setDisable(false);
-					                	
-					                	timeText.setDisable(false);
-					                	if	(!frequencyTextDisabled)
-					                 		frequencyText.setDisable(false);
-
+					                    ScreenEnabled(frequencyTextDisabled,startBtn,channelPickerBtn, 
+									    		minimalSignalBtn  ,calibrateBtn,radioSin,radioSweep,
+									    		timeText, frequencyText);
 									}
 								});
 							}
@@ -400,9 +385,42 @@ public class gui extends Application {
 		});
         t.start();
     }
- 
+ /**
+  * 
+  * @param args
+  */
     public static void start(String[] args) {
      
       launch(args);
    }
+    /**
+     * 
+     * @param frequencyTextDisabled
+     * @param startBtn
+     * @param channelPickerBtn
+     * @param minimalSignalBtn
+     * @param calibrateBtn
+     * @param radioSin
+     * @param radioSweep
+     * @param timeText
+     * @param frequencyText
+     */
+    public static void ScreenEnabled(boolean frequencyTextDisabled, Button startBtn,Button channelPickerBtn, 
+    		Button minimalSignalBtn  ,Button calibrateBtn,RadioButton radioSin, RadioButton radioSweep,
+    		TextField timeText, TextField frequencyText)
+    {
+        
+							startBtn.setDisable(false);
+							channelPickerBtn.setDisable(false);
+		                	minimalSignalBtn.setDisable(false);
+		                	calibrateBtn.setDisable(false);
+		                	
+		                	radioSin.setDisable(false);
+		                	radioSweep.setDisable(false);
+		                	
+		                 	timeText.setDisable(false);
+		                 	if	(!frequencyTextDisabled)
+		                 		frequencyText.setDisable(false);
+
+    }
 }
