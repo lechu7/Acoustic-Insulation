@@ -231,7 +231,7 @@ public class KlasaNormalizationTest {
             oczekiwana[i] = (oczekiwana[i]-min)/(max-min)*2-1;
                 
         //Tablica 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'
-        double [] uzyskana=KlasaNormalization.normalization(lista);
+        double [] uzyskana=KlasaNormalization.normalization(tab);
         int i=0;
         while(i < oczekiwana.length && czy_zgodne == true)
         {
@@ -239,7 +239,7 @@ public class KlasaNormalizationTest {
             if(!czy_zgodne)
             {
                 System.out.println("Blad w tescie normalizacji!");      
-                System.out.println("oczekiwano .. " + oczekiwana[i]));
+                System.out.println("oczekiwano .. " + oczekiwana[i]);
                 System.out.println("uzyskano .... " + uzyskana[i]);
             }
 	    i++;
