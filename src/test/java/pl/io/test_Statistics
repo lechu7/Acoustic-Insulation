@@ -10,98 +10,97 @@ public class test_IO {
 
 	@Test
 	public void test() {
-		Statistics test = new Statistics();
-		List<Double> test1 = new ArrayList();
-		test1.add(1.0);
-		test1.add(2.0);
-		test1.add(10.0);
-		test1.add(2.4);
-		test1.add(1.7);
-		test1.add(23.99);
-		test1.add(-5.0);
-		test1.add(-500.0);
+		
+		Statistics st =new Statistics();
+		double[]test1=new double[8];
+		test1[0]=1.0;
+		test1[1]=2.0;
+		test1[2]=10.0;
+		test1[3]=2.4;
+		test1[4]=1.7;
+		test1[5]=23.99;
+		test1[6]=-5.0;
+		test1[7]=-500.0;
 		double av1=0;
-		for(int i=0;i<test1.size();i++) av1+=test1.get(i);
-		av1=av1/test1.size();
+		for(int i=0;i<test1.length;i++) av1+=test1[i];
+		av1=av1/test1.length;
 		double deviation1=0;
 		System.out.println("Average input 1: "+av1);
-		for(int i=0;i<test1.size();i++)
-			deviation1 += Math.pow(test1.get(i)-av1, 2);
-		deviation1 = deviation1/(test1.size()-1);
+		for(int i=0;i<test1.length;i++)
+			deviation1 += Math.pow(test1[i]-av1, 2);
+		deviation1 = deviation1/(test1.length-1);
 		deviation1 = Math.sqrt(deviation1);
 		double upper1 = av1+2*deviation1;
 		double bottom1 = av1-2*deviation1;
 		System.out.println("upper input 1 : "+upper1);
 		System.out.println("bottom input 1 : "+bottom1);
 		
-		List<Double> result1 = new ArrayList();
-		result1=test.outliners(test1);
-		List<Double> pr =new ArrayList();
-		pr.add(1.0);
-		pr.add(2.0);
-		pr.add(10.0);
-		pr.add(2.4);
-		pr.add(1.7);
-		pr.add(23.99);
-		pr.add(-5.0);
-		pr.add(-415.60994551079665);
-		assertEquals(result1,pr);
-		System.out.println("Output list : ");
-		for(int i=0;i<pr.size();i++)
-		{
-			System.out.print(pr.get(i)+" || ");
-		}
+		double[]result1=new double[8];
+		result1=Statistics.outliners(test1);
+		double[]pr=new double[8];
+		pr[0]=1.0;
+		pr[1]=2.0;
+		pr[2]=10.0;
+		pr[3]=2.4;
+		pr[4]=1.7;
+		pr[5]=23.99;
+		pr[6]=-5.0;
+		pr[7]=-415.60994551079665;
 		
-			
-	}
-	@Test
-	public void test2() {
-		Statistics test = new Statistics();
-		List<Double> test2=new ArrayList();
-		test2.add(1.99);
-		test2.add(5.21);
-		test2.add(10.5);
-		test2.add(600.0);
-		test2.add(-400.0);
-		test2.add(0.99);
-		test2.add(-5.23);
+		//System.out.println("Test array result1 and pr, if false result1==pr");
+	     boolean czy=false;
+	   for(int i=0;i<result1.length;i++)
+	   {
+		   if(result1[i]!=pr[i]) czy=true;   
+	   }
+	   System.out.println("Reult test 1, if false its ok : "+czy);
 		
 		
+		/// TEST 2
+		
+		
+		System.out.println("/////////TEST 2/////////");
+		
+		double[]test2=new double[7];
+		test2[0]=1.99;
+		test2[1]=5.21;
+		test2[2]=10.5;
+		test2[3]=600.0;
+		test2[4]=-400.0;
+		test2[5]=0.99;
+		test2[6]=-5.23;
 		double av2=0;
-		for(int i=0;i<test2.size();i++) av2+=test2.get(i);
-		av2=av2/test2.size();
+		for(int i=0;i<test2.length;i++) av2+=test2[i];
+		av2=av2/test2.length;
 		double deviation2=0;
 		System.out.println();
 		System.out.println("Average input 2: "+av2);
-		for(int i=0;i<test2.size();i++)
-			deviation2 += Math.pow(test2.get(i)-av2, 2);
-		deviation2 = deviation2/(test2.size()-1);
+		for(int i=0;i<test2.length;i++)
+			deviation2 += Math.pow(test2[i]-av2, 2);
+		deviation2 = deviation2/(test2.length-1);
 		deviation2 = Math.sqrt(deviation2);
 		double upper2 = av2+2*deviation2;
 		double bottom2 = av2-2*deviation2;
 		System.out.println("upper input 2 : "+upper2);
 		System.out.println("bottom input 2 : "+bottom2);
 		
-		List<Double> result2 = new ArrayList();
-		result2=test.outliners(test2);
-
-List<Double> pr2=new ArrayList();
-pr2.add(1.99);
-pr2.add(5.21);
-pr2.add(10.5);
-pr2.add(600.0);
-pr2.add(-400.0);
-pr2.add(0.99);
-pr2.add(-5.23);
-  System.out.println("Output list 2");
-for(int i=0;i<pr2.size();i++)
-{
-	System.out.print(pr2.get(i)+" || ");
-}
-
-assertEquals(result2,pr2);
+		double[] result2 = new double[7];
+		result2=Statistics.outliners(test2);
 		
-	}
+		double[]pr2=new double[7];
+		pr2[0]=1.99;
+		pr2[1]=5.21;
+		pr2[2]=10.5;
+		pr2[3]=600.0;
+		pr2[4]=-400.0;
+		pr2[5]=0.99;
+		pr2[6]=-5.23;
+		boolean czy2=false;
+		for(int i=0;i<result2.length;i++)
+		{
+			if(result2[i]!=pr2[i]) czy2=true;
+		}
+        		System.out.println("Reult test 2, if false its ok : "+czy2);	
 }
 	
 	
