@@ -57,53 +57,17 @@ public class CalculationTest {
     @org.junit.Test
     public void testDiff() {
         System.out.println("diff");
-        Random generator;
-        List<Double> listch1;
-        List<Double> listch2;
-        List<Double> expResult;
-        int N;
-        int i;
-        boolean if_equal;
-        double difference;
-        
-        
-        listch1 = new ArrayList();
-        listch2 = new ArrayList();
-        expResult = new ArrayList();
-        if_equal = true;
-        generator = new Random();
-        N=300;
-        
-        for(i=0;i<N;i++)
-        {
-            listch1.add(i,generator.nextDouble());
-            listch2.add(i,generator.nextDouble());
-        }
-        
-        for(i=0;i<listch1.size();i++)
-        {
-            expResult.add(listch1.get(i)-listch2.get(i));
-        }//koniec pętli for
-        List<Double> result = Calculation.diff(listch1, listch2);
-        
-        i=0;
-        while(i<expResult.size() && if_equal == true)
-        {
-            difference = expResult.get(i)-result.get(i);
-            if(difference < -0.0001 || difference > 0.0001) if_equal = false;
-            
-            if(!if_equal)
-            {
-                System.out.println("Blad w tescie diff!");
-                System.out.println("oczekiwano........ " + expResult.get(i));
-                System.out.println("uzyskano.......... " + result.get(i));
-            }//end if
-            
+        double[] listch1 = new double[]{77.5, 89.5};
+        double[] listch2 = new double[]{75.2, 88.3};
+        double[] expResult = new double[]{2.3, 1.2};
+        double[] result = Calculation.diff(listch1, listch2);
+        boolean czy_rowne = true;
+        int i = 0;
+        while(i<expResult.length && czy_rowne == true) {
+            if(expResult[i] < result[i] - 0.0001 || expResult[i] > result[i] + 0.0001) czy_rowne = false;
             i++;
-        }//end while
-        
-        assertEquals(true, if_equal);
-        
+        }//koniec while
+        assertEquals(czy_rowne, true);
     }//koniec testu diff
     
 }
