@@ -1,4 +1,68 @@
-public class test_InputStream
+package pl.io;
+
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+
+import org.junit.Test;
+
+public class inputStreamTest
 {
-  //reading
+
+	@Test
+	public void testReading1() throws Exception
+	{
+		final float recordingTime = 30000;
+		outputStream.sweep(20, 20000, recordingTime, 350);
+    	ArrayList<double[]> result = inputStream.reading(recordingTime);
+    	double[] firstChannel = result.get(0);
+    	double[] secondChannel = result.get(1);
+    	boolean czyZgodne = true;
+    	
+    	if(firstChannel.length != secondChannel.length)
+    	{
+    		czyZgodne = false;
+    		assertEquals(true, czyZgodne);
+    	}
+    	
+    	for(int i = 0; i < secondChannel.length; i++)
+    	{
+    		if(firstChannel[i] < -128 || secondChannel[i] < -128 || firstChannel[i] > 127 || secondChannel[i] > 127)
+    		{
+    			czyZgodne = false;
+    			break;
+    		}
+    	}
+    	 assertEquals(true, czyZgodne);
+	}
+	@Test
+	public void testReading2() throws Exception
+	{
+		final float recordingTime = 30000;
+		outputStream.sweep(20, 20000, recordingTime, 350);
+    	ArrayList<double[]> result = inputStream.reading(recordingTime);
+    	double[] firstChannel = result.get(0);
+    	double[] secondChannel = result.get(1);
+    	
+    	boolean czyZgodne = true;
+    	
+    	if(firstChannel.length != secondChannel.length)
+    	{
+    		czyZgodne = false;
+    		assertEquals(true, czyZgodne);
+    	}
+    	for(int i = 0; i < secondChannel.length-2; i++)
+    	{
+    		if(firstChannel[i] == 0 && firstChannel[i+1] == 0 && firstChannel[i+2] == 0)
+    		{		
+    			czyZgodne = false;
+    			break;
+    		}
+    		if(secondChannel[i] == 0 && secondChannel[i+1] == 0 && secondChannel[i+2] == 0)
+    		{	
+    			czyZgodne = false;
+    			break;
+    		}
+    	}
+    	 assertEquals(true, czyZgodne);	
+	}
 }
