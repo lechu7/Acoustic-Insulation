@@ -2,6 +2,7 @@ package pl.io;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -70,4 +71,25 @@ public class CalculationTest {
         assertEquals(czy_rowne, true);
     }//koniec testu diff
     
+    @Test
+	public void testCalculateIsolation() {
+    	double[] fc = new double[20];
+    	double[] sc = new double[20];
+    	double freq = 20.0;
+    	
+    	Random r = new Random();
+		for (int i = 0; i < fc.length; i++){
+			fc[i] = r.nextDouble()*46+80.0;
+		}
+		for (int i = 0; i < sc.length; i++){
+			sc[i] = r.nextDouble()*46+80.0;
+		}
+		
+		double[] dbs1 = Calculation.calcDBs(fc, freq);
+		double[] dbs2 = Calculation.calcDBs(sc, freq);
+		
+		double[] expectedResult = Calculation.diff(dbs1, dbs2);
+		double[] result = Calculation.calculateIsolation(fc, sc, freq);
+		assertArrayEquals(expectedResult, result, 0.0001);
+	}
 }
