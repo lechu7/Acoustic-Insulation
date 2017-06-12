@@ -71,6 +71,27 @@ public class CalculationTest {
         assertEquals(czy_rowne, true);
     }//koniec testu diff
     
+     @Test
+    
+    public void testCalcDBs() {
+        System.out.println("calcDBs");
+        double[] ch = new double[20];
+        double frequency = 20.0;
+        Random r = new Random();
+	for (int i = 0; i < ch.length; i++){
+		ch[i] = r.nextDouble()*48+75.0;
+	}
+        
+        Complex[] fft = FFT.fft(PreparingFFT.DataPreparingForFFT(ch));
+        double[] eS=PreparingFFT.EnergySpectrum(fft, ch.length);
+        
+        double[] expResult = Calculation.dbs(eS,frequency,1,fft.length);  //mam problem z wywołaniem dbs, bo jest jako private
+        double[] result = Calculation.calcDBs(ch, frequency);
+        assertArrayEquals(expResult, result,0.0001);
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
+    }
+    
     @Test
     public void testCalculateIsolation() {
     	double[] fc = new double[20];
