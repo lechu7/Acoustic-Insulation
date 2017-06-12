@@ -28,7 +28,7 @@ public class gui extends Application {
     ImageView iv3 = new ImageView();
     
     boolean frequencyTextDisabled=false;
-    
+
     /**
      * 
      */
@@ -71,7 +71,11 @@ public class gui extends Application {
             }
         });
         
-  
+        final Label labelBeforeBarrier = new Label("");
+        final Label labelAfterBarrier = new Label("");
+        Label labelDifference = new Label("Różnica między kanałami.");
+        UpdateLabels(labelBeforeBarrier,labelAfterBarrier);
+        
         final Button channelPickerBtn = new Button();
         channelPickerBtn.setText("Kanał przed przegrodą");
         channelPickerBtn.setOnAction(new EventHandler<ActionEvent>()
@@ -94,7 +98,9 @@ public class gui extends Application {
 					} else if (result.get() == "Kanał 1") {
 						Calculation.setFirstChannelIsBeforeBarrier(false);
 					}
+				
 				}
+				UpdateLabels(labelBeforeBarrier,labelAfterBarrier);
 			}
 		});
         
@@ -294,9 +300,8 @@ public class gui extends Application {
             }
         });
         
-        Label labelBeforeBarrier = new Label("Kanał przed przegrodą");
-        Label labelAfterBarrier = new Label("Kanał za przegrodą");
-        Label labelDifference = new Label("Różnica między kanałami");
+     
+  
         
         //Setting layout of the graph images
         iv1.fitWidthProperty().bind(primaryStage.widthProperty().divide(1.076));
@@ -448,4 +453,12 @@ public class gui extends Application {
 		                 		frequencyText.setDisable(false);
 
     }
-}
+    public void UpdateLabels(  Label labelBeforeBarrier, Label labelAfterBarrier)
+    {
+            int channel = Calculation.isFirstChannelBeforeBarrier()?0:1;
+            String label1="Kanał przed przegrodą. (Kanał "+channel+")"; 
+            String label2="Kanał za przegrodą. (Kanał "+((channel==1)?0:1)+")";
+            labelBeforeBarrier.setText(label1);
+            labelAfterBarrier.setText(label2);
+    }
+    }
