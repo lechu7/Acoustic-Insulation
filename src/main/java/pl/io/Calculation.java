@@ -1,7 +1,7 @@
 package pl.io;
 
 public class Calculation {
-	private static double[] calibrationDifference;
+	private static double[] calibrationChannel0, calibrationChannel1;
 	private static boolean firstChannelIsBeforeBarrier = true;
 	private static double minimalSignalStrength = 0;
 	
@@ -9,9 +9,17 @@ public class Calculation {
 		double[] dbs1 = calcDBs(firstChannel, frequency);
 		double[] dbs2 = calcDBs(secondChannel, frequency);
 		
-		double[] difference = diff(dbs1, dbs2);
+		if (calibrationChannel0 != null && calibrationChannel1 != null){
+			if (firstChannelIsBeforeBarrier){
+				dbs1 = diff(dbs1, calibrationChannel0);
+				dbs2 = diff(dbs2, calibrationChannel1);
+			} else {
+				dbs1 = diff(dbs1, calibrationChannel1);
+				dbs2 = diff(dbs2, calibrationChannel0);
+			}
+		}
 		
-		if (calibrationDifference != null) difference = diff(difference, calibrationDifference);
+		double[] difference = diff(dbs1, dbs2);
 		
 		return difference;
 	}
@@ -64,23 +72,17 @@ public class Calculation {
         return result;
     }
 	
-	public static void setCalibrationDifference(double[] diff){
-		calibrationDifference = diff;
-		if (!firstChannelIsBeforeBarrier) {
-			for (int i = 0; i < calibrationDifference.length; i++){
-				calibrationDifference[i] = -calibrationDifference[i];
-			}
-		}
+	public static void setCalibrationChannel0(double[] cal){
+		calibrationChannel0 = cal;
+	}
+	
+	public static void setCalibrationChannel1(double[] cal){
+		calibrationChannel1 = cal;
 	}
 	
 	public static void setFirstChannelIsBeforeBarrier(boolean b){
 		if (firstChannelIsBeforeBarrier != b){
 			firstChannelIsBeforeBarrier = b;
-			if (calibrationDifference != null) {
-				for (int i = 0; i < calibrationDifference.length; i++){
-					calibrationDifference[i] = -calibrationDifference[i];
-				}
-			}
 		}
 	}
 	
