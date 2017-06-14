@@ -36,7 +36,7 @@ public class CalculationTest {
 
     /**
      * Test of transformation method, of class Calculation.
-     * Not ready yet
+     
      */
    /** @org.junit.Test
     public void testTransformation() {
