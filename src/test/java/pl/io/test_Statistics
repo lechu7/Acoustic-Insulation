@@ -108,35 +108,46 @@ public class test_IO {
 
 
 /////////////////////   TEST NORMALIZATION ////////////
-package pl.io;
+package statictics;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author Magdalena Wojciechowska
  */
-public class test_Normalization extends TestCase {
+public class NormalizationTest {
     
-    public test_Normalization(String testName) {
-        super(testName);
+    public NormalizationTest() {
     }
     
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeClass
+    public static void setUpClass() {
     }
     
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
     }
 
     /**
-     * Test of Normalization method, of class  Statistics.
+     * Test of normalization method, of class Statistics.
      */
+    @Test
     public void testNormalization() {
-	 System.out.println("Test metody 'normalization'");
+         System.out.println("Test metody 'normalization'");
         //przykladowy zestaw danych dla metody 'outliners'
         double [] tab=new double[6];
 		tab[0]=2.0;
@@ -146,23 +157,25 @@ public class test_Normalization extends TestCase {
 		tab[4]=25.3;
 		tab[5]=32.90;
         
-        System.out.println(" Sprawdzamy prawidlowosc pobranych danych (zwracanych przez metoda 'outliners')");
-        double [] oczekiwana= Statistics.outliners(tab);
+        System.out.println("Sprawdzamy prawidlowosc pobranych danych (zwracanych przez metoda 'outliners').");
+     
+        double [] dane =Statistics.outliners(tab);
         boolean czy_zgodne=true;
       
-        if(oczekiwana==null) czy_zgodne = false;
+        if(dane==null) czy_zgodne = false;
             
             if(!czy_zgodne)
-            {
-                System.out.println("Nieprawidlowy pobor danych");
-                
+            {          
+                 System.out.println("Nieprawidlowy pobor danych");
             }
-      System.out.println("Sprawdzamy normalizacje danych");
+            else System.out.println("Dane zostaly prawidlowo pobrane!");
+      System.out.println("Sprawdzamy normalizacje danych.");
       /*Transformacja ta jest przeprowadzana wedlug wzoru:
         a(i)'=(a(i)-a(i)max)/(a(i)max-a(i)min)
  	a(i)max jest maksymalna wartosc wystepujaca w zbiorze dla i-tej wartosci
         a(i))min jest minimalna wartoscia
       */
+        double [] oczekiwana= Statistics.outliners(tab);
         double max = oczekiwana[0];                        
         double min = oczekiwana[0];                       
         for (int i = 1; i < oczekiwana.length; i++) {
@@ -174,23 +187,23 @@ public class test_Normalization extends TestCase {
             oczekiwana[i] = (oczekiwana[i]-min)/(max-min)*2-1;
                 
         //Tablica 'oczekiwana' zawiera prawidlowo znormalizowane elementy,porownujemy je z elementami zwroconymi przez metode 'normalization'
-        double [] uzyskana= Statistics.normalization(tab);
+        double [] uzyskana= Statistics.normalization(dane);
         int i=0;
         while(i < oczekiwana.length && czy_zgodne == true)
         {
+            
             if(oczekiwana[i] != uzyskana[i] || uzyskana[i]<-1 || uzyskana[i]>1) czy_zgodne = false;       
             if(!czy_zgodne)
             {
                 System.out.println("Blad w tescie normalizacji!");      
-                System.out.println("oczekiwano .. " + oczekiwana[i]);
-                System.out.println("uzyskano .... " + uzyskana[i]);
+                
             }
+            
 	    i++;
+           
         }//end while
+         if(czy_zgodne) System.out.println("Test zakończony  powodzeniem.");   
         
         assertEquals(czy_zgodne, true);
-    }//koniec testu Normalization
-    
+    }    
 }
-   
-   
