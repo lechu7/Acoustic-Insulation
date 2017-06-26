@@ -120,26 +120,35 @@ public class gui extends Application {
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK){
 					try{
-						double[][] recording = InputStream.reading((float)1000 * 3);
-						double[] channel1 = recording[0];
-						double[] channel2 = recording[1];
-
-						channel1 = Statistics.outliners(channel1);
-						channel2 = Statistics.outliners(channel2);
-
-						channel1 = Statistics.normalization(channel1);
-						channel2 = Statistics.normalization(channel2);
-
-						channel1 = Calculation.calcDBs(channel1, 48000);
-						channel2 = Calculation.calcDBs(channel2, 48000);
-						double[] diff = Calculation.diff(channel1, channel2);
-
-						Calculation.setCalibrationDifference(diff);
-
-						Alert calibratedAlert = new Alert(Alert.AlertType.INFORMATION);
-						calibratedAlert.setTitle("Kalibracja Zakończona");
-						calibratedAlert.setHeaderText("Kalibracja zakończona sukcesem!");
-						calibratedAlert.show();
+						double[][] recording0 = InputStream.reading((float)1000 * 3);
+						double[] channel0 = recording0[0];
+						
+						Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
+						alert1.setTitle("Kalibracja");
+						alert1.setHeaderText("Czy chciałbyś przeprowadzić kalibrację kanału 1?");
+						
+						Optional<ButtonType> result1 = alert1.showAndWait();
+						if (result1.get() == ButtonType.OK){
+							double[][] recording1 = InputStream.reading((float)1000 * 3);
+							double[] channel1 = recording1[1];
+							
+							channel0 = Statistics.outliners(channel0);
+							channel1 = Statistics.outliners(channel1);
+							
+							channel0 = Statistics.normalization(channel0);
+							channel1 = Statistics.normalization(channel1);
+							
+							channel0 = Calculation.calcDBs(channel0, 48000);
+							channel1 = Calculation.calcDBs(channel1, 48000);
+							
+							Calculation.setCalibrationChannel0(channel0);
+							Calculation.setCalibrationChannel1(channel1);
+							
+							Alert calibratedAlert = new Alert(Alert.AlertType.INFORMATION);
+							calibratedAlert.setTitle("Kalibracja Zakończona");
+							calibratedAlert.setHeaderText("Kalibracja zakończona sukcesem!");
+							calibratedAlert.show();
+						}
 					}catch(Exception e){
 						System.out.println(e.getMessage());
 					}
