@@ -2,8 +2,9 @@ package pl.io;
 
 public class Statistics {
 	 /**
+	  *The method takes as a array parameter and returns a new normalized
+	  list with values from -1 to 1.
 	  * @param tab
-	  * @return
 	  */
     public static double[] normalization(double[] tab)
     {
@@ -21,8 +22,9 @@ public class Statistics {
     }
  
     /**
+	 *The method takes an array as a parameter, calculates outliners, 
+	 then searches for values in excess and converts them to calculated outliners.
      * @param tab
-     * @return
      */
     public static  double[] outliners(double[] tab)
     {
