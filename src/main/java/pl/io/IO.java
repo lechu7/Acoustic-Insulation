@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 public class IO 
 {
 	/**
+	 * Zapisuje do pliku .csv dane sygnału - częstotliwość, poziom natężenia dźwięku dla dwóch kanałów kanałów i różnicę tych poziomów
 	 * 
 	 * @param channel1
 	 * @param channel2
