@@ -24,6 +24,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 @SuppressWarnings("restriction")
+//  Author: Dawid Wloszek
+//Class Graph generates a acoustic spectrum from double array.
+//Final Plot is exported to gui class.
 public class Graph extends JFrame {
    
     private static final long serialVersionUID = 1L;
@@ -32,6 +35,9 @@ public class Graph extends JFrame {
         * 
         * @param tab
         */
+    //Constructor initializes area for graph, then adds data 
+    //from parameter tab to DataTable class, which is used in plot initialization.
+    //Thereafter constructor initializes plot,  sets margin and creates label.
     public Graph(double[] tab)
     {
         //Initialization of area for graph 
@@ -77,7 +83,8 @@ public class Graph extends JFrame {
         plot.getAxisRenderer(XYPlot.AXIS_Y).setLabel(lb2);
        
     }
-    //Convert a Graph to byte[] object
+    //This method converts a Graph class to byte array and returns necessary byte[].
+    //Parameter double[] tab is required for using a constructor. 
     /**
      * 
      * @param tab
@@ -96,7 +103,8 @@ public class Graph extends JFrame {
         return bytes;
         }
    
-    // Method takes double[], and creates the Image class, which is putting to ImageView  
+    // This method creates an Image object by using save() method and parameter double[] tab.
+    // 
     /**
      * 
      * @param iv
