@@ -7,11 +7,11 @@ import java.io.PrintWriter;
 public class IO 
 {
 	/**
-	 * Zapisuje do pliku .csv dane sygnału - częstotliwość, poziom natężenia dźwięku dla dwóch kanałów kanałów i różnicę tych poziomów
+	 * Saves to .csv file information about signal - frequency, signal level for each of two channels and difference of signal for these two channels.
 	 * 
-	 * @param channel1
-	 * @param channel2
-	 * @param diff
+	 * @param channel1 	sampled signal from first microphone
+	 * @param channel2 	sampled signal from second microphone
+	 * @param diff 		difference of channel1 and channel2
 	 * @throws FileNotFoundException
 	 */
 	public static void saveCSV(double[] channel1, double[] channel2, double[] diff) throws FileNotFoundException{
