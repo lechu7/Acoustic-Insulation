@@ -114,7 +114,7 @@ public class gui extends Application {
 			{
 				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 				alert.setTitle("Kalibracja");
-				alert.setHeaderText("Czy chciałbyś przeprowadzić kalibrację?");
+				alert.setHeaderText("Czy chciałbyś przeprowadzić kalibrację kanału 0?");
 //				alert.setContentText("");
 
 				Optional<ButtonType> result = alert.showAndWait();
