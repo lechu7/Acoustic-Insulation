@@ -45,6 +45,9 @@ public class outputStream{
 	
 	/**
 	 * This method generates sweep signal.
+	 * <p>
+	 * Method generates sweep signal using BeadsProject library and standard Sin buffer. It runs on separate thread, so it doesn't freeze program, and it is possible to e.g. record generated sound.
+	 * </p>
 	 * @param startFreq Initial frequency of signal
 	 * @param endFreq Final frequency of signal
 	 * @param time Determines how long signal should be generating
@@ -91,6 +94,9 @@ public class outputStream{
 	
 	/**
 	 * This method generates sinusoidal signal
+	 * <p>
+	 * Method generates Sin signal with amplitude 0.9 using BeadsProject library and modified Sin buffer. It runs on separate thread, so it doesn't freeze program, and it is possible to e.g. record generated sound.
+	 * </p>
 	 * @param freq Sets frequency of signal
 	 * @param time Determines how long signal should be generating
 	 * @param delay Sets delay to start generating signal
