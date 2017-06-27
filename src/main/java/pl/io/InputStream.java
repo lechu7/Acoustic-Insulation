@@ -4,12 +4,18 @@ import java.io.IOException;
 import javax.sound.sampled.*;
 
 
+/**
+ * @author Kamil Rytel
+ */
 public class InputStream 
-{	
-	
+{
+
     /**
-     * @param recordingTime
-     * @return
+     * @author Kamil Rytel
+     * Method responsible for reading input stream. Method use Threat to run reading in the same time as Sweep or Sin signal generation. Special object DataLine is use to read data from 2 chanels. Samples size in bites is 16, 2 chanelsl and frame size is 4. Method force small endian and later is converted to big endian.
+
+     * @param recordingTime Determines how long signal should be generating
+     * @return double[][]
      * @throws Exception
      */
     public static double[][] reading(float recordingTime) throws Exception
@@ -57,9 +63,11 @@ public class InputStream
        
         return result;    
     }
-   
+
     /**
-     * @param fromStream
+     * @author Kamil Rytel
+     * Method responsible for regroup data. Data from two channels is collect in one byte[] array. Method divide this array on two array, channel1 and channel2. Futhermore method convert small endian data onto big endian.
+     * @param fromStream byte[] array from DataLine
      * @return
      */
     private static double[][] regroupData(byte[] fromStream){
