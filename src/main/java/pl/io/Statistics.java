@@ -1,11 +1,19 @@
 package pl.io;
 
+/**
+ * Class used for normalization and removing outliners.
+ *  
+ * @author Daniel Niczyporuk
+ *
+ */
 public class Statistics {
-	 /**
-	  *The method takes as a array parameter and returns a new normalized
-	  list with values from -1 to 1.
-	  * @param tab
-	  */
+	
+	/**
+	 * The method takes as a array parameter and returns a new normalized list with values from -1 to 1.
+	 * 
+	 * @param tab
+	 * @return
+	 */
     public static double[] normalization(double[] tab)
     {
         double max = tab[0];                        //Defining and calculating the max value

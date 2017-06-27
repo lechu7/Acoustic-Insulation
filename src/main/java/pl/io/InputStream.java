@@ -5,6 +5,8 @@ import javax.sound.sampled.*;
 
 
 /**
+ * Class used for recording sound from microphone.
+ * 
  * @author Kamil Rytel
  */
 public class InputStream 

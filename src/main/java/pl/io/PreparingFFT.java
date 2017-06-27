@@ -14,6 +14,11 @@ package pl.io;
     @author Piotr Wrzeciono
     @since 2016.02.14
 */
+
+/**
+ * Special class for spectral analysis.
+ *
+ */
 public class PreparingFFT{
     
     /**

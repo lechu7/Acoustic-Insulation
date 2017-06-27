@@ -3,7 +3,12 @@ package pl.io;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-
+/**
+ * Class used for exporting data to .csv
+ * 
+ * @author Hubert Korgul
+ *
+ */
 public class IO 
 {
 	/**

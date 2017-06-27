@@ -23,10 +23,15 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+
+/**
+ * Class Graph generates a acoustic spectrum from double array.
+ * Final Plot is exported to gui class.
+ * 
+ * @author Dawid Włoszek
+ */
 @SuppressWarnings("restriction")
-//  Author: Dawid Wloszek
-//Class Graph generates a acoustic spectrum from double array.
-//Final Plot is exported to gui class.
 public class Graph extends JFrame {
    
     private static final long serialVersionUID = 1L;

@@ -20,9 +20,12 @@ import javafx.stage.Stage;
 
 import javafx.stage.WindowEvent;
 
-//authors: Zagórowicz Jakub, Radosz Szymon
-//class gui generates graphical user interface of existing program
-
+/**
+ * Class gui generates graphical user interface of existing program.
+ * 
+ * @author Zagórowicz Jakub
+ * @author Radosz Szymon
+ */
 @SuppressWarnings("restriction")
 public class gui extends Application {
 
